@@ -4,9 +4,10 @@
 </script>
  
 <template>
-  <div>
-    
+  <div class="marking">
+    <Header/>
     <slot/>
+    <Footer/>
   </div>
 </template>
  

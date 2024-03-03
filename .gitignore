@@ -1,4 +1,6 @@
 # Nuxt dev/build outputs
+.technical-task.txt
+.technical_task.docx
 .output
 .data
 .nuxt

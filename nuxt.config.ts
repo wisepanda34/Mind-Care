@@ -13,9 +13,22 @@ export default defineNuxtConfig({
   runtimeConfig: {
     dbUrl: process.env.DATABASE_URL,
   },
-  modules: [],
+  modules: [
+    '@pinia/nuxt',
+  ],
   
   css: [
     '~/assets/scss/main.scss',
   ],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `
+            @import "@/assets/scss/variables.scss";
+          `
+        }
+      }
+    }
+  }
 })

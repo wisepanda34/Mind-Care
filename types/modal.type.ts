@@ -1,0 +1,1 @@
+// types/modal.type.ts

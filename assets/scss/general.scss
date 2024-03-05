@@ -8,6 +8,7 @@ body{
 #__nuxt {
   height: 100%;
 }
+
 *{
   box-sizing: border-box;
 }
@@ -21,14 +22,15 @@ body{
   justify-content: space-between;
 }
 
-.wrapper {
+.page {
+  flex: 1 1 auto;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
 }
 @media (max-width: 768px) {
-  .wrapper{
+  .page{
     padding: 10px;
   }
 }
@@ -38,10 +40,7 @@ body{
 .no-scroll{
   overflow: hidden;
 }
-.page {
-  flex: 1 1 auto;
-  padding: 20px 0;
-}
+
 .flex{
   display: flex;
 }
@@ -49,4 +48,11 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.flex-middle{
+  display: flex;
+  align-items: center;
+}
+.curspoint{
+  cursor: pointer;
 }

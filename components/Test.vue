@@ -1,14 +1,11 @@
+<!--  -->
 <script lang='ts'>
-
-
+ 
 </script>
  
 <template>
-  <div class="site">
-    <Header/>
-    <slot/>
-    <Footer/>
-    <AuthModal/>
+  <div>
+    Test
   </div>
 </template>
  

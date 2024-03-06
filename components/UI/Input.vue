@@ -44,7 +44,7 @@ const onInput = (event: Event) => {
     }
 
     &:focus{
-      border: 1px solid $blue-700;
+      border: 1px solid $green-ok-bg;
     }
   }
  

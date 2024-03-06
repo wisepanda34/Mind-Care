@@ -1,17 +1,22 @@
 <!-- components/Header.vue -->
 <script setup lang='ts'>
- 
+import { useAuthStore } from '@/stores/auth.store';
 
- const openModalLogin = () => {
-  
- }
+
+const authStore = useAuthStore()
+
+const openModalLogin = () => {
+
+}
 </script>
  
 <template>
   <section class="header">
-    <div class="header__logo">
-      <img src="../public/mind-care.svg" alt="logo">
-      <div class="header__logo-name">Mind <br> Care</div>
+    <div >
+      <nuxt-link class="header__logo" to="/">
+        <NuxtImg src="mind-care.svg" alt="logo"/>
+        <div class="header__logo-name">Mind <br> Care</div>
+      </nuxt-link>
     </div>
     <nav class="header__nav">
       <nuxt-link class="header__nav-item" to="/">Main</nuxt-link>
@@ -19,7 +24,7 @@
       <nuxt-link class="header__nav-item" to="/reviews">Reviews</nuxt-link>
     </nav>
     <div class="header__user">
-      <div class="header__user-enter" @click="openModalLogin">Enter</div>
+      <div class="header__user-enter" @click="authStore.toggleAuthModal">Enter</div>
     </div>
   </section>
 </template>

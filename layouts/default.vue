@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script setup lang='ts'>
 
 
 </script>
@@ -8,7 +8,6 @@
     <Header/>
     <slot/>
     <Footer/>
-    <AuthModal/>
   </div>
 </template>
  

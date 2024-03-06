@@ -13,9 +13,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     dbUrl: process.env.DATABASE_URL,
   },
-  modules: [
-    '@pinia/nuxt',
-  ],
+  modules: ['@pinia/nuxt', "@nuxt/image"],
   
   css: [
     '~/assets/scss/main.scss',

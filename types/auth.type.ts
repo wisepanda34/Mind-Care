@@ -1,8 +1,11 @@
-import { ROLE } from "~/constants";
+import { ROLE, ENTER } from "~/constants";
 
 export type RolesT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN
+export type EnterT = ENTER.NULL | ENTER.LOGIN | ENTER.REGISTRATON
 
 export interface IStateAuth {
+  isOpenAuthModal: boolean;
+  processAuth: EnterT;
   isAuthed: boolean;
   user: IUser;
 }

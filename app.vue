@@ -1,3 +1,10 @@
+<!-- app.vue -->
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/auth.store';
+
+const authStore = useAuthStore()
+
+</script>
 <template>
  <Html>
     <Body>
@@ -9,6 +16,7 @@
         />
         <NuxtPage class="page"/>
       </NuxtLayout>
+      <AuthModal v-if="authStore.isOpenAuthModal"/>
     </Body>
   </Html>
 </template>

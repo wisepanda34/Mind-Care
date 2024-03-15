@@ -19,9 +19,9 @@ const openModalLogin = () => {
       </nuxt-link>
     </div>
     <nav class="header__nav">
-      <nuxt-link class="header__nav-item" to="/">Main</nuxt-link>
-      <nuxt-link class="header__nav-item" to="/specialists">Our specialists</nuxt-link>
-      <nuxt-link class="header__nav-item" to="/reviews">Reviews</nuxt-link>
+      <nuxt-link class="header__nav-item" to="/" exact-active-class="active">Company</nuxt-link>
+      <nuxt-link class="header__nav-item" to="/specialists" exact-active-class="active">Our specialists</nuxt-link>
+      <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active">Reviews</nuxt-link>
     </nav>
     <div class="header__user">
       <div class="header__user-enter" @click="authStore.toggleAuthModal">Enter</div>
@@ -57,7 +57,6 @@ const openModalLogin = () => {
       font-weight: 700;
       display: flex;
       align-items: center;
-
     }
   }
   &__nav{
@@ -70,6 +69,10 @@ const openModalLogin = () => {
       color: $blue-100;
       font-weight: 700;
       font-size: 20px;
+    }
+    &-item.active{
+      color: $purple-active;
+;
     }
   }
   &__user{

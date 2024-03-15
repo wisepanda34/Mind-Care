@@ -1,11 +1,11 @@
 <!-- pages/main.vue -->
-<script lang='ts'>
+<script setup lang='ts'>
  
 </script>
  
 <template>
   <div>
-    main
+    <Company/>
   </div>
 </template>
  

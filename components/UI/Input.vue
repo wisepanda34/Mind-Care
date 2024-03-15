@@ -8,6 +8,7 @@ const onInput = (event: Event) => {
   const inputValue = (event.target as HTMLInputElement).value;
   emits('update:modelValue', inputValue);
 };
+
 </script>
  
 <template>

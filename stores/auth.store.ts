@@ -1,7 +1,7 @@
 // stores/auth.store.ts
 import axios from "axios";
 import { defineStore } from "pinia";
-import { ENTER } from "~/constants";
+import { ENTER, ROLE } from "~/constants";
 import type { IStateAuth, IUser, EnterT } from "~/types/auth.type";
 
 
@@ -12,13 +12,13 @@ export const useAuthStore = defineStore('auth', {
     isAuthed: false,
     user: {
       avatar: null,
-      birthday: '',
+      birthday: null,
       email: '',
       id: '',
-      name: '',
+      userName: '',
       phone: '',
       role: null,
-      registeredAt: ''
+      registeredAt: null
     } as IUser
   }),
   actions: {
@@ -33,9 +33,14 @@ export const useAuthStore = defineStore('auth', {
     },
     toggleAuthModal(){
       this.isOpenAuthModal = !this.isOpenAuthModal
+      if(!this.isOpenAuthModal) this.processAuth = ENTER.LOGIN
     },
     startRegistration(){
       this.processAuth = ENTER.REGISTRATON
+    },
+    cancelRegistration(){
+      this.toggleAuthModal()
+      this.processAuth = ENTER.LOGIN
     }
   },
 

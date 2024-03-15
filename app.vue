@@ -6,7 +6,7 @@ const authStore = useAuthStore()
 const showUIPageUp = ref(false);
 
 const handleScroll = () => {
-  if (window.scrollY > 500) {
+  if (window.scrollY > 80) {
     showUIPageUp.value = true;
   } else {
     showUIPageUp.value = false;

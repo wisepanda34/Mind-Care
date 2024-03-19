@@ -24,21 +24,35 @@ export interface IStateAuth {
 }
 
 export interface IUser {
-  avatar: string | null;
-  birthday?: Date | null;
   email: string;
   password?: string,
   id?: string;
-  userName: string | null;
-  phone: string | null;
-  role: ROLE | null;
-  registeredAt: Date | null;
-  isActivated?: boolean;
-  activationLink?: string;
+  _id?: string;
+  role: string;
 }
+export interface IUserDB {
+  email: string;
+  password?: string,
+  _id: string;
+  role: string;
+}
+// export interface IUser {
+//   avatar: string | null;
+//   email: string;
+//   password?: string,
+//   id?: string;
+//   userName: string | null;
+//   birthday?: Date | null;
+//   phone: string | null;
+//   role: string | null;
+//   registeredAt: Date | null;
+//   isActivated?: boolean;
+//   activationLink?: string;
+// }
 
 export interface IUserDto  {
   email: string;
   id?: string;
-  isActivated?: boolean;
+  role: string;
 }
+// isActivated?: boolean;

@@ -2,11 +2,13 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { required, email as emailValidator, minLength } from '@vuelidate/validators';
+import type {INewUser} from '@/types/auth.type'
+
 import { useAuthStore } from '@/stores/auth.store';
 
 const authStore = useAuthStore();
-const email = ref('');
-const password = ref('');
+const email = ref('bob@mail.zxzx');
+const password = ref('zxzx');
 
 const rules = {
   email: { required, email: emailValidator },
@@ -16,12 +18,21 @@ const rules = {
 const v$ = useVuelidate(rules, { email, password });
 
 const submitLogin = () => {
-  if (v$.value.$invalid) {
-    // Form is invalid, do not submit
+  const validated = v$.value.$validate()
+  if (!validated) {
+    console.log('No valid email or password');
     return;
   }
-  // Логика залогинивания
+  // Логика аудентификации
   console.log('submitLogin');
+
+  const data: INewUser = {
+    email: email.value,
+    password: password.value
+  }
+
+  authStore.fetchLogin(data)
+
 };
 
 const startRegistration = () => {

@@ -4,7 +4,7 @@ import {hash} from 'bcrypt-ts';
 import  {v4}  from 'uuid';
 // import MailService from "../service/mail-service.js";
 import tokenService from "../services/token-service";
-import { IUser, INewUser } from "~/types/auth.type";
+import { IUser, IUserDB, INewUser } from "~/types/auth.type";
 import { ROLE } from "~/constants";
 import createUserDto from "../dtos/user-dto";
 // import cookieParser from "cookie-parser";
@@ -25,27 +25,39 @@ export default defineEventHandler(async (event) => {
     }
     // const secretKey = process.env.JWT_ACCESS_SECRET
     const hashPassword = await hash(password, 3)
+    console.log('hash', hashPassword);
+    
     //уникальный идентификатор для активации учетной записи пользователя через его имэйл
     const activationLink = v4() //af914236-e488-47fb-925e-c3fb6c762f0b
+    console.log('activationLink: ', activationLink);
+    
 
-    const userData: IUser = {
-      avatar: null,
+    // const userData: IUser = {
+    //   avatar: null,
+    //   email: email,
+    //   password: hashPassword,
+    //   userName: null,
+    //   birthday: null,
+    //   phone: null,
+    //   role: ROLE.USER,
+    //   registeredAt: new Date(),
+    //   isActivated: false,
+    //   activationLink: activationLink
+    // }
+      const userData: IUser = {
       email: email,
-      password: hashPassword,
+      // password: hashPassword,
+      password: password,
       role: ROLE.USER,
-      userName: null,
-      birthday: null,
-      phone: null,
-      registeredAt: new Date(),
-      isActivated: false,
-      activationLink: activationLink
     }
 
+    console.log('userData: ', userData);
+    
    
 
     //сохраняем пользователя в БД
     const newUser = new UserModel(userData);
-    console.log("newUser:",newUser)
+    console.log("newUser:", newUser)
     //отправка ссылки активации на имейл пользователя
     // console.log('MailService')
     const path = `${process.env.API_URL}/api/activate/${activationLink}`

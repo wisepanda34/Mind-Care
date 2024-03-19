@@ -1,12 +1,20 @@
 <!-- components/UI/Input.vue -->
 <script setup lang='ts'>
 
-const props = defineProps(['modelValue', 'id', 'type', 'label',]);
+const props = defineProps(['modelValue', 'id', 'type', 'label']);
 const emits = defineEmits(['update:modelValue']);
 
 const onInput = (event: Event) => {
   const inputValue = (event.target as HTMLInputElement).value;
   emits('update:modelValue', inputValue);
+};
+
+const getAutocompleteType = (type: string): string => {
+  if (type === 'email') {
+    return 'email'; // Для поля email используем автокомплит 'email'
+  }
+  // Другие типы полей могут использовать автокомплит по умолчанию
+  return 'on';
 };
 
 </script>
@@ -19,6 +27,7 @@ const onInput = (event: Event) => {
       :type="type"
       :id="id"
       :value="modelValue" 
+      :autocomplete="getAutocompleteType(type)"
       @input="onInput" 
     />
   </div>

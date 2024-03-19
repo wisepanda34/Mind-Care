@@ -1,14 +1,14 @@
 <!-- components/auth/Registration.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
-import type {INewUser, MindRequestOptions} from '@/types/auth.type'
+import type {INewUser} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email as emailValidator, maxLength, minLength, sameAs } from '@vuelidate/validators'
 
 const authStore = useAuthStore()
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
+const email = ref('fox@mail.com')
+const password = ref('qwqw')
+const confirmPassword = ref('qwqw')
 
 const rules = {
   email: { required, email: emailValidator },
@@ -18,32 +18,13 @@ const rules = {
 
 const v$ = useVuelidate(rules, {email, password, confirmPassword});
 
-const submitRegistration = async() => {
+const submitRegistration = () => {
   console.log('submitRegistration');
-  // const newUser: INewUser = {
-  //   email: email.value,
-  //   password: password.value,
-  // }
-  // const requestOptions: MindRequestOptions = {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify(newUser)
-  // };
-  // try {
-  //   const response = await fetch('/api/registration', requestOptions);
-  //   if(!response.ok){
-  //     throw new Error('error')
-  //   }
-  //   console.log('response: ', response);
-  //   console.log('request is sent to server');
-    
-    
-    
-  // } catch (error) {
-  //   console.error('Error submitting registration:', error);
-  // }
+  const newUser: INewUser = {
+    email: email.value,
+    password: password.value,
+  }
+  authStore.fetchRegistration(newUser)
 }
 
 const cancelRegistration = () => {
@@ -72,7 +53,7 @@ const cancelRegistration = () => {
         <UIInput
           v-model="password"
           id="password"
-          type="text"
+          type="password"
           label="Password"
         />
         <p v-if="v$.password.required.$invalid" class="field-error text--red">Password is required</p>
@@ -81,7 +62,7 @@ const cancelRegistration = () => {
         <UIInput
           v-model="confirmPassword"
           id="confirmPassword"
-          type="text"
+          type="password"
           label="Confirm password"
         />
         <p v-if="v$.confirmPassword.sameAs.$invalid" class="field-error text--red">not match password</p>

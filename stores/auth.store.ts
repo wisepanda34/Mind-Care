@@ -72,12 +72,29 @@ export const useAuthStore = defineStore('auth', {
         this.user.id = responseData.id
         this.user.email = responseData.email
         this.user.role = responseData.role
+        this.isAuthed = true
         this.showUser()
         
       } catch (error) {
         console.error("Error fetching modal data:", error);
       } finally {
         this.toggleAuthModal()
+      }
+    },
+    async fetchLogout(){
+      try {
+        await fetch("/api/logout")
+        // localStorage.removeItem("access_token");
+      } catch(error){
+        console.log("Error logging out:", error);
+      } finally {
+        this.isAuthed = false
+        this.user = {
+          email: '',
+          id: '',
+          role: '',
+        }
+        navigateTo('/')
       }
     },
 

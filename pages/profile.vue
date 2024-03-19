@@ -1,18 +1,14 @@
-<!-- layouts/default.vue -->
-
+<!-- pages/profile.vue -->
 <script setup lang='ts'>
-
-
+definePageMeta({layout: 'profile-layout'})
 </script>
  
 <template>
-  <div class="site">
-    <Header/>
-    <slot/>
-    <Footer/>
+  <div>
+    <Profile/>
   </div>
 </template>
  
 <style scoped lang='scss'>
- 
+
 </style>

@@ -1,13 +1,10 @@
-<!-- layouts/default.vue -->
-
+<!-- layouts/profile-layout.vue -->
 <script setup lang='ts'>
-
 
 </script>
  
 <template>
   <div class="site">
-    <Header/>
     <slot/>
     <Footer/>
   </div>

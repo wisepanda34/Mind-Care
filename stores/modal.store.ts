@@ -1,24 +1,13 @@
 // stores/modal.store.ts
 import { defineStore } from "pinia";
 
-// import type { IModalProps, IModalAvailableProps } from "~/types/modal.type";
+import type { IModalState, IModalProps, IModalAvailableProps } from "~/types/modal.type";
 import { extend } from "@vue/shared";
 import axios from "axios";
 const component = extend({});
 type VueComponent = InstanceType<typeof component>;
 
-export interface IModalProps {
-  component: null | VueComponent;
-  props?: IModalAvailableProps;
-}
 
-export interface IModalAvailableProps {
-  title: string;
-  text: string;
-}
-export interface IModalState {
-  modalState: IModalProps;
-}
 
 // базовое состояние для модального окна
 const basicState = { component: null, props: { title: "", text: "" } };

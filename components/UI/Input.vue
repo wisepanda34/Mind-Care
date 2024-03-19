@@ -31,7 +31,7 @@ const getAutocompleteType = (type: string): string => {
       @input="onInput" 
     />
   </div>
-  
+
 </template>
  
 <style scoped lang='scss'>

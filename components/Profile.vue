@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import type {INewUser} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, minLength, sameAs } from '@vuelidate/validators'
+import BirthdayPicker from './BirthdayPicker.vue';
 
 
 
@@ -13,7 +14,7 @@ const newPassword = ref('')
 const confirmPassword = ref('')
 const userName = ref('')
 const phone = ref('')
-const birthday = ref('')
+const birthday = ref(null)
 
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
@@ -30,7 +31,7 @@ const editAvatar = () => {
 
 }
 const submitCancel = () => {
-
+  navigateTo('/')
 }
 const submitSave = () => {
   
@@ -65,7 +66,10 @@ const submitSave = () => {
     />
     <!-- <p v-if="v$.phone.phoneRegex.$invalid" class="field-error text--red">Invalid email format</p> -->
 
-    <div class="text--fz18 mt--30 mb--30">Birthday</div>
+    <BirthdayPicker 
+      class="profile__birthday"
+      v-model="birthday" 
+    />
 
     <p>Change password</p>
     <div class="profile__line"></div>
@@ -120,6 +124,9 @@ const submitSave = () => {
   &__inputs{
     max-width: 600px;
     padding:20px 50px;
+  }
+  &__birthday{
+    margin: 12px 0 40px;
   }
   &__line{
     width: 100%;

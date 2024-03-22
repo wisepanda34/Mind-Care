@@ -17,7 +17,9 @@ export default defineNuxtConfig({
     dbUrl: process.env.DATABASE_URL,
   },
   modules: ['@pinia/nuxt', "@nuxt/image", '@morev/vue-transitions/nuxt'],
-  
+  build: {
+    transpile: ['@vuepic/vue-datepicker']
+  },
   css: [
     '~/assets/scss/main.scss',
   ],

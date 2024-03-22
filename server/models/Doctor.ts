@@ -2,6 +2,10 @@
 import { Schema, model } from "mongoose";
 
 const DoctorSchema = new Schema({
+  id:{
+    type: String,
+    required: true,
+  },
   avatar: {
     type: String,
     default: null

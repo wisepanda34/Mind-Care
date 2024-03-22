@@ -1,18 +1,36 @@
-<!-- pages/specialists.vue -->
+<!-- pages/specialists/index.vue -->
 <script setup lang='ts'>
-  const response = await fetch('/api/doctor')
-  const doctors = await response.json();
-  
-  const chooseDoctor = (index: string) => {
-    console.log('chooseDoctor', index);
+import type {IDoctor} from '@/types/auth.type'
+
+// Property '_id' does not exist on type 'never'.
+  const doctors = ref<IDoctor[]>([]);
+
+  const fetchDoctors = async() => {
+    try{
+      const response = await fetch('/api/doctor')
+      if(!response.ok){
+        throw new Error('response is not OK')
+      }
+      doctors.value = await response.json();
+
+    } catch(error) {
+      console.log('getDoctors error:', error);
+    }
   }
+  
+  const chooseDoctor = (id: string) => {
+    navigateTo(`/specialists/${id}`)
+  }
+
+  onMounted(fetchDoctors)
+  
 </script>
  
 <template>
   <div class="doctor">
     <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
     <ul class="doctor__list">
-      <li class="doctor__card" v-for="(doctor, index) in doctors" :key="doctor._id" @click="chooseDoctor(doctor._id)">
+      <li class="doctor__card" v-for="doctor in doctors" :key="doctor._id" @click="chooseDoctor(doctor._id)">
 
         <div class="doctor__avatar"></div>
         <div class="doctor__info">
@@ -25,6 +43,12 @@
             </span>
           </div>
         </div>
+        <div class="doctor__consultation">
+          <UIButton
+            text="Sign up for a consultation"
+            @click="chooseDoctor(doctor._id)"
+          />
+        </div>  
 
       </li>
     </ul>
@@ -61,6 +85,10 @@
   }
   &__specialization{
 
+  }
+  &__consultation{
+    margin-left: auto;
+    padding: 10px;
   }
 }
 </style>

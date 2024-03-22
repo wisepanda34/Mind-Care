@@ -56,3 +56,27 @@ export interface IUserDto  {
   role: string;
 }
 // isActivated?: boolean;
+
+export interface IDoctor {
+  _id: string;
+  avatar?: string;
+  birthday?: Date;
+  name: string;
+  surname: string;
+  experience?: number;
+  specialization?: string[];
+  password: string;
+  email: string;
+  phone?: string;
+  role: string;
+  registeredAt: Date;
+  isActivated: boolean;
+  activationLink: string;
+}
+
+export interface IDoctorDto {
+  name: string;
+  surname: string;
+  email: string;
+  role: string;
+}

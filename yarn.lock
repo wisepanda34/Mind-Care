@@ -1168,7 +1168,7 @@
 
 "@nuxt/image@^1.4.0":
   version "1.4.0"
-  resolved "https://registry.npmjs.org/@nuxt/image/-/image-1.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/@nuxt/image/-/image-1.4.0.tgz#1d81056868402329d95aae8ade1c3023051fcda4"
   integrity sha512-ZEGHjX8UZY/Wt/jWm+66QuUQA14E0dTwdi7n9BoZ1cJdinL8QdRMm3FcbwJvCj2quvD85c9LT2wvNA8l6hOMOA==
   dependencies:
     "@nuxt/kit" "^3.10.3"

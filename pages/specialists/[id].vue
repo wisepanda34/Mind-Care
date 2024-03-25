@@ -22,7 +22,7 @@ onMounted(() => {
 <template>
   <div class="doctor-details">
     DOCTOR
-    <!-- <pre>{{ doctor }}</pre> -->
+    <pre>{{ doctorId }}</pre>
     <!-- <h1>{{ doctor.name }} {{ doctor.surname }}</h1>
     <p>Experience: {{ doctor.experience }} years</p>
     <p>Specializations: {{ doctor.specialization.join(', ') }}</p> -->

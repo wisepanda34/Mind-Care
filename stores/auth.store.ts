@@ -2,7 +2,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ENTER, ROLE } from "~/constants";
-import type { IStateAuth, IUser, EnterT, INewUser, MindRequestOptions } from "~/types/auth.type";
+import type { IStateAuth, IUser, EnterT, RoleT, INewUser, MindRequestOptions } from "~/types/auth.type";
 
 
 
@@ -12,23 +12,18 @@ export const useAuthStore = defineStore('auth', {
     processAuth: ENTER.LOGIN,
     isAuthed: false,
     user: {
-      email: '',
       id: '',
-      role: '',
+      name: '',
+      email: '',
+      password: '',
+      role: ROLE.USER,
+      phone: '',
+      birthday: new Date(),
+      registeredAt: new Date(),
     } as IUser
-    // user: {
-    //   avatar: null,
-    //   birthday: null,
-    //   email: '',
-    //   id: '',
-    //   userName: '',
-    //   phone: '',
-    //   role: null,
-    //   registeredAt: null
-    // } as IUser
   }),
   actions: {
-    async fetchRegistration(newUser:INewUser) {
+    async fetchRegistration(newUser:IUser) {
       const requestOptions: MindRequestOptions = {
         method: 'POST',
         headers: {
@@ -71,7 +66,7 @@ export const useAuthStore = defineStore('auth', {
 
         this.user.id = responseData.id
         this.user.email = responseData.email
-        this.user.role = responseData.role
+        this.user.role = responseData.role as RoleT
         this.isAuthed = true
         this.showUser()
         
@@ -83,18 +78,23 @@ export const useAuthStore = defineStore('auth', {
     },
     async fetchLogout(){
       try {
-        await fetch("/api/logout")
+        await fetch('/api/logout')
         // localStorage.removeItem("access_token");
       } catch(error){
         console.log("Error logging out:", error);
       } finally {
-        this.isAuthed = false
+        this.isAuthed = false;
         this.user = {
-          email: '',
           id: '',
-          role: '',
-        }
-        navigateTo('/')
+          name: '',
+          email: '',
+          password: '',
+          role: ROLE.USER as RoleT,
+          phone: '',
+          birthday: new Date(),
+          registeredAt: new Date()
+        } as IUser; 
+        navigateTo('/');
       }
     },
 

@@ -13,54 +13,44 @@ import createUserDto from "../dtos/user-dto";
 
 export default defineEventHandler(async (event) => {
   try{
-    const { email,  password } = await readBody(event);
-    console.log(email, password);
+    const data = await readBody(event);
+    console.log('data: ', data);
     
-    const candidate = await UserModel.findOne({ email });
+    
+    const candidate = await UserModel.findOne({email: data.email});
     if (candidate) {
       return {
         status: 400,
-        body: { error: `User with email ${email} already exists` },
+        body: { error: `User with email ${data.email} already exists` },
       };
     }
     // const secretKey = process.env.JWT_ACCESS_SECRET
-    const hashPassword = await hash(password, 3)
+    const hashPassword = await hash(data.password, 3)
     console.log('hash', hashPassword);
     
     //уникальный идентификатор для активации учетной записи пользователя через его имэйл
-    const activationLink = v4() //af914236-e488-47fb-925e-c3fb6c762f0b
-    console.log('activationLink: ', activationLink);
+    // const activationLink = v4() //af914236-e488-47fb-925e-c3fb6c762f0b
+    // console.log('activationLink: ', activationLink);
     
 
-    // const userData: IUser = {
-    //   avatar: null,
-    //   email: email,
-    //   password: hashPassword,
-    //   userName: null,
-    //   birthday: null,
-    //   phone: null,
-    //   role: ROLE.USER,
-    //   registeredAt: new Date(),
-    //   isActivated: false,
-    //   activationLink: activationLink
-    // }
-      const userData: IUser = {
-      email: email,
-      // password: hashPassword,
-      password: password,
+    const user: IUser = {
+      id: data.id,
+      email: data.email,
+      password: hashPassword,
+      name: data.name,
+      birthday: data.birthday,
+      phone: data.phone,
       role: ROLE.USER,
+      registeredAt: data.registeredAt,
+      // isActivated: false,
+      // activationLink: activationLink
     }
 
-    console.log('userData: ', userData);
-    
-   
-
     //сохраняем пользователя в БД
-    const newUser = new UserModel(userData);
-    console.log("newUser:", newUser)
+    const newUser = new UserModel(user);
     //отправка ссылки активации на имейл пользователя
     // console.log('MailService')
-    const path = `${process.env.API_URL}/api/activate/${activationLink}`
+    // const path = `${process.env.API_URL}/api/activate/${activationLink}`
     // await MailService.sendActivationMail(email, path)
     // await MailService.sendActivationMail(email, activationLink)
 

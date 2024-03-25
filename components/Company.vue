@@ -10,7 +10,7 @@
     <p>At Mind Care, we understand that mental health is just as important as physical health. We offer a variety of counseling services to help you address common mental health concerns and improve your overall well-being.</p>
     
     <div class="company__image flex-center">
-      <NuxtImg class="co" src="images/doctor3.jpg" loading="lazy"/>
+      <NuxtImg class="co" src="images/doctor3.jpg"/>
     </div>
 
     <h2>Our Services</h2>
@@ -32,7 +32,7 @@
     <p>Our team of experienced therapists are committed to providing you with the highest quality of care. They are all licensed and insured, and they have a wealth of experience working with people from all walks of life.</p> 
     
     <div class="company__image flex-center">
-      <NuxtImg class="co" src="images/consultation2.webp" loading="lazy"/>
+      <NuxtImg class="co" src="images/consultation2.webp"/>
     </div>
 
     <h2>Our Approach</h2>
@@ -42,7 +42,7 @@
     <p>When you first come to Mind Care, we will meet with you to assess your needs and develop a treatment plan. We will work with you at your own pace, and we will be there to support you every step of the way.</p>
   
     <div class="company__image flex-center">
-      <NuxtImg class="co" src="images/doctor1.jpg" loading="lazy"/>
+      <NuxtImg class="co" src="images/doctor1.jpg"/>
     </div>
 
     <h2>Contact Us</h2>
@@ -57,7 +57,7 @@
     </ul>
 
     <div class="company__image flex-center">
-      <NuxtImg src="images/doctor2.jpg" loading="lazy"/>
+      <NuxtImg src="images/doctor2.jpg"/>
     </div>
 
     <h2>Take the First Step to Better Mental Health</h2>

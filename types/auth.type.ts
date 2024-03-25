@@ -4,6 +4,7 @@ import { ENTER, ROLE } from "~/constants";
 // export type RolesT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN
 
 export type EnterT = ENTER.NULL | ENTER.LOGIN | ENTER.REGISTRATON
+export type RoleT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN
 
 export interface INewUser {
   email: string;
@@ -24,55 +25,48 @@ export interface IStateAuth {
 }
 
 export interface IUser {
+  id: string;
+  name: string;
   email: string;
-  password?: string,
-  id?: string;
-  _id?: string;
-  role: string;
+  password: string;
+  role: RoleT;
+  phone: string;
+  birthday: Date;
+  registeredAt: Date;
 }
+
+export interface IClient extends IUser {
+  interests?: string;
+}
+
 export interface IUserDB {
   email: string;
   password?: string,
   _id: string;
   role: string;
 }
-// export interface IUser {
-//   avatar: string | null;
-//   email: string;
-//   password?: string,
-//   id?: string;
-//   userName: string | null;
-//   birthday?: Date | null;
-//   phone: string | null;
-//   role: string | null;
-//   registeredAt: Date | null;
-//   isActivated?: boolean;
-//   activationLink?: string;
-// }
 
 export interface IUserDto  {
   email: string;
   id?: string;
   role: string;
 }
-// isActivated?: boolean;
 
-export interface IDoctor {
-  _id: string;
-  avatar?: string;
-  birthday?: Date;
+export interface IDoctor  {
+  id: string;
   name: string;
+  email: string;
+  password: string;
+  role: RoleT;
+  phone: string;
+  birthday: Date;
+  registeredAt: Date;
   surname: string;
   experience?: number;
   specialization?: string[];
-  password: string;
-  email: string;
-  phone?: string;
-  role: string;
-  registeredAt: Date;
-  isActivated: boolean;
-  activationLink: string;
 }
+ // isActivated: boolean;
+// activationLink: string;
 
 export interface IDoctorDto {
   name: string;

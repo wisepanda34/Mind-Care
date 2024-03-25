@@ -30,7 +30,7 @@ import type {IDoctor} from '@/types/auth.type'
   <div class="doctor">
     <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
     <ul class="doctor__list">
-      <li class="doctor__card" v-for="doctor in doctors" :key="doctor._id" @click="chooseDoctor(doctor._id)">
+      <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id" @click="chooseDoctor(doctor.id)">
 
         <div class="doctor__avatar"></div>
         <div class="doctor__info">
@@ -46,7 +46,7 @@ import type {IDoctor} from '@/types/auth.type'
         <div class="doctor__consultation">
           <UIButton
             text="Sign up for a consultation"
-            @click="chooseDoctor(doctor._id)"
+            @click="chooseDoctor(doctor.id)"
           />
         </div>  
 

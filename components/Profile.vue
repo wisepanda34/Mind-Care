@@ -1,7 +1,7 @@
 <!-- components/Profile.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
-import type {INewUser} from '@/types/auth.type'
+import type {IUser} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, minLength, sameAs } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
@@ -14,18 +14,22 @@ const newPassword = ref('')
 const confirmPassword = ref('')
 const userName = ref('')
 const phone = ref('')
-const birthday = ref(null)
+const birthday = ref<Date | null>(null)
 
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
   password: { required },
-  newPassword: { required, minLength: minLength(3), maxLength: maxLength(20) },
+  newPassword: { required, minLength: minLength(3), maxLength: maxLength(16) },
   confirmPassword: {sameAs: sameAs(password)},
-  userName: { required, minLength: minLength(3), maxLength: maxLength(20) },
+  userName: { required, minLength: minLength(2), maxLength: maxLength(20) },
   phone: { pattern: phoneRegex },
 };
 
 const v$ = useVuelidate(rules, { password, newPassword, confirmPassword, userName, phone });  
+
+const handleUpdateBirthday = (date: Date | null) => {
+  birthday.value = date;
+};
 
 const editAvatar = () => {
 
@@ -68,7 +72,8 @@ const submitSave = () => {
 
     <BirthdayPicker 
       class="profile__birthday"
-      v-model="birthday" 
+      :date="birthday"
+      @update:selectedDate="handleUpdateBirthday"  
     />
 
     <p>Change password</p>

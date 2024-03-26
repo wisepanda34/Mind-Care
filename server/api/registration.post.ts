@@ -1,6 +1,6 @@
 // server/api/registration.post.ts
 import UserModel from "../models/User";
-import {hash} from 'bcrypt-ts';
+import { hash}  from 'bcrypt-ts';
 import  {v4}  from 'uuid';
 // import MailService from "../service/mail-service.js";
 import tokenService from "../services/token-service";

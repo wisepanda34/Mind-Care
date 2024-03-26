@@ -2,7 +2,8 @@
 
 import UserModel from "@/server/models/User";
 import createUserDto from "../dtos/user-dto";
-import type { IUserDB, IUserDto } from "~/types/auth.type";
+import type { IUser, IUserDB, IUserDto } from "~/types/auth.type";
+import { compare } from 'bcrypt-ts'
 
 // import { fetchData } from "~/server/api/utils/data-fetcher";
 
@@ -11,34 +12,37 @@ export default defineEventHandler(async (event) => {
   // return fetchData(UserModel, event);
   try{
     const { email,  password } = await readBody(event);
-    // console.log("login.post.ts", email, password);
 
-    if(!email || !password){
+    if(!email || !password) {
+      setResponseStatus(event, 400);
       return {
-        status: 400,
-        body: { error: 'missing required data' },
+        body: { error: 'Missing required data' },
       }
     }
 
-    const foundedUser = await UserModel.findOne({email}) as IUserDB;
-
-    if (!foundedUser) {
+    const foundUser = await UserModel.findOne({email}) as IUser;
+    console.log('foundUser: ', foundUser);
+    
+    if (!foundUser) {
+      setResponseStatus(event, 400);
       return { 
-        status: 400,
-        body: { message: "there is no user with this email" }
+        body: { message: "There is no user with this email" }
       };
     }
-    if(password !== foundedUser.password){
+    const isPasswordValid = await compare(password, foundUser.password);
+    if(!isPasswordValid){
+      setResponseStatus(event, 400);
       return { 
-        status: 400,
-        body: { message: "password is wrong!" }
+        body: { message: "Password is wrong!" }
       };
     }
-    const responseDto = createUserDto(foundedUser)//email,id,role
-    return responseDto;
+    const responseDto = createUserDto(foundUser)//email,id,role
+    return {
+      responseDto,
+      body: { message: "Password is ok!" }
+    }
     
   }catch(e){
     console.log('error: ', e);
   }
-  
 });

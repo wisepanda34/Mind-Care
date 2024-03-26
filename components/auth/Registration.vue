@@ -11,18 +11,12 @@ import { ROLE } from '~/constants';
 const authStore = useAuthStore()
 const state = reactive({
   name:'Fox',
-  email :'fox@mail.qwqw',
-  phone :'0991234567',
-  birthday:<Date | null>(null),
-  password :'qwqw',
-  confirmPassword :'qwqw',
+  email:'fox@mail.qwqw',
+  phone:'0991234567',
+  birthday: <Date | null>(null),
+  password:'qwqw',
+  confirmPassword:'qwqw',
 })
-// const name = ref('Fox')
-// const email = ref('fox@mail.qwqw')
-// const phone = ref('0991234567')
-// const birthday = ref<Date | null>(null)
-// const password = ref('qwqw')
-// const confirmPassword = ref('qwqw')
 
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {

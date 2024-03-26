@@ -4,7 +4,7 @@ import { ENTER, ROLE } from "~/constants";
 // export type RolesT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN
 
 export type EnterT = ENTER.NULL | ENTER.LOGIN | ENTER.REGISTRATON
-export type RoleT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN
+export type RoleT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN | null
 
 export interface INewUser {
   email: string;
@@ -29,10 +29,10 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role: RoleT;
+  role: RoleT | null;
   phone: string;
-  birthday: Date;
-  registeredAt: Date;
+  birthday: Date | null;
+  registeredAt: Date | null;
 }
 
 export interface ILogin {
@@ -45,16 +45,23 @@ export interface IClient extends IUser {
 }
 
 export interface IUserDB {
+  id: string;
+  name: string;
   email: string;
-  password?: string,
-  _id: string;
-  role: string;
+  role: RoleT;
+  phone: string;
+  birthday: Date | null;
+  registeredAt: Date | null;
 }
 
 export interface IUserDto  {
+  id: string;
+  name: string;
   email: string;
-  id?: string;
-  role: string;
+  role: RoleT;
+  phone: string;
+  birthday: Date | null;
+  registeredAt: Date | null;
 }
 
 export interface IDoctor  {
@@ -64,8 +71,8 @@ export interface IDoctor  {
   password: string;
   role: RoleT;
   phone: string;
-  birthday: Date;
-  registeredAt: Date;
+  birthday: Date | null;
+  registeredAt: Date | null;
   surname: string;
   experience?: number;
   specialization?: string[];

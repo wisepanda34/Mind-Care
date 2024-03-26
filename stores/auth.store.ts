@@ -16,10 +16,10 @@ export const useAuthStore = defineStore('auth', {
       name: '',
       email: '',
       password: '',
-      role: ROLE.USER,
+      role: null,
       phone: '',
-      birthday: new Date(),
-      registeredAt: new Date(),
+      birthday: null,
+      registeredAt: null,
     } as IUser
   }),
   actions: {
@@ -37,7 +37,6 @@ export const useAuthStore = defineStore('auth', {
         if(!response.ok){
           throw new Error('error')
         }
-        console.log('response: ', response);
         
       } catch (error) {
         console.error('Error submitting registration:', error);
@@ -58,23 +57,31 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         const response = await fetch('/api/login', requestOptions);
-        if(!response.ok){
-          throw new Error('error /api/login')
-        }
         const responseData = await response.json();
-        console.log('Response data:', responseData);
-
-        this.user.id = responseData.id
-        this.user.email = responseData.email
-        this.user.role = responseData.role as RoleT
-        this.isAuthed = true
-        this.showUser()
+        if(!response.ok){
+          // throw new Error('error /api/login')
+          console.log('!mes', responseData.body.message);
+          
+          return responseData.body.message
+        }
         
+        const data = responseData.responseDto
+
+        this.user.id = data.id
+        this.user.name = data.name
+        this.user.email = data.email
+        this.user.role = data.role as RoleT
+        this.user.phone = data.phone
+        this.user.birthday = data.birthday
+        this.user.registeredAt = data.registeredAt
+        this.isAuthed = true
+        this.toggleAuthModal()
+        console.log('mes', responseData.body.message);
+        return responseData.body.message
+
       } catch (error) {
         console.error("Error fetching modal data:", error);
-      } finally {
-        this.toggleAuthModal()
-      }
+      } 
     },
     async fetchLogout(){
       try {
@@ -89,10 +96,10 @@ export const useAuthStore = defineStore('auth', {
           name: '',
           email: '',
           password: '',
-          role: ROLE.USER as RoleT,
+          role: null,
           phone: '',
-          birthday: new Date(),
-          registeredAt: new Date()
+          birthday: null,
+          registeredAt: null
         } as IUser; 
         navigateTo('/');
       }

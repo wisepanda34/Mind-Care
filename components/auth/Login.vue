@@ -7,32 +7,29 @@ import type {INewUser, ILogin} from '@/types/auth.type'
 import { useAuthStore } from '@/stores/auth.store';
 
 const authStore = useAuthStore();
-const email = ref('bob@mail.zxzx');
-const password = ref('zxzx');
+const message = ref<string | null>(null);
+const state = reactive({
+  email:'fox@mail.qwqw',
+  password:'qwqw'
+})
 
 const rules = {
   email: { required, email: emailValidator },
   password: { required },
 };
 
-const v$ = useVuelidate(rules, { email, password });
+const v$ = useVuelidate(rules, state);
 
-const submitLogin = () => {
-  const validated = v$.value.$validate()
-  if (!validated) {
-    console.log('No valid email or password');
-    return;
+const submitLogin = async () => {
+  if (v$.value.$invalid){
+    message.value = 'Please input email and password'
+    return
   }
-  // Логика аудентификации
-  console.log('submitLogin');
-
-  const data: INewUser = {
-    email: email.value,
-    password: password.value
+  const data: ILogin = {
+    email: state.email,
+    password: state.password
   }
-
-  authStore.fetchLogin(data)
-
+    message.value = await authStore.fetchLogin(data);
 };
 
 const startRegistration = () => {
@@ -55,7 +52,7 @@ const restorePassword = () => {
     <div class="login__body">
       <form class="login__form">
         <UIInput
-          v-model="email"
+          v-model="state.email"
           id="email"
           type="text"
           label="Email"
@@ -64,13 +61,14 @@ const restorePassword = () => {
         <p v-if="v$.email.email.$invalid" class="field-error text--red">Invalid email format</p>
 
         <UIInput
-          v-model="password"
+          v-model="state.password"
           id="password"
           type="password"
           label="Password"
         />
         <p v-if="v$.password.required.$invalid" class="field-error text--red">Password is required</p>
       </form>
+      <div v-if="message" class="login__message">{{ message }}</div>
     </div>
     <div class="login__footer">
       <div class="login__footer-up">

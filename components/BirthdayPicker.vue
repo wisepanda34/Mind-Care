@@ -15,12 +15,9 @@ const maxDate = new Date().toISOString().split('T')[0];
 
 const handleChangeDate = (value: Date | null) => {
   selectedDate.value = value;
-  // if (value) {
-  //   emit('update:selectedDate', selectedDate.value); 
-  // }
-  emit('update:selectedDate', selectedDate.value); // Все одно відправляємо подію при зміні дати
+  emit('update:selectedDate', selectedDate.value); 
 
-  if (!value) { // Якщо значення порожнє (null), то відправляємо null до батьківського компонента
+  if (!value) { 
     emit('update:selectedDate', null);
   }
 };

@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { required, email as emailValidator, minLength } from '@vuelidate/validators';
-import type {INewUser} from '@/types/auth.type'
+import type {INewUser, ILogin} from '@/types/auth.type'
 
 import { useAuthStore } from '@/stores/auth.store';
 
@@ -12,7 +12,7 @@ const password = ref('zxzx');
 
 const rules = {
   email: { required, email: emailValidator },
-  password: { required, minLength: minLength(3) },
+  password: { required },
 };
 
 const v$ = useVuelidate(rules, { email, password });
@@ -70,7 +70,6 @@ const restorePassword = () => {
           label="Password"
         />
         <p v-if="v$.password.required.$invalid" class="field-error text--red">Password is required</p>
-        <p v-if="v$.password.minLength.$invalid" class="field-error text--red">Minimum 3 symbols</p>
       </form>
     </div>
     <div class="login__footer">

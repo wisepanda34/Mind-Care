@@ -35,6 +35,11 @@ export interface IUser {
   registeredAt: Date;
 }
 
+export interface ILogin {
+  email: string;
+  password: string;
+}
+
 export interface IClient extends IUser {
   interests?: string;
 }

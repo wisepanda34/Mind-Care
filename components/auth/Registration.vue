@@ -9,42 +9,49 @@ import { ROLE } from '~/constants';
 
 
 const authStore = useAuthStore()
-const name = ref('Fox')
-const email = ref('fox@mail.qwqw')
-const phone = ref('0991234567')
-const birthday = ref<Date | null>(null)
-const password = ref('qwqw')
-const confirmPassword = ref('qwqw')
+const state = reactive({
+  name:'Fox',
+  email :'fox@mail.qwqw',
+  phone :'0991234567',
+  birthday:<Date | null>(null),
+  password :'qwqw',
+  confirmPassword :'qwqw',
+})
+// const name = ref('Fox')
+// const email = ref('fox@mail.qwqw')
+// const phone = ref('0991234567')
+// const birthday = ref<Date | null>(null)
+// const password = ref('qwqw')
+// const confirmPassword = ref('qwqw')
 
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
   name: { required, minLength: minLength(2), maxLength: maxLength(20)},
   email: { required, email: emailValidator },
   password: { required, minLength: minLength(3), maxLength: maxLength(16)},
-  confirmPassword: {sameAs: sameAs(password)},
+  confirmPassword: {sameAs: sameAs(state.password)},
   phone: { required, phoneFormat: helpers.regex(phoneRegex)},
+  birthday: {required}
 };
 
-const v$ = useVuelidate(rules, {name, email, phone , password, confirmPassword});
-console.log('v$', v$);
-
+const v$ = useVuelidate(rules, state);
 
 const handleUpdateBirthday = (date: Date | null) => {
-  birthday.value = date;
-  console.log('birthday: ', birthday.value);
-  
+  state.birthday = date;
 };
 
 const submitRegistration = () => {
-  console.log('submitRegistration');
+  if (v$.value.$invalid){
+    return
+  }
   const newUser: IUser = {
     id: new Date().getTime().toString(),
-    name: name.value,
-    email: email.value,
+    name: state.name,
+    email: state.email,
     role: ROLE.USER,
-    phone: phone.value,
-    birthday: birthday.value as Date,
-    password: password.value,
+    phone: state.phone,
+    birthday: state.birthday as Date,
+    password: state.password,
     registeredAt: new Date()
   }
   console.log('newUser: ', newUser);
@@ -64,11 +71,11 @@ const cancelRegistration = () => {
             <h3 class="text--fz24 text--fw700">Registration</h3>
             <div class="login__close" @click="authStore.toggleAuthModal">X</div>
     </div>
-
+    <pre>{{ v$.$invalid }}</pre>
     <div class="login__body">
       <form class="login__form">
         <UIInput
-          v-model="name"
+          v-model="state.name"
           id="name"
           type="text"
           label="Name"
@@ -76,7 +83,7 @@ const cancelRegistration = () => {
          <p v-if="v$.name.minLength.$invalid" class="field-error text--red">Email is required</p>
         <p v-if="v$.name.maxLength.$invalid" class="field-error text--red">Invalid email format</p>
         <UIInput
-          v-model="email"
+          v-model="state.email"
           id="email"
           type="text"
           label="Email"
@@ -84,7 +91,7 @@ const cancelRegistration = () => {
         <p v-if="v$.email.required.$invalid" class="field-error text--red">Email is required</p>
         <p v-if="v$.email.email.$invalid" class="field-error text--red">Invalid email format</p>
         <UIInput
-          v-model="phone"
+          v-model="state.phone"
           id="phone"
           type="text"
           label="Phone"
@@ -94,11 +101,13 @@ const cancelRegistration = () => {
         
         <BirthdayPicker 
           class="login__birthday"
-          :date="birthday"
+          :date="state.birthday"
           @update:selectedDate="handleUpdateBirthday" 
         />
+        <p v-if="v$.birthday.required.$invalid" class="field-error text--red">Birthday is required</p>
+
         <UIInput
-          v-model="password"
+          v-model="state.password"
           id="password"
           type="password"
           label="Password"
@@ -108,7 +117,7 @@ const cancelRegistration = () => {
         <p v-if="v$.password.maxLength.$invalid" class="field-error text--red">Minimum 20 symbols</p>
 
         <UIInput
-          v-model="confirmPassword"
+          v-model="state.confirmPassword"
           id="confirmPassword"
           type="password"
           label="Confirm password"

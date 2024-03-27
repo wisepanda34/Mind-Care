@@ -49,9 +49,7 @@ export const useAuthStore = defineStore('auth', {
 
       const requestOptions: MindRequestOptions = {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       };
 
@@ -59,12 +57,8 @@ export const useAuthStore = defineStore('auth', {
         const response = await fetch('/api/login', requestOptions);
         const responseData = await response.json();
         if(!response.ok){
-          // throw new Error('error /api/login')
-          console.log('!mes', responseData.body.message);
-          
           return responseData.body.message
         }
-        
         const data = responseData.responseDto
 
         this.user.id = data.id
@@ -74,9 +68,9 @@ export const useAuthStore = defineStore('auth', {
         this.user.phone = data.phone
         this.user.birthday = data.birthday
         this.user.registeredAt = data.registeredAt
+        
         this.isAuthed = true
         this.toggleAuthModal()
-        console.log('mes', responseData.body.message);
         return responseData.body.message
 
       } catch (error) {

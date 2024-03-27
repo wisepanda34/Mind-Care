@@ -48,8 +48,6 @@ const submitRegistration = () => {
     password: state.password,
     registeredAt: new Date()
   }
-  console.log('newUser: ', newUser);
-  
   authStore.fetchRegistration(newUser)
 }
 

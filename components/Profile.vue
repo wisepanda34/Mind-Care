@@ -41,6 +41,12 @@ const submitSave = () => {
   
 }
 
+onMounted(()=>{
+  userName.value = authStore.user.name
+  phone.value = authStore.user.phone
+  birthday.value = authStore.user.birthday
+})
+
 </script>
  
 <template>
@@ -50,7 +56,9 @@ const submitSave = () => {
     <div class="profile__avatar" @click="editAvatar">
       <NuxtImg  src="images/empty-avatar.jpg" alt="avatar"/>
     </div>
+
     <!-- <p class="">Edit avatar</p> -->
+    <div class="profile__email">{{ authStore.user.email }}</div>
 
     <form class="profile__inputs">
       <UIInput
@@ -73,7 +81,7 @@ const submitSave = () => {
     <BirthdayPicker 
       class="profile__birthday"
       :date="birthday"
-      @update:selectedDate="handleUpdateBirthday"  
+      @update:selectedDate="handleUpdateBirthday" 
     />
 
     <p>Change password</p>
@@ -124,6 +132,11 @@ const submitSave = () => {
     img{
       width: 100%;
     }
+  }
+  &__email{
+    font-size: 24px;
+    padding-left: 50px;
+    margin-top: 20px;
   }
 
   &__inputs{

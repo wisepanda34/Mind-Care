@@ -21,7 +21,6 @@ export default defineEventHandler(async (event) => {
     }
 
     const foundUser = await UserModel.findOne({email}) as IUser;
-    console.log('foundUser: ', foundUser);
     
     if (!foundUser) {
       setResponseStatus(event, 400);

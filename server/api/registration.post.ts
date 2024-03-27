@@ -26,7 +26,6 @@ export default defineEventHandler(async (event) => {
     }
     // const secretKey = process.env.JWT_ACCESS_SECRET
     const hashPassword = await hash(data.password, 3)
-    console.log('hash', hashPassword);
     
     //уникальный идентификатор для активации учетной записи пользователя через его имэйл
     // const activationLink = v4() //af914236-e488-47fb-925e-c3fb6c762f0b

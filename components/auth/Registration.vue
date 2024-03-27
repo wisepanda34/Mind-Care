@@ -93,6 +93,7 @@ const cancelRegistration = () => {
         
         <BirthdayPicker 
           class="login__birthday"
+          label="Birthday"
           :date="state.birthday"
           @update:selectedDate="handleUpdateBirthday" 
         />

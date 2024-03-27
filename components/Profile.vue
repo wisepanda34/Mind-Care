@@ -3,32 +3,35 @@
 import { useAuthStore } from '@/stores/auth.store';
 import type {IUser} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
-import { required, maxLength, minLength, sameAs } from '@vuelidate/validators'
+import { required, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
 
 
 
 const authStore = useAuthStore()
-const password = ref('')
-const newPassword = ref('')
-const confirmPassword = ref('')
-const userName = ref('')
-const phone = ref('')
-const birthday = ref<Date | null>(null)
+const state = reactive({
+  name:'',
+  phone:'',
+  birthday: <Date | null>(null),
+  oldPassword:'',
+  newPassword:'',
+  confirmPassword:'',
+})
 
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
-  password: { required },
-  newPassword: { required, minLength: minLength(3), maxLength: maxLength(16) },
-  confirmPassword: {sameAs: sameAs(password)},
-  userName: { required, minLength: minLength(2), maxLength: maxLength(20) },
-  phone: { pattern: phoneRegex },
+  name: { required, minLength: minLength(2), maxLength: maxLength(20)},
+  phone: { required, phoneFormat: helpers.regex(phoneRegex)},
+  birthday: {required},
+  oldPassword: { required },
+  newPassword: { required, minLength: minLength(3), maxLength: maxLength(16)},
+  confirmPassword: {sameAs: sameAs(state.newPassword)},
 };
 
-const v$ = useVuelidate(rules, { password, newPassword, confirmPassword, userName, phone });  
+const v$ = useVuelidate(rules, state);  
 
 const handleUpdateBirthday = (date: Date | null) => {
-  birthday.value = date;
+  state.birthday = date;
 };
 
 const editAvatar = () => {
@@ -42,9 +45,9 @@ const submitSave = () => {
 }
 
 onMounted(()=>{
-  userName.value = authStore.user.name
-  phone.value = authStore.user.phone
-  birthday.value = authStore.user.birthday
+  state.name = authStore.user.name
+  state.phone = authStore.user.phone
+  state.birthday = authStore.user.birthday
 })
 
 </script>
@@ -62,7 +65,7 @@ onMounted(()=>{
 
     <form class="profile__inputs">
       <UIInput
-      v-model="userName"
+      v-model="state.name"
       id="userName"
       type="text"
       label="Username"
@@ -71,7 +74,7 @@ onMounted(()=>{
     <p v-if="v$.userName.maxLength.$invalid" class="field-error text--red">Invalid email format</p> -->
 
     <UIInput
-      v-model="phone"
+      v-model="state.phone"
       id="phone"
       type="text"
       label="Phone"
@@ -80,20 +83,21 @@ onMounted(()=>{
 
     <BirthdayPicker 
       class="profile__birthday"
-      :date="birthday"
+      :date="state.birthday"
+      label="Birthday"
       @update:selectedDate="handleUpdateBirthday" 
     />
 
     <p>Change password</p>
     <div class="profile__line"></div>
     <UIInput
-      v-model="password"
+      v-model="state.oldPassword"
       id="oldPassword"
       type="password"
       label="Old password"
     />
     <UIInput
-      v-model="newPassword"
+      v-model="state.newPassword"
       id="newPassword"
       type="password"
       label="New password"
@@ -103,7 +107,7 @@ onMounted(()=>{
     <p v-if="v$.newPassword.maxLength.$invalid" class="field-error text--red">Maximum 20 symbols</p> -->
 
     <UIInput
-      v-model="confirmPassword"
+      v-model="state.confirmPassword"
       id="confirmPassword"
       type="password"
       label="Confirm password"

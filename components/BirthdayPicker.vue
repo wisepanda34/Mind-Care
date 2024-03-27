@@ -3,19 +3,32 @@
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
-const props = defineProps<{date: Date | null}>();
+const props = defineProps<{date: Date | null, label: string;}>();
 const emit = defineEmits(['update:selectedDate']);
 
-
-const selectedDate = ref<Date | null>(props.date); 
 const type = 'date'; // Тип выбора (date, month, year)
 const minDate = '1900-01-01'; 
 const maxDate = new Date().toISOString().split('T')[0]; 
 
+const dateValue = ref<Date | null>(null);
+
+watch(() => props.date, (newValue) => {
+  updateDateValue(newValue);
+});
+
+onMounted(() => {
+  updateDateValue(props.date);
+});
+const updateDateValue = (value: Date | null) => {
+  if (value) {
+    dateValue.value = value;
+  } else {
+    dateValue.value = null;
+  }
+};
 
 const handleChangeDate = (value: Date | null) => {
-  selectedDate.value = value;
-  emit('update:selectedDate', selectedDate.value); 
+  emit('update:selectedDate', value); 
 
   if (!value) { 
     emit('update:selectedDate', null);
@@ -29,7 +42,7 @@ const handleChangeDate = (value: Date | null) => {
     <div class="vuedatepicker__label">Birthday</div>
       <VueDatePicker 
         class="vuedatepicker__custom"
-        :model-value="selectedDate" 
+        :model-value="dateValue" 
         :type="type" 
         :min="minDate" 
         :max="maxDate" 

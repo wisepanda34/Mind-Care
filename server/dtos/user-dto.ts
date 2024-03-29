@@ -4,6 +4,7 @@
 import type { IUser, IUserDto } from "~/types/auth.type";
 
 const createUserDto = (model: IUser ): IUserDto => {
+  
   return {
     id: model.id,
     name: model.name,

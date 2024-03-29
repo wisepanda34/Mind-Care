@@ -34,6 +34,13 @@ export interface IUser {
   birthday: Date | null;
   registeredAt: Date | null;
 }
+export interface IUpdateUser {
+  name?: string;
+  phone?: string;
+  birthday?: Date | null;
+  oldPassword: string;
+  newPassword: string;
+}
 
 export interface ILogin {
   email: string;

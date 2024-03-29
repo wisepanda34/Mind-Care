@@ -1,7 +1,7 @@
 <!-- components/Profile.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
-import type {IUser} from '@/types/auth.type'
+import type { IUser, IUpdateUser } from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
@@ -22,10 +22,9 @@ const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
   name: { required, minLength: minLength(2), maxLength: maxLength(20)},
   phone: { required, phoneFormat: helpers.regex(phoneRegex)},
-  birthday: {required},
-  oldPassword: { required },
-  newPassword: { required, minLength: minLength(3), maxLength: maxLength(16)},
-  confirmPassword: {sameAs: sameAs(state.newPassword)},
+  oldPassword: { maxLength: maxLength(20) },
+  newPassword: { minLength: minLength(3), maxLength: maxLength(16)},
+  confirmPassword: { sameAs: sameAs(state.newPassword)},
 };
 
 const v$ = useVuelidate(rules, state);  
@@ -35,14 +34,47 @@ const handleUpdateBirthday = (date: Date | null) => {
 };
 
 const editAvatar = () => {
-
+  console.log('editAvatar');
 }
 const submitCancel = () => {
   navigateTo('/')
 }
 const submitSave = () => {
-  
-}
+  const newData: Partial<IUpdateUser> = {};
+  let hasChanges = false;
+  const { name, phone, birthday, oldPassword, newPassword, confirmPassword } = state;
+
+  if (name !== authStore.user.name) {
+    newData.name = name;
+    hasChanges = true;
+  }
+  if (phone !== authStore.user.phone) {
+    newData.phone = phone;
+    hasChanges = true;
+  }
+  if (birthday !== authStore.user.birthday) {
+    newData.birthday = birthday;
+    hasChanges = true;
+  }
+  if (oldPassword || newPassword || confirmPassword) {
+    if (!(oldPassword && newPassword && confirmPassword)) {
+      console.log('Fill in all three password fields.');
+      return; 
+    }
+    if (newPassword !== confirmPassword) {
+      console.log('New password and confirm password do not match.');
+      return;
+    }
+    newData.oldPassword = oldPassword;
+    newData.newPassword = newPassword;
+    hasChanges = true;
+  }
+  if (hasChanges) {
+    console.log('New data to save:', newData);
+  } else {
+    console.log('No changes to save.');
+  }
+};
 
 onMounted(()=>{
   state.name = authStore.user.name

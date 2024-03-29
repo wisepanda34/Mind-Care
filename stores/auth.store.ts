@@ -66,7 +66,8 @@ export const useAuthStore = defineStore('auth', {
         this.user.email = data.email
         this.user.role = data.role as RoleT
         this.user.phone = data.phone
-        this.user.birthday = data.birthday
+        this.user.birthday = new Date(data.birthday) 
+        
         this.user.registeredAt = data.registeredAt
         
         this.isAuthed = true
@@ -75,7 +76,9 @@ export const useAuthStore = defineStore('auth', {
 
       } catch (error) {
         console.error("Error fetching modal data:", error);
-      } 
+      } finally{
+        console.log('type: ', typeof(this.user.birthday));
+      }
     },
     async fetchLogout(){
       try {

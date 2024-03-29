@@ -7,8 +7,6 @@ const authStore = useAuthStore()
 const isAvaMenuOpen = ref(false)
 
 const openAvatarMenu = () => {
-  console.log('openAvatarMenu');
-  
   isAvaMenuOpen.value = true
 }
 const closeAvatarMenu = () => {
@@ -17,7 +15,6 @@ const closeAvatarMenu = () => {
 
 const editProfile = () => {
   navigateTo('/profile')
-  closeAvatarMenu()
 }
 
 const logout = () => {

@@ -63,7 +63,6 @@ const cancelRegistration = () => {
             <h3 class="text--fz24 text--fw700">Registration</h3>
             <div class="login__close" @click="authStore.toggleAuthModal">X</div>
     </div>
-    <pre>{{ v$.$invalid }}</pre>
     <div class="login__body">
       <form class="login__form">
         <UIInput

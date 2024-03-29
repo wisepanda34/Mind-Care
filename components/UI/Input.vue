@@ -99,6 +99,7 @@ const hidePassword = () => {
     padding: 20px;
     border: 1px solid $grey-5;
     margin-top: 5px;
+    font-size: 18px;
 
     &:hover{
       border: 1px solid $grey-7;

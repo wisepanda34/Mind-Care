@@ -10,6 +10,10 @@ const type = 'date'; // Тип выбора (date, month, year)
 const minDate = '1900-01-01'; 
 const maxDate = new Date().toISOString().split('T')[0]; 
 
+const parseDate = (value: string ): Date => {
+  return new Date(value);
+};
+
 const dateValue = ref<Date | null>(null);
 
 watch(() => props.date, (newValue) => {
@@ -19,11 +23,16 @@ watch(() => props.date, (newValue) => {
 onMounted(() => {
   updateDateValue(props.date);
 });
-const updateDateValue = (value: Date | null) => {
-  if (value) {
+
+const updateDateValue = (value: Date | string | null) => {
+  if (value instanceof Date) {
     dateValue.value = value;
-  } else {
+  } else if (typeof value === 'string') {
+    dateValue.value = parseDate(value);
+  } else if (value === null){
     dateValue.value = null;
+  } else {
+    throw new Error('updateDateValue error with type') 
   }
 };
 
@@ -54,12 +63,13 @@ const handleChangeDate = (value: Date | null) => {
  
 <style scoped lang='scss'>
  .vuedatepicker{
+  margin-top: 10px;
   &__label{
     font-size: 18px;
     margin: 0px 0 5px 0;
   }
   &__custom{
-    height: 60px;
+    height: 50px;
     input{
             border: black; 
           }

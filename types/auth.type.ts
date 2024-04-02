@@ -35,11 +35,14 @@ export interface IUser {
   registeredAt: Date | null;
 }
 export interface IUpdateUser {
-  name?: string;
-  phone?: string;
-  birthday?: Date | null;
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  birthday: Date | null;
   oldPassword: string;
   newPassword: string;
+  password: string;
 }
 
 export interface ILogin {

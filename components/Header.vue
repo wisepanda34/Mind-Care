@@ -14,6 +14,7 @@ const closeAvatarMenu = () => {
 }
 
 const editProfile = () => {
+  console.log('/profile');
   navigateTo('/profile')
 }
 

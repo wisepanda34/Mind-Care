@@ -2,7 +2,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ENTER, ROLE } from "~/constants";
-import type { IStateAuth, IUser, EnterT, RoleT, INewUser, MindRequestOptions } from "~/types/auth.type";
+import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, INewUser, MindRequestOptions } from "~/types/auth.type";
 
 
 
@@ -45,6 +45,45 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async fetchUpdateUser(newData: Partial<IUpdateUser>){
+
+      const data: Partial<IUpdateUser> = {
+        ...newData,
+        id: this.user.id,
+      };
+
+      const requestOptions: MindRequestOptions = {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      };
+      try {
+        const response = await fetch('/api/update-user', requestOptions);
+        if(!response.ok){
+          console.log('fetchUpdateUser !response.ok');
+        }
+        const responseData = await response.json();
+        console.log('responseData', responseData);
+        const resUser = responseData.body.user
+        
+        this.$patch({
+          user: {
+            id: resUser.id,
+            name: resUser.name,
+            email: resUser.email,
+            role: resUser.role as RoleT,
+            phone: resUser.phone,
+            birthday: new Date(resUser.birthday),
+            registeredAt: resUser.registeredAt,
+          }
+        });
+        
+
+      } catch (error) {
+        console.error("Error fetching modal data:", error);
+      }
+    },
+
     async fetchLogin(data: INewUser) {
 
       const requestOptions: MindRequestOptions = {
@@ -61,14 +100,26 @@ export const useAuthStore = defineStore('auth', {
         }
         const data = responseData.responseDto
 
-        this.user.id = data.id
-        this.user.name = data.name
-        this.user.email = data.email
-        this.user.role = data.role as RoleT
-        this.user.phone = data.phone
-        this.user.birthday = new Date(data.birthday) 
+        // this.user.id = data.id
+        // this.user.name = data.name
+        // this.user.email = data.email
+        // this.user.role = data.role as RoleT
+        // this.user.phone = data.phone
+        // this.user.birthday = new Date(data.birthday) 
+        // this.user.registeredAt = data.registeredAt
+
+        this.$patch({
+          user: {
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            role: data.role as RoleT,
+            phone: data.phone,
+            birthday: new Date(data.birthday),
+            registeredAt: data.registeredAt,
+          }
+        });
         
-        this.user.registeredAt = data.registeredAt
         
         this.isAuthed = true
         this.toggleAuthModal()
@@ -115,8 +166,6 @@ export const useAuthStore = defineStore('auth', {
     },
     showUser() {
       console.log('showUser', this.user);
-      
     }
   },
-
 })

@@ -22,7 +22,7 @@ const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
   name: { required, minLength: minLength(2), maxLength: maxLength(20)},
   email: { required, email: emailValidator },
-  password: { required, minLength: minLength(3), maxLength: maxLength(16)},
+  password: { required, minLength: minLength(3), maxLength: maxLength(20)},
   confirmPassword: {sameAs: sameAs(state.password)},
   phone: { required, phoneFormat: helpers.regex(phoneRegex)},
   birthday: {required}

@@ -1,0 +1,72 @@
+// server/api/update-user.patch.ts
+import { IUpdateUser } from "~/types/auth.type";
+import UserModel from "../models/User";
+import { compare, hash } from "bcrypt-ts";
+
+
+
+export default defineEventHandler( async(event) => {
+
+  try {
+    const data: Partial<IUpdateUser> = await readBody(event);
+    console.log('data from event: ', data);
+
+    if (!data.id) {
+      throw new Error('Missing id in request data');
+    }
+
+    const updateData: Partial<IUpdateUser> = {};
+    updateData.id = data.id 
+    if (data.name) {
+      updateData.name = data.name;
+    }
+    if (data.phone) {
+      updateData.phone = data.phone;
+    }
+    if (data.birthday) {
+      updateData.birthday = data.birthday;
+    }
+    if (data.oldPassword && data.newPassword) {
+      const foundUser = await UserModel.findOne({id: data.id});
+      console.log('foundUser: ', foundUser);
+      
+      if (!foundUser) {
+      console.log('no foundUser');
+
+        setResponseStatus(event, 400);
+        return {
+          body: { message: "There is no user with this id" }
+        };
+      }
+
+      const isOldPasswordValid = await compare(data.oldPassword, foundUser.password);
+      console.log('isOldPasswordValid: ', isOldPasswordValid);
+
+      if(!isOldPasswordValid){
+        setResponseStatus(event, 400);
+        return { 
+          body: { message: "Old password is wrong!" }
+        };
+      }
+      const hashedNewPassword = await hash(data.newPassword, 3);
+      updateData.password = hashedNewPassword;
+    }
+    console.log('updateData: ', updateData);
+
+
+    const updatedUser = await UserModel.findOneAndUpdate({ id: data.id }, updateData, { new: true });
+
+    if (!updatedUser) {
+      throw new Error('User not found');
+    }
+
+    console.log('Updated user:', updatedUser);
+
+    return {
+      body: { message: "User updated successfully", user: updatedUser }
+    };
+
+  } catch (error) {
+    console.log('error update-user', error);
+  }
+})

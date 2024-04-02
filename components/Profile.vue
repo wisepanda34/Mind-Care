@@ -3,7 +3,7 @@
 import { useAuthStore } from '@/stores/auth.store';
 import type { IUser, IUpdateUser } from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
-import { required, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
+import { helpers } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
 
 
@@ -22,7 +22,7 @@ const state = reactive({
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
   name: { isValidName: (value: string) => !value.trim() || (value.trim().length >= 2 && value.trim().length <= 20), isNotEmpty: (value: string) => !!value.trim()},
-  phone: { phoneFormat: helpers.regex(phoneRegex), isValidPhone: (value: string) => !value || phoneRegex.test(value), isNotEmpty: (value: string) => !!value.trim() },
+  phone: { isValidPhone: (value: string) => !value || phoneRegex.test(value), isNotEmpty: (value: string) => !!value.trim() },
   birthday: { isValidBirthday: (value: Date | null) => value !== null  },
   oldPassword: { isValidOldPassword: (value: string) => !value || (value.length <= 20)},
   newPassword: { isValidNewPassword: (value: string) => !value || (value.length >= 3 && value.length <= 20)},
@@ -38,6 +38,9 @@ const editAvatar = () => {
   console.log('editAvatar');
 }
 const submitCancel = () => {
+  state.oldPassword = ''
+  state.newPassword = ''
+  state.confirmPassword = ''
   navigateTo('/')
 }
 const submitSave = () => {
@@ -68,7 +71,6 @@ const submitSave = () => {
     hasChanges = true;
   }
   if (hasChanges) {
-    console.log('New data to save:', newData);
     authStore.fetchUpdateUser(newData)
     state.oldPassword = ''
     state.newPassword = ''
@@ -102,7 +104,6 @@ onMounted(()=>{
       <NuxtImg  src="images/empty-avatar.jpg" alt="avatar"/>
     </div>
 
-    <!-- <p class="">Edit avatar</p> -->
     <div class="profile__email">{{ authStore.user.email }}</div>
 
     <form class="profile__inputs">

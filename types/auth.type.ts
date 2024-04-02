@@ -19,6 +19,8 @@ export interface MindRequestOptions {
 
 export interface IStateAuth {
   isOpenAuthModal: boolean;
+  isOpenMessageModal: boolean;
+  textMessageModal: string;
   processAuth: EnterT;
   isAuthed: boolean;
   user: IUser;

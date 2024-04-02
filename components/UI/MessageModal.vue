@@ -11,11 +11,11 @@ const authStore = useAuthStore()
  
 <template>
   <Teleport to="body">
-    <div class="modal" @mousedown.self="authStore.toggleAuthModal" @click.stop>
+    <div class="modal" @mousedown.self="authStore.closeMessageModal" @click.stop>
       <Transition name="slide-fade">
-        <div class="modal__white">
-          <Login v-if="authStore.processAuth === ENTER.LOGIN"/>
-          <Registration v-if="authStore.processAuth === ENTER.REGISTRATON"/>
+        <div class="modal__content">
+         <p class="text-center">{{ authStore.textMessageModal }}</p>
+         <span class="modal__close" @click="authStore.closeMessageModal">x</span>
         </div>
       </Transition>
     </div>
@@ -24,7 +24,7 @@ const authStore = useAuthStore()
  
 <style scoped lang='scss'>
 .slide-fade-enter-active, .slide-fade-leave-active {
-  transition: all 0.3s ease-out;
+  transition: all 3s ease-out;
 }
 
 .slide-fade-enter-from, .slide-fade-leave-to {

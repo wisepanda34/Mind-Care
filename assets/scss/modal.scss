@@ -1,5 +1,5 @@
 // assets/scss/modal.scss
-.login{
+.modal{
   position: fixed;
   top: 0;
   bottom: 0;
@@ -13,11 +13,24 @@
   align-items: center;
 
   &__white{
+    position: relative;
     width: 400px;
     min-height: 400px;
     background: rgba(255, 255, 255, 1);
     border-radius: 5px;
     padding: 20px;
+  }
+  &__content{
+    position: relative;
+    width: 200px;
+    min-height: 150px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &__header{
     position: relative;

@@ -9,8 +9,6 @@ export default defineEventHandler( async(event) => {
 
   try {
     const data: Partial<IUpdateUser> = await readBody(event);
-    console.log('data from event: ', data);
-
     if (!data.id) {
       throw new Error('Missing id in request data');
     }
@@ -28,11 +26,7 @@ export default defineEventHandler( async(event) => {
     }
     if (data.oldPassword && data.newPassword) {
       const foundUser = await UserModel.findOne({id: data.id});
-      console.log('foundUser: ', foundUser);
-      
       if (!foundUser) {
-      console.log('no foundUser');
-
         setResponseStatus(event, 400);
         return {
           body: { message: "There is no user with this id" }
@@ -40,8 +34,6 @@ export default defineEventHandler( async(event) => {
       }
 
       const isOldPasswordValid = await compare(data.oldPassword, foundUser.password);
-      console.log('isOldPasswordValid: ', isOldPasswordValid);
-
       if(!isOldPasswordValid){
         setResponseStatus(event, 400);
         return { 
@@ -51,16 +43,11 @@ export default defineEventHandler( async(event) => {
       const hashedNewPassword = await hash(data.newPassword, 3);
       updateData.password = hashedNewPassword;
     }
-    console.log('updateData: ', updateData);
-
 
     const updatedUser = await UserModel.findOneAndUpdate({ id: data.id }, updateData, { new: true });
-
     if (!updatedUser) {
       throw new Error('User not found');
     }
-
-    console.log('Updated user:', updatedUser);
 
     return {
       body: { message: "User updated successfully", user: updatedUser }

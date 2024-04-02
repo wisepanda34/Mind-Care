@@ -9,6 +9,8 @@ import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, INewUser, MindReque
 export const useAuthStore = defineStore('auth', {
   state: (): IStateAuth => ({
     isOpenAuthModal: false,
+    isOpenMessageModal: false,
+    textMessageModal: '',
     processAuth: ENTER.LOGIN,
     isAuthed: false,
     user: {
@@ -34,6 +36,9 @@ export const useAuthStore = defineStore('auth', {
     
       try {
         const response = await fetch('/api/registration', requestOptions);
+        const responseJson = await response.json()
+        this.openMessageModal(responseJson.body.message)
+
         if(!response.ok){
           throw new Error('error')
         }
@@ -59,12 +64,13 @@ export const useAuthStore = defineStore('auth', {
       };
       try {
         const response = await fetch('/api/update-user', requestOptions);
+        const responseJson = await response.json();
+        this.openMessageModal(responseJson.body.message)
+
         if(!response.ok){
           console.log('fetchUpdateUser !response.ok');
         }
-        const responseData = await response.json();
-        console.log('responseData', responseData);
-        const resUser = responseData.body.user
+        const resUser = responseJson.body.user
         
         this.$patch({
           user: {
@@ -94,11 +100,13 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         const response = await fetch('/api/login', requestOptions);
-        const responseData = await response.json();
+        const responseJson = await response.json();
+        this.openMessageModal(responseJson.body.message)
+
         if(!response.ok){
-          return responseData.body.message
+          return responseJson.body.message
         }
-        const data = responseData.responseDto
+        const data = responseJson.responseDto
 
         // this.user.id = data.id
         // this.user.name = data.name
@@ -123,7 +131,7 @@ export const useAuthStore = defineStore('auth', {
         
         this.isAuthed = true
         this.toggleAuthModal()
-        return responseData.body.message
+        return responseJson.body.message
 
       } catch (error) {
         console.error("Error fetching modal data:", error);
@@ -133,7 +141,9 @@ export const useAuthStore = defineStore('auth', {
     },
     async fetchLogout(){
       try {
-        await fetch('/api/logout')
+        const response = await fetch('/api/logout')
+        const responseJson = await response.json();
+        this.openMessageModal(responseJson.body.message)
         // localStorage.removeItem("access_token");
       } catch(error){
         console.log("Error logging out:", error);
@@ -166,6 +176,17 @@ export const useAuthStore = defineStore('auth', {
     },
     showUser() {
       console.log('showUser', this.user);
+    },
+    openMessageModal(message: string){
+      this.textMessageModal = message
+      this.isOpenMessageModal = true
+      setTimeout(()=>{
+        this.closeMessageModal() 
+      },1200)
+    },
+    closeMessageModal() {
+      this.isOpenMessageModal = false
+      this.textMessageModal = ''
     }
   },
 })

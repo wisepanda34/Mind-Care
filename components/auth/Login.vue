@@ -45,12 +45,12 @@ const restorePassword = () => {
 
 <template>
   <div>
-    <div class="login__header">
+    <div class="modal__header">
       <h3 class="text--fz24 text--fw700">Enter</h3>
-      <div class="login__close" @click="authStore.toggleAuthModal">X</div>
+      <div class="modal__close" @click="authStore.toggleAuthModal">X</div>
     </div>
-    <div class="login__body">
-      <form class="login__form">
+    <div class="modal__body">
+      <form class="modal__form">
         <UIInput
           v-model="state.email"
           id="email"
@@ -68,10 +68,10 @@ const restorePassword = () => {
         />
         <p v-if="v$.password.required.$invalid" class="field-error text--red">Password is required</p>
       </form>
-      <div v-if="message" class="login__message">{{ message }}</div>
+      <div v-if="message" class="modal__message">{{ message }}</div>
     </div>
-    <div class="login__footer">
-      <div class="login__footer-up">
+    <div class="modal__footer">
+      <div class="modal__footer-up">
         <div class="text--blue-600 curspoint" @click="restorePassword">Forgot password?</div>
         <UIButton class="btn-ok" text="OK" @click="submitLogin"/>
       </div>

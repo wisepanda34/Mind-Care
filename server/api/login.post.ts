@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     if(!email || !password) {
       setResponseStatus(event, 400);
       return {
-        body: { error: 'Missing required data' },
+        body: { message: 'Missing required data' },
       }
     }
 

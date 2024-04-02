@@ -59,12 +59,12 @@ const cancelRegistration = () => {
  
 <template>
   <div>
-    <div class="login__header">
+    <div class="modal__header">
             <h3 class="text--fz24 text--fw700">Registration</h3>
-            <div class="login__close" @click="authStore.toggleAuthModal">X</div>
+            <div class="modal__close" @click="authStore.toggleAuthModal">X</div>
     </div>
-    <div class="login__body">
-      <form class="login__form">
+    <div class="modal__body">
+      <form class="modal__form">
         <UIInput
           v-model="state.name"
           id="name"
@@ -91,7 +91,7 @@ const cancelRegistration = () => {
         <p v-if="v$.phone.phoneFormat.$invalid" class="field-error text--red">Invalid email format</p>
         
         <BirthdayPicker 
-          class="login__birthday"
+          class="modal__birthday"
           label="Birthday"
           :date="state.birthday"
           @update:selectedDate="handleUpdateBirthday" 
@@ -118,8 +118,8 @@ const cancelRegistration = () => {
       </form>
     </div>
 
-    <div class="login__footer">
-      <div class="login__footer-up">
+    <div class="modal__footer">
+      <div class="modal__footer-up">
         <UIButton text="Cancel" @click="cancelRegistration"/>
         <UIButton class="btn-ok" text="OK" @click="submitRegistration"/>
       </div>

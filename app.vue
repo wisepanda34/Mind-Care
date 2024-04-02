@@ -41,6 +41,7 @@ onUnmounted(() => {
         <NuxtPage class="page"/>
       </NuxtLayout>
       <AuthModal v-if="authStore.isOpenAuthModal" />
+      <UIMessageModal v-if="authStore.isOpenMessageModal"/>
       <UIPageUp v-if="showUIPageUp" class="pageUpFixed" @click="scrollToTop"/>
     </Body>
   </Html>

@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     const responseDto = createUserDto(foundUser)//email,id,role
     return {
       responseDto,
-      body: { message: "Password is ok!" }
+      body: { message: "Successful authorization!" }
     }
     
   }catch(e){

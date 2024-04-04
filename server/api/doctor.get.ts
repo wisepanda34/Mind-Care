@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   try{
     const response = await DoctorModel.find();
 
-    if (!response) {
+    if (!response || response.length === 0) {
       return { body: { message: "no data from DB" }};
     }
       return response;
@@ -17,5 +17,4 @@ export default defineEventHandler(async (event) => {
   }catch(e){
     console.log('error: ', e);
   }
-  
 });

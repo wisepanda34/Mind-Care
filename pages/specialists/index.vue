@@ -32,7 +32,9 @@ import type {IDoctor} from '@/types/auth.type'
     <ul class="doctor__list">
       <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id" @click="chooseDoctor(doctor.id)">
 
-        <div class="doctor__avatar"></div>
+        <div class="doctor__avatar">
+          <img v-if="doctor.photoLink" :src="doctor.photoLink" alt="Doctor Photo" />
+        </div>
         <div class="doctor__info">
           <p class="text--fz24 text--fw700" >{{ doctor.name }} {{ doctor.surname }}</p>
           <p class="text--fz24">experience years: {{ doctor.experience }}</p>
@@ -45,7 +47,7 @@ import type {IDoctor} from '@/types/auth.type'
         </div>
         <div class="doctor__consultation">
           <UIButton
-            text="Sign up for a consultation"
+            text="Сonsultation"
             @click="chooseDoctor(doctor.id)"
           />
         </div>  
@@ -77,6 +79,13 @@ import type {IDoctor} from '@/types/auth.type'
     height: 200px;
     background: $grey-3;
     border-radius: $radius-8;
+    overflow: hidden;
+
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
   &__info{
     p{

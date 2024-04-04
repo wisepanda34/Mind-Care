@@ -1,6 +1,7 @@
 // server/models/User.ts
 import { Schema, model } from "mongoose";
 import { ROLE } from "~/constants";
+import { IUser } from "~/types/auth.type";
 
 const UserSchema = new Schema({
   id: { type: String, required: true },
@@ -11,8 +12,7 @@ const UserSchema = new Schema({
   phone: { type: String, required: true },
   birthday: { type: Date, required: true },
   registeredAt: { type: Date, required: true },
-  // avatar: { type: String, default: null },
 });
 
-const UserModel = model('users', UserSchema);
+const UserModel = model<IUser>('users', UserSchema);
 export default UserModel

@@ -6,17 +6,20 @@ import { ENTER, ROLE } from "~/constants";
 export type EnterT = ENTER.NULL | ENTER.LOGIN | ENTER.REGISTRATON
 export type RoleT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN | null
 
-export interface INewUser {
-  email: string;
-  password: string;
-}
-
 export interface MindRequestOptions {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; 
   headers: { [key: string]: string };
   body?: string | FormData | URLSearchParams | ReadableStream<Uint8Array> | null; 
 }
-
+export interface INewUser {
+  email: string;
+  password: string;
+}
+export interface MindRequestOptions {
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; 
+  headers: { [key: string]: string };
+  body?: string | FormData | URLSearchParams | ReadableStream<Uint8Array> | null; 
+}
 export interface IStateAuth {
   isOpenAuthModal: boolean;
   isOpenMessageModal: boolean;
@@ -25,7 +28,6 @@ export interface IStateAuth {
   isAuthed: boolean;
   user: IUser;
 }
-
 export interface IUser {
   id: string;
   name: string;
@@ -46,16 +48,13 @@ export interface IUpdateUser {
   newPassword: string;
   password: string;
 }
-
 export interface ILogin {
   email: string;
   password: string;
 }
-
 export interface IClient extends IUser {
   interests?: string;
 }
-
 export interface IUserDB {
   id: string;
   name: string;
@@ -65,7 +64,6 @@ export interface IUserDB {
   birthday: Date | null;
   registeredAt: Date | null;
 }
-
 export interface IUserDto  {
   id: string;
   name: string;
@@ -75,19 +73,12 @@ export interface IUserDto  {
   birthday: Date | null;
   registeredAt: Date | null;
 }
-
-export interface IDoctor  {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: RoleT;
-  phone: string;
-  birthday: Date | null;
-  registeredAt: Date | null;
+export interface IDoctor extends IUser  {
   surname: string;
-  experience?: number;
+  experience: number;
   specialization?: string[];
+  education?: string[];
+  photoLink?: string;
 }
  // isActivated: boolean;
 // activationLink: string;

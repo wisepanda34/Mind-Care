@@ -27,14 +27,25 @@ const afterEnter = () => {
 </template>
  
 <style scoped lang='scss'>
-.slide-fade-enter-active, .slide-fade-leave-active {
-  transition: opacity 1s ease-in-out, transform 0.3s ease-in-out; 
-  opacity: 1;
-  transform: translateY(0)
-}
+.slide-fade{
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
 
-.slide-fade-enter-from, .slide-fade-leave-to {
-  transform: translateY(20px);
-  opacity: 0;
+  &-enter-active,
+  &-leave-active {
+    transition: 0.8s ease;
+  }
 }
+// .slide-fade-enter-active, .slide-fade-leave-active {
+//   transition: opacity 1s ease-in-out, transform 0.3s ease-in-out; 
+//   opacity: 1;
+//   transform: translateY(0)
+// }
+
+// .slide-fade-enter-from, .slide-fade-leave-to {
+//   transform: translateY(20px);
+//   opacity: 0;
+// }
 </style>

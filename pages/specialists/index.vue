@@ -1,6 +1,10 @@
 <!-- pages/specialists/index.vue -->
 <script setup lang='ts'>
 import type {IDoctor} from '@/types/auth.type'
+import { useAuthStore } from "~/stores/auth.store";
+
+const authStore = useAuthStore()
+
 
 // Property '_id' does not exist on type 'never'.
   const doctors = ref<IDoctor[]>([]);
@@ -19,7 +23,9 @@ import type {IDoctor} from '@/types/auth.type'
   }
   
   const chooseDoctor = (id: string) => {
-    navigateTo(`/specialists/${id}`)
+    if(!authStore.isAuthed){
+      authStore.toggleAuthModal()
+    } else navigateTo(`/specialists/${id}`)
   }
 
   onMounted(fetchDoctors)
@@ -30,7 +36,7 @@ import type {IDoctor} from '@/types/auth.type'
   <div class="doctor">
     <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
     <ul class="doctor__list">
-      <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id" @click="chooseDoctor(doctor.id)">
+      <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">
 
         <div class="doctor__avatar">
           <img v-if="doctor.photoLink" :src="doctor.photoLink" alt="Doctor Photo" />

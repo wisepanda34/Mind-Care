@@ -8,6 +8,8 @@ export default defineEventHandler(async (event) => {
   // return fetchData(UserModel, event);
   try{
     const response = await ReviewModel.find();
+    console.log('response ', response);
+    
 
     if (!response) {
       return { body: { message: "no data from DB" }};

@@ -2,11 +2,13 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { required, email as emailValidator, minLength } from '@vuelidate/validators';
-import type {INewUser, ILogin} from '@/types/auth.type'
+import type {INewUser, ILogin, RoleT} from '@/types/auth.type'
 
 import { useAuthStore } from '@/stores/auth.store';
+import { ROLE } from '~/constants';
 
 const authStore = useAuthStore();
+const selectedRole = ref<RoleT>(ROLE.USER)
 const message = ref<string | null>(null);
 const state = reactive({
   email:'fox@mail.qwqw',
@@ -27,13 +29,13 @@ const submitLogin = async () => {
   }
   const data: ILogin = {
     email: state.email,
-    password: state.password
+    password: state.password,
+    role: selectedRole.value
   }
     message.value = await authStore.fetchLogin(data);
 };
 
 const startRegistration = () => {
-  console.log('startRegistration');
   authStore.startRegistration();
 };
 
@@ -41,12 +43,17 @@ const restorePassword = () => {
   console.log('restorePassword');
 };
 
+const handleUpdateRole = (role: RoleT) => {
+  selectedRole.value = role;
+}
+
 </script>
 
 <template>
   <div>
     <div class="modal__header">
       <h3 class="text--fz24 text--fw700">Enter</h3>
+      <UIRole v-model="selectedRole" @update:selectedRole="handleUpdateRole"/>
       <div class="modal__close" @click="authStore.toggleAuthModal">X</div>
     </div>
     <div class="modal__body">

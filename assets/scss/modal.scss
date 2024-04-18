@@ -35,6 +35,10 @@
   &__header{
     position: relative;
     margin-bottom: 20px;
+
+    display: flex;
+    // justify-content: space-between;
+    gap: 10px;
   }
   &__close{
     position: absolute;

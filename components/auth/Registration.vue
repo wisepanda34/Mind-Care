@@ -1,7 +1,7 @@
 <!-- components/auth/Registration.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
-import type {IUser} from '@/types/auth.type'
+import type {IUser, RoleT} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email as emailValidator, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from '../BirthdayPicker.vue';
@@ -9,6 +9,7 @@ import { ROLE } from '~/constants';
 
 
 const authStore = useAuthStore()
+const selectedRole = ref<RoleT>(ROLE.USER)
 const state = reactive({
   name:'Fox',
   email:'fox@mail.qwqw',
@@ -34,6 +35,10 @@ const handleUpdateBirthday = (date: Date | null) => {
   state.birthday = date;
 };
 
+const handleUpdateRole = (role: RoleT) => {
+  selectedRole.value = role;
+}
+
 const submitRegistration = () => {
   if (v$.value.$invalid){
     return
@@ -42,7 +47,7 @@ const submitRegistration = () => {
     id: new Date().getTime().toString(),
     name: state.name,
     email: state.email,
-    role: ROLE.USER,
+    role: selectedRole.value,
     phone: state.phone,
     birthday: state.birthday as Date,
     password: state.password,
@@ -61,6 +66,7 @@ const cancelRegistration = () => {
   <div>
     <div class="modal__header">
             <h3 class="text--fz24 text--fw700">Registration</h3>
+            <UIRole v-model="selectedRole" @update:selectedRole="handleUpdateRole"/>
             <div class="modal__close" @click="authStore.toggleAuthModal">X</div>
     </div>
     <div class="modal__body">

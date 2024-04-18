@@ -2,13 +2,13 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ENTER, ROLE } from "~/constants";
-import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, INewUser, MindRequestOptions } from "~/types/auth.type";
+import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, INewUser, MindRequestOptions, ILogin } from "~/types/auth.type";
 
 
 
 export const useAuthStore = defineStore('auth', {
   state: (): IStateAuth => ({
-    isOpenAuthModal: false,
+    isOpenAuthModal: true,
     isOpenMessageModal: false,
     textMessageModal: '',
     processAuth: ENTER.LOGIN,
@@ -49,7 +49,6 @@ export const useAuthStore = defineStore('auth', {
         this.processAuth = ENTER.LOGIN
       }
     },
-
     async fetchUpdateUser(newData: Partial<IUpdateUser>){
 
       const data: Partial<IUpdateUser> = {
@@ -89,8 +88,7 @@ export const useAuthStore = defineStore('auth', {
         console.error("Error fetching modal data:", error);
       }
     },
-
-    async fetchLogin(data: INewUser) {
+    async fetchLogin(data: ILogin) {
 
       const requestOptions: MindRequestOptions = {
         method: 'POST',
@@ -108,14 +106,6 @@ export const useAuthStore = defineStore('auth', {
         }
         const data = responseJson.responseDto
 
-        // this.user.id = data.id
-        // this.user.name = data.name
-        // this.user.email = data.email
-        // this.user.role = data.role as RoleT
-        // this.user.phone = data.phone
-        // this.user.birthday = new Date(data.birthday) 
-        // this.user.registeredAt = data.registeredAt
-
         this.$patch({
           user: {
             id: data.id,
@@ -128,16 +118,13 @@ export const useAuthStore = defineStore('auth', {
           }
         });
         
-        
         this.isAuthed = true
         this.toggleAuthModal()
         return responseJson.body.message
 
       } catch (error) {
         console.error("Error fetching modal data:", error);
-      } finally{
-        console.log('type: ', typeof(this.user.birthday));
-      }
+      } 
     },
     async fetchLogout(){
       try {
@@ -162,7 +149,6 @@ export const useAuthStore = defineStore('auth', {
         navigateTo('/');
       }
     },
-
     toggleAuthModal(){
       this.isOpenAuthModal = !this.isOpenAuthModal
       if(!this.isOpenAuthModal) this.processAuth = ENTER.LOGIN

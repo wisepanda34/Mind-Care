@@ -35,7 +35,8 @@ const afterEnter = () => {
 
   &-enter-active,
   &-leave-active {
-    transition: 0.8s ease;
+    transition: 1.8s ease;
+    opacity: 1;
   }
 }
 // .slide-fade-enter-active, .slide-fade-leave-active {

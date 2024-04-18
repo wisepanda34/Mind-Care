@@ -10,7 +10,7 @@ const rating = ref<number>(0)
 const reviews = ref<IReview[]>([])
 
 const getReviews = async() => {
-  const response = await fetch('/api/review')
+  const response = await fetch('/api/reviews/review')
   reviews.value = await response.json();
 }
 

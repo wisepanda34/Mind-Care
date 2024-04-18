@@ -51,6 +51,7 @@ export interface IUpdateUser {
 export interface ILogin {
   email: string;
   password: string;
+  role: RoleT;
 }
 export interface IClient extends IUser {
   interests?: string;

@@ -14,7 +14,6 @@ import createUserDto from "../dtos/user-dto";
 export default defineEventHandler(async (event) => {
   try{
     const data = await readBody(event);
-    console.log('data: ', data);
     
     
     const candidate = await UserModel.findOne({email: data.email});

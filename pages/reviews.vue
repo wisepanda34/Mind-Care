@@ -1,26 +1,76 @@
 <!-- pages/reviews.vue -->
 <script setup lang='ts'>
+import { useAuthStore } from '~/stores/auth.store';
+import { MindRequestOptions } from '~/types/auth.type';
+import { IReview } from '~/types/auth.type';
 
-const response = await fetch('/api/review')
-const reviews = await response.json();
-
+const authStore = useAuthStore()
 const textReview = ref('')
 const rating = ref<number>(0)
+const reviews = ref<IReview[]>([])
+
+const getReviews = async() => {
+  const response = await fetch('/api/review')
+  reviews.value = await response.json();
+}
 
 const updateRating = (value: number) => {
   rating.value = value;
 }
 
+const createReview = async() => {
+  if(!authStore.isAuthed){
+    authStore.toggleAuthModal()
+    return
+  }
+  const data = {
+    id: authStore.user.id,
+    text: textReview.value,
+    rating: rating.value
+  }
+  console.log('id ', data.id);
+  
+  const requestOptions: MindRequestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  };
+  
+  try {
+    const response = await fetch('/api/reviews/create-review', requestOptions);
+    if(!response.ok){
+      throw new Error('error')
+    }
+    const responseJson = await response.json()
+    authStore.openMessageModal(responseJson.body.message)
+    getReviews()
+
+  } catch(error) {
+    console.log('createReview error: ', error);
+  }
+}
+
+const formatDate = (dateString: string | Date) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString();
+};
+
+onMounted(()=>{
+  getReviews()
+})
 </script>
  
 <template>
   <div class="reviews">
     <h1 class="reviews__title text-center text--fz30 text--fw700">Reviews</h1>
     <ul>
-       <li class="reviews__card" v-for="review in reviews" :key="review._id">
+       <li class="reviews__card" v-for="review in reviews" :key="review.userId">
         <div class="reviews__header">
           <h5>{{ review.name }}</h5>
-          <UIStarRating :rating="review.stars" :enabled="false"  />
+          <div v-if="review.dateReview">{{   formatDate(review.dateReview) }}</div>
+          <UIStarRating :rating="review.rating" :enabled="false" />
         </div>
         <p>{{ review.text }}</p>
       </li>
@@ -28,7 +78,7 @@ const updateRating = (value: number) => {
 
     <div class="reviews__write">
       <h3 class="reviews__title text-center text--fz24 text--grey-5">Write your review</h3>
-      <form class="reviews__form">
+      <form class="reviews__form" @submit.prevent="createReview">
         <div class="reviews__rating">
           <UIStarRating :rating="rating" :enabled="true" @update:rating="updateRating" />
         </div>
@@ -36,6 +86,11 @@ const updateRating = (value: number) => {
           v-model="textReview"
           id="textReview"
           placeholder="Field for your review"
+        />
+        <UIButton
+          class="reviews__submit"
+          type="submit"
+          text="OK"
         />
       </form>
     </div>
@@ -82,8 +137,8 @@ const updateRating = (value: number) => {
     justify-content: center;
     align-items: center;
   }
-  &__form{
-
+  &__submit{
+    margin: 30px 0 30px auto;
   }
  }
 </style>

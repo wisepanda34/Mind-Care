@@ -89,3 +89,10 @@ export interface IDoctorDto {
   email: string;
   role: string;
 }
+export interface IReview {
+  name: string;
+  userId: string;
+  rating: number;
+  text: string;
+  dateReview: Date;
+}

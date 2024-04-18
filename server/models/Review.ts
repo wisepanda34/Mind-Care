@@ -6,13 +6,11 @@ const ReviewSchema = new Schema({
     type: String,
     require: true
   },
-  idUser:{
-    //означает, что ожидается идентификатор объекта (ObjectId) MongoDB.
-    // Это создает связь между токеном и пользователем.
-    type: Schema.Types.ObjectId,
-    ref: 'users'
+  userId:{
+    type: String,
+    require: true
   },
-  stars: {
+  rating: {
     type: Number,
     require: true
   },
@@ -20,6 +18,10 @@ const ReviewSchema = new Schema({
     type: String,
     require: true
   },
+  dateReview: {
+    type: Date,
+    require: true
+  }
 });
 
 

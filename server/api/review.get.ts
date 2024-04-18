@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
   // return fetchData(UserModel, event);
   try{
     const response = await ReviewModel.find();
-    console.log('response ', response);
     
 
     if (!response) {
@@ -16,8 +15,10 @@ export default defineEventHandler(async (event) => {
     }
       return response;
     
-  }catch(e){
-    console.log('error: ', e);
+  }catch(error){
+    console.log('review.get.js error: ', error);
+    setResponseStatus(event, 500); 
+    return { body: { message: "Internal server error" }};
   }
   
 });

@@ -7,7 +7,6 @@ const doctor = ref(null);
 const doctorId = router.currentRoute.value.params.id;
 
 const fetchDoctorDetails = async () => {
-  console.log('doctorId: ', doctorId);
   
   // const response = await fetch(`/api/doctor/${route.params._id}}`);
   // const data = await response.json();

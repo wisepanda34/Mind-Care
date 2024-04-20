@@ -1,9 +1,6 @@
 // server/api/login.post.js
 
-import UserModel from "@/server/models/User";
-import createUserDto from "../dtos/user-dto";
-import type { IUser, IUserDB, IUserDto } from "~/types/auth.type";
-import { compare } from 'bcrypt-ts'
+import { loginUser, loginDoctor, loginAdmin } from '../controllers/login'
 
 // import { fetchData } from "~/server/api/utils/data-fetcher";
 
@@ -11,37 +8,28 @@ export default defineEventHandler(async (event) => {
 
   // return fetchData(UserModel, event);
   try{
-    const { email,  password } = await readBody(event);
-
-    if(!email || !password) {
+    const { email,  password, role } = await readBody(event);
+    if(!email || !password || !role) {
       setResponseStatus(event, 400);
       return {
         body: { message: 'Missing required data' },
       }
     }
 
-    const foundUser = await UserModel.findOne({email}) as IUser;
-    
-    if (!foundUser) {
-      setResponseStatus(event, 400);
-      return { 
-        body: { message: "There is no user with this email" }
-      };
-    }
-    const isPasswordValid = await compare(password, foundUser.password);
-    if(!isPasswordValid){
-      setResponseStatus(event, 400);
-      return { 
-        body: { message: "Password is wrong!" }
-      };
-    }
-    const responseDto = createUserDto(foundUser)//email,id,role
-    return {
-      responseDto,
-      body: { message: "Successful authorization!" }
+    switch(role){
+      case 'user':
+        return loginUser(email, password)
+      case 'doctor':
+        return loginDoctor(email, password)
+      case 'admin':
+        return loginAdmin(email, password)
+      default: return {
+        body: { message: "Found nothing" }
+      }
     }
     
-  }catch(e){
-    console.log('error: ', e);
+  }catch(error){
+    setResponseStatus(event, 500)
+    console.log('login.post.js error: ', error);
   }
 });

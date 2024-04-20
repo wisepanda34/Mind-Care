@@ -2,7 +2,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ENTER, ROLE } from "~/constants";
-import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, INewUser, MindRequestOptions, ILogin } from "~/types/auth.type";
+import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, MindRequestOptions, ILogin } from "~/types/auth.type";
 
 
 
@@ -16,13 +16,14 @@ export const useAuthStore = defineStore('auth', {
     user: {
       id: '',
       name: '',
+      surname: '',
       email: '',
       password: '',
       role: null,
       phone: '',
       birthday: null,
       registeredAt: null,
-    } as IUser
+    } 
   }),
   actions: {
     async fetchRegistration(newUser:IUser) {
@@ -89,22 +90,24 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async fetchLogin(data: ILogin) {
-
+      
       const requestOptions: MindRequestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       };
-
+      
       try {
         const response = await fetch('/api/login', requestOptions);
         const responseJson = await response.json();
+        console.log('responseJson :', responseJson);
+        
         this.openMessageModal(responseJson.body.message)
 
         if(!response.ok){
           return responseJson.body.message
         }
-        const data = responseJson.responseDto
+        const data = responseJson.data
 
         this.$patch({
           user: {

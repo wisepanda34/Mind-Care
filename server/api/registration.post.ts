@@ -4,9 +4,9 @@ import { hash}  from 'bcrypt-ts';
 import  {v4}  from 'uuid';
 // import MailService from "../service/mail-service.js";
 import tokenService from "../services/token-service";
-import { IUser, IUserDB, INewUser } from "~/types/auth.type";
+import { IUser, IUserDB } from "~/types/auth.type";
 import { ROLE } from "~/constants";
-import createUserDto from "../dtos/user-dto";
+import DoctorModel from "../models/Doctor";
 // import cookieParser from "cookie-parser";
 // import {body} from 'express-validator'
 
@@ -14,12 +14,19 @@ import createUserDto from "../dtos/user-dto";
 export default defineEventHandler(async (event) => {
   try{
     const data = await readBody(event);
+    let candidate = null
+    if(data.role === 'user') {
+      candidate = await UserModel.findOne({email: data.email});
+    } else if(data.role === 'doctor') {
+      candidate = await DoctorModel.findOne({email: data.email});
+    } else {
+      return {
+        body: { message: `You cannot change role 'admin' for registration`},
+      };
+    }
     
-    
-    const candidate = await UserModel.findOne({email: data.email});
     if (candidate) {
       return {
-        status: 400,
         body: { error: `User with email ${data.email} already exists` },
       };
     }
@@ -34,7 +41,7 @@ export default defineEventHandler(async (event) => {
     const user: IUser = {
       id: data.id,
       email: data.email,
-      password: hashPassword,
+      password: data.password,
       name: data.name,
       birthday: data.birthday,
       phone: data.phone,

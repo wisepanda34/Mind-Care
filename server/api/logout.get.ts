@@ -1,4 +1,4 @@
-// server/api/logout.ts
+// server/api/logout.get.ts
 
 // import tokenService from "~/server/service/token-service";
 

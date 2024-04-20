@@ -11,15 +11,6 @@ export interface MindRequestOptions {
   headers: { [key: string]: string };
   body?: string | FormData | URLSearchParams | ReadableStream<Uint8Array> | null; 
 }
-export interface INewUser {
-  email: string;
-  password: string;
-}
-export interface MindRequestOptions {
-  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; 
-  headers: { [key: string]: string };
-  body?: string | FormData | URLSearchParams | ReadableStream<Uint8Array> | null; 
-}
 export interface IStateAuth {
   isOpenAuthModal: boolean;
   isOpenMessageModal: boolean;
@@ -28,9 +19,11 @@ export interface IStateAuth {
   isAuthed: boolean;
   user: IUser;
 }
+
 export interface IUser {
   id: string;
   name: string;
+  surname?: string;
   email: string;
   password: string;
   role: RoleT | null;
@@ -38,20 +31,20 @@ export interface IUser {
   birthday: Date | null;
   registeredAt: Date | null;
 }
-export interface IUpdateUser {
-  id: string;
-  email: string;
-  name: string;
-  phone: string;
-  birthday: Date | null;
-  oldPassword: string;
-  newPassword: string;
-  password: string;
+export interface IDoctor extends IUser  {
+  experience: number;
+  specialization?: string[];
+  education?: string[];
+  photoLink?: string;
 }
-export interface ILogin {
+export interface IAdmin {
+  id: string;
+  name: string;
+  surname: string;
   email: string;
   password: string;
-  role: RoleT;
+  role: RoleT | null;
+  phone: string;
 }
 export interface IClient extends IUser {
   interests?: string;
@@ -68,27 +61,43 @@ export interface IUserDB {
 export interface IUserDto  {
   id: string;
   name: string;
+  surname?: string;
   email: string;
   role: RoleT;
   phone: string;
   birthday: Date | null;
   registeredAt: Date | null;
 }
-export interface IDoctor extends IUser  {
-  surname: string;
+export interface IDoctorDto extends IUserDto {
   experience: number;
   specialization?: string[];
   education?: string[];
   photoLink?: string;
 }
- // isActivated: boolean;
-// activationLink: string;
-
-export interface IDoctorDto {
+export interface IAdminDto  {
+  id: string;
   name: string;
   surname: string;
   email: string;
-  role: string;
+  role: RoleT;
+  phone: string;
+}
+
+export interface IUpdateUser {
+  id: string;
+  email: string;
+  name: string;
+  surname?: string;
+  phone: string;
+  birthday: Date | null;
+  oldPassword: string;
+  newPassword: string;
+  password: string;
+}
+export interface ILogin {
+  email: string;
+  password: string;
+  role: RoleT;
 }
 export interface IReview {
   name: string;
@@ -97,3 +106,7 @@ export interface IReview {
   text: string;
   dateReview: Date;
 }
+
+
+ // isActivated: boolean;
+// activationLink: string;

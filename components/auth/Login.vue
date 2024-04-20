@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core';
 import { required, email as emailValidator, minLength } from '@vuelidate/validators';
-import type {INewUser, ILogin, RoleT} from '@/types/auth.type'
+import type {ILogin, RoleT} from '@/types/auth.type'
 
 import { useAuthStore } from '@/stores/auth.store';
 import { ROLE } from '~/constants';
@@ -11,8 +11,8 @@ const authStore = useAuthStore();
 const selectedRole = ref<RoleT>(ROLE.USER)
 const message = ref<string | null>(null);
 const state = reactive({
-  email:'fox@mail.qwqw',
-  password:'qwqw'
+  email:'admin@mail.com',
+  password:'1234'
 })
 
 const rules = {

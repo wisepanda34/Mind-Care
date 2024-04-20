@@ -1,17 +1,23 @@
 <!-- components/UI/Role.vue -->
 <script setup lang='ts'>
+import { ROLE } from '~/constants'
 
-const selects = ['Client', 'Doctor', "Admin"]
-const selectedRole = ref(selects[0])
+const roleLabels: Record<ROLE, string> = {
+  [ROLE.USER]: 'Client',
+  [ROLE.DOCTOR]: 'Doctor',
+  [ROLE.ADMIN]: 'Admin'
+};
+
+const selectedRole = ref(roleLabels[ROLE.USER]);
 const isSelectOpen = ref(false)
 
 const emits = defineEmits(['update:selectedRole'])
 
-const changeRole = (i: number) => {
-  selectedRole.value = selects[i]
-  toggleSelect()
-  emits('update:selectedRole', selectedRole.value)
-}
+const changeRole = (role: ROLE) => {
+  selectedRole.value = roleLabels[role];
+  toggleSelect();
+  emits('update:selectedRole', role);
+};
 
 const toggleSelect = () => {
   isSelectOpen.value = !isSelectOpen.value
@@ -35,11 +41,11 @@ const toggleSelect = () => {
       <ul>
         <li 
           class="role__item" 
-          v-for="(item, i) in selects" 
-          :key="i"
-          @click="changeRole(i)"
+          v-for="(label, role) in roleLabels" 
+          :key="role"
+          @click="changeRole(role)"
         >
-          {{ item }}
+          {{ label }}
         </li>
       </ul>
     </div>

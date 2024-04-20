@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import { ROLE } from '~/constants';
 
 const authStore = useAuthStore();
-const selectedRole = ref<RoleT>(ROLE.USER)
+const selectedRole = ref<RoleT>(ROLE.CLIENT)
 const message = ref<string | null>(null);
 const state = reactive({
   email:'admin@mail.com',

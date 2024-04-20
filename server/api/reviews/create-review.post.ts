@@ -1,7 +1,7 @@
 // server/api/review/create-review.post.js
 import mongoose from "mongoose";
 import ReviewModel from "@/server/models/Review";
-import UserModel from "~/server/models/User";
+import UserModel from "~/server/models/Client";
 import { IReview } from "~/types/auth.type";
 // import { fetchData } from "~/server/api/utils/data-fetcher";
 

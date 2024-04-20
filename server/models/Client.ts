@@ -1,11 +1,20 @@
-// server/models/Doctor.ts
-import { Schema, Document } from 'mongoose';
-import { IClient } from '@/types/auth.type';
-import  UserModel  from './User'
+// server/models/Client.ts
+import { Schema, model } from "mongoose";
+import { ROLE } from "~/constants";
+import { IClient } from "~/types/auth.type";
 
-
-const clientSchema = new Schema({
-  interests: { type: String },
+const ClientSchema = new Schema({
+  id: { type: String, required: true },
+  name: { type: String, required: true },
+  surname: { type: String },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: Object.values(ROLE), required: true },
+  phone: { type: String, required: true },
+  birthday: { type: Date, require: true },
+  registeredAt: { type: Date, require: true },
+  info: { type: Object }
 });
 
-export const ClientModel = UserModel.discriminator<IClient>('clients', clientSchema);
+const ClientModel = model<IClient>('users', ClientSchema);
+export default ClientModel

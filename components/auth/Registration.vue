@@ -1,7 +1,7 @@
 <!-- components/auth/Registration.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
-import type {IUser, RoleT} from '@/types/auth.type'
+import type {INewUser, RoleT} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email as emailValidator, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from '../BirthdayPicker.vue';
@@ -9,14 +9,14 @@ import { ROLE } from '~/constants';
 
 
 const authStore = useAuthStore()
-const selectedRole = ref<RoleT>(ROLE.USER)
+const selectedRole = ref<RoleT>(ROLE.CLIENT)
 const state = reactive({
   name:'Fox',
   email:'fox@mail.qwqw',
   phone:'0991234567',
   birthday: <Date | null>(null),
-  password:'qwqw',
-  confirmPassword:'qwqw',
+  password:'',
+  confirmPassword:'',
 })
 
 const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
@@ -43,15 +43,13 @@ const submitRegistration = () => {
   if (v$.value.$invalid){
     return
   }
-  const newUser: IUser = {
-    id: new Date().getTime().toString(),
+  const newUser: INewUser = {
     name: state.name,
     email: state.email,
     role: selectedRole.value,
     phone: state.phone,
     birthday: state.birthday as Date,
     password: state.password,
-    registeredAt: new Date()
   }
   authStore.fetchRegistration(newUser)
 }

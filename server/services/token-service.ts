@@ -1,14 +1,14 @@
 // server/services/token-service.ts
 import jwt from 'jsonwebtoken'
 import tokenModel  from '../models/Token'
-import type  {IUserDto}  from '~/types/auth.type'
+import type  {IClientDto}  from '~/types/auth.type'
 
 const accessSecret = process.env.JWT_ACCESS_SECRET || 'default_secret';
 const refreshSecret = process.env.JWT_ACCESS_SECRET || 'default_secret';
 
 const TokenService = {
 
-  generateTokens (payload: IUserDto){
+  generateTokens (payload: IClientDto){
     const accessToken = jwt.sign(payload, accessSecret, {expiresIn: '1d'})
     const refreshToken = jwt.sign(payload, refreshSecret, {expiresIn: '30d'})
     return {

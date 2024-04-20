@@ -1,9 +1,9 @@
 //user-dto.js   data transfer object
 // DTO используется для представления данных пользователя в упрощенной форме,
 // содержащей только указанные свойства.
-import type { IUser, IDoctor, IAdmin, IUserDto, IDoctorDto, IAdminDto } from "~/types/auth.type";
+import type { IUser, IDoctor, IAdmin, IClientDto, IDoctorDto, IAdminDto } from "~/types/auth.type";
 
-export const createUserDto = (model: IUser ): IUserDto => {
+export const createUserDto = (model: IUser ): IClientDto => {
   return {
     id: model.id,
     name: model.name,
@@ -26,16 +26,11 @@ export const createDoctorDto = (model: IDoctor ): IDoctorDto => {
     phone: model.phone,
     birthday: model.birthday,
     registeredAt: model.registeredAt,
-    experience: model.experience,
-    specialization: model.specialization,
-    education: model.education,
-    photoLink: model.photoLink
+    info: model.info
   }
 }
 
 export const createAdminDto = (model: IAdmin ): IAdminDto => {
-  console.log('createAdminDto: ', model);
-
   return {
     id: model.id,
     name: model.name,
@@ -43,5 +38,7 @@ export const createAdminDto = (model: IAdmin ): IAdminDto => {
     email: model.email,
     role: model.role,
     phone: model.phone,
+    birthday: model.birthday,
+    registeredAt: model.registeredAt
   }
 }

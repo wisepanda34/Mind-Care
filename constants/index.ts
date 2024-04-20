@@ -1,6 +1,6 @@
 // constants/index.ts
 export enum ROLE {
-  USER = 'user',
+  CLIENT = 'client',
   DOCTOR = 'doctor',
   ADMIN = 'admin'
 }

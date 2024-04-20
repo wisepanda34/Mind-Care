@@ -3,12 +3,12 @@
 import { ROLE } from '~/constants'
 
 const roleLabels: Record<ROLE, string> = {
-  [ROLE.USER]: 'Client',
+  [ROLE.CLIENT]: 'Client',
   [ROLE.DOCTOR]: 'Doctor',
   [ROLE.ADMIN]: 'Admin'
 };
 
-const selectedRole = ref(roleLabels[ROLE.USER]);
+const selectedRole = ref(roleLabels[ROLE.CLIENT]);
 const isSelectOpen = ref(false)
 
 const emits = defineEmits(['update:selectedRole'])

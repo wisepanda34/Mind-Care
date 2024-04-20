@@ -2,7 +2,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ENTER, ROLE } from "~/constants";
-import type { IStateAuth, IUser, IUpdateUser, EnterT, RoleT, MindRequestOptions, ILogin } from "~/types/auth.type";
+import type { IStateAuth, IUser, INewUser, IUpdateUser, EnterT, RoleT, MindRequestOptions, ILogin } from "~/types/auth.type";
 
 
 
@@ -18,7 +18,6 @@ export const useAuthStore = defineStore('auth', {
       name: '',
       surname: '',
       email: '',
-      password: '',
       role: null,
       phone: '',
       birthday: null,
@@ -26,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
     } 
   }),
   actions: {
-    async fetchRegistration(newUser:IUser) {
+    async fetchRegistration(newUser:INewUser) {
       const requestOptions: MindRequestOptions = {
         method: 'POST',
         headers: {
@@ -113,6 +112,7 @@ export const useAuthStore = defineStore('auth', {
           user: {
             id: data.id,
             name: data.name,
+            surname: data.surname,
             email: data.email,
             role: data.role as RoleT,
             phone: data.phone,

@@ -4,7 +4,7 @@ import { ENTER, ROLE } from "~/constants";
 // export type RolesT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN
 
 export type EnterT = ENTER.NULL | ENTER.LOGIN | ENTER.REGISTRATON
-export type RoleT = ROLE.USER | ROLE.DOCTOR | ROLE.ADMIN | null
+export type RoleT = ROLE.CLIENT | ROLE.DOCTOR | ROLE.ADMIN | null
 
 export interface MindRequestOptions {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; 
@@ -25,31 +25,49 @@ export interface IUser {
   name: string;
   surname?: string;
   email: string;
-  password: string;
   role: RoleT | null;
   phone: string;
   birthday: Date | null;
   registeredAt: Date | null;
 }
-export interface IDoctor extends IUser  {
-  experience: number;
-  specialization?: string[];
-  education?: string[];
-  photoLink?: string;
-}
-export interface IAdmin {
-  id: string;
+
+export interface INewUser {
   name: string;
-  surname: string;
+  surname?: string;
   email: string;
-  password: string;
+  password: string
   role: RoleT | null;
   phone: string;
+  birthday: Date | null;
 }
+export interface ISaveNewUser extends IUser{
+  id: string;
+  password: string
+}
+
+export interface ISaveNewDoctor extends ISaveNewUser{
+  info: {}
+}
+
 export interface IClient extends IUser {
-  interests?: string;
+  password: string;
 }
-export interface IUserDB {
+
+export interface IDoctor extends IUser  {
+  password: string;
+  info: {
+    experience: number;
+    specialization?: string[];
+    education?: string[];
+    photoLink?: string;
+  }
+}
+
+export interface IAdmin extends IUser {
+  password: string;
+}
+
+export interface IClientDB {
   id: string;
   name: string;
   email: string;
@@ -58,7 +76,7 @@ export interface IUserDB {
   birthday: Date | null;
   registeredAt: Date | null;
 }
-export interface IUserDto  {
+export interface IClientDto  { //в принципе тот же самый IUser
   id: string;
   name: string;
   surname?: string;
@@ -68,19 +86,23 @@ export interface IUserDto  {
   birthday: Date | null;
   registeredAt: Date | null;
 }
-export interface IDoctorDto extends IUserDto {
-  experience: number;
-  specialization?: string[];
-  education?: string[];
-  photoLink?: string;
+export interface IDoctorDto extends IClientDto {
+  info:{
+    experience: number;
+    specialization?: string[];
+    education?: string[];
+    photoLink?: string;
+  }
 }
-export interface IAdminDto  {
+export interface IAdminDto { //в принципе тот же самый IUser
   id: string;
   name: string;
-  surname: string;
+  surname?: string;
   email: string;
   role: RoleT;
   phone: string;
+  birthday: Date | null;
+  registeredAt: Date | null;
 }
 
 export interface IUpdateUser {

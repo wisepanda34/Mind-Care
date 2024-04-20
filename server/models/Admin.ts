@@ -3,11 +3,10 @@ import { Schema, model } from 'mongoose';
 import { IAdmin} from '@/types/auth.type';
 import { ROLE } from "~/constants";
 
-
-
 const AdminSchema = new Schema({
   id: { type: String, required: true },
   name: { type: String, required: true },
+  surname: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, enum: Object.values(ROLE), required: true },

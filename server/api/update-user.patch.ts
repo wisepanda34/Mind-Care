@@ -1,6 +1,6 @@
 // server/api/update-user.patch.ts
 import { IUpdateUser } from "~/types/auth.type";
-import UserModel from "../models/User";
+import UserModel from "../models/Client";
 import { compare, hash } from "bcrypt-ts";
 
 

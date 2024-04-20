@@ -1,14 +1,14 @@
 // server/controllers/login.ts
-import UserModel from "@/server/models/User";
+import ClientModel from "~/server/models/Client";
 import DoctorModel from "../models/Doctor";
 import { AdminModel } from "../models/Admin";
 import { createUserDto, createDoctorDto, createAdminDto } from "../dtos";
 import { compare } from 'bcrypt-ts'
 
 
-export const loginUser = async(email: string, password: string) => {
+export const loginClient = async(email: string, password: string) => {
   try {
-    const foundUser = await UserModel.findOne({email});
+    const foundUser = await ClientModel.findOne({email});
     if (!foundUser) {
       return { 
         body: { message: "There is no user with this email" }

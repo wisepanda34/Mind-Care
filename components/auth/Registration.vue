@@ -11,9 +11,9 @@ import { ROLE } from '~/constants';
 const authStore = useAuthStore()
 const selectedRole = ref<RoleT>(ROLE.CLIENT)
 const state = reactive({
-  name:'Fox',
-  email:'fox@mail.qwqw',
-  phone:'0991234567',
+  name:'',
+  email:'',
+  phone:'',
   birthday: <Date | null>(null),
   password:'',
   confirmPassword:'',
@@ -24,12 +24,13 @@ const rules = {
   name: { required, minLength: minLength(2), maxLength: maxLength(20)},
   email: { required, email: emailValidator },
   password: { required, minLength: minLength(3), maxLength: maxLength(20)},
-  confirmPassword: {sameAs: sameAs(state.password)},
+  confirmPassword: {required, sameAs:sameAs(computed(() => state.password))},
   phone: { required, phoneFormat: helpers.regex(phoneRegex)},
   birthday: {required}
 };
 
-const v$ = useVuelidate(rules, state);
+const v$ = useVuelidate(rules, state, { $autoDirty: true });
+
 
 const handleUpdateBirthday = (date: Date | null) => {
   state.birthday = date;
@@ -74,16 +75,18 @@ const cancelRegistration = () => {
           id="name"
           type="text"
           label="Name"
+          @blur="v$.name.$model"
         />
-         <p v-if="v$.name.minLength.$invalid" class="field-error text--red">Email is required</p>
-        <p v-if="v$.name.maxLength.$invalid" class="field-error text--red">Invalid email format</p>
+        <p v-if="v$.name.required.$invalid && v$.name.$dirty" class="field-error text--red">Name is required</p>
+        <p v-if="v$.name.minLength.$invalid" class="field-error text--red">Min 2 symbols</p>
+        <p v-if="v$.name.maxLength.$invalid" class="field-error text--red">Max 20 symbols</p>
         <UIInput
           v-model="state.email"
           id="email"
           type="text"
           label="Email"
         />
-        <p v-if="v$.email.required.$invalid" class="field-error text--red">Email is required</p>
+        <p v-if="v$.email.required.$invalid && v$.email.$dirty" class="field-error text--red">Email is required</p>
         <p v-if="v$.email.email.$invalid" class="field-error text--red">Invalid email format</p>
         <UIInput
           v-model="state.phone"
@@ -91,7 +94,7 @@ const cancelRegistration = () => {
           type="text"
           label="Phone"
         />
-        <p v-if="v$.phone.required.$invalid" class="field-error text--red">Email is required</p>
+        <p v-if="v$.phone.required.$invalid && v$.phone.$dirty" class="field-error text--red">Email is required</p>
         <p v-if="v$.phone.phoneFormat.$invalid" class="field-error text--red">Invalid email format</p>
         
         <BirthdayPicker 
@@ -100,7 +103,7 @@ const cancelRegistration = () => {
           :date="state.birthday"
           @update:selectedDate="handleUpdateBirthday" 
         />
-        <p v-if="v$.birthday.required.$invalid" class="field-error text--red">Birthday is required</p>
+        <p v-if="v$.birthday.required.$invalid && v$.birthday.$dirty" class="field-error text--red">Birthday is required</p>
 
         <UIInput
           v-model="state.password"
@@ -108,7 +111,7 @@ const cancelRegistration = () => {
           type="password"
           label="Password"
         />
-        <p v-if="v$.password.required.$invalid" class="field-error text--red">Password is required</p>
+        <p v-if="v$.password.required.$invalid && v$.password.$dirty" class="field-error text--red">Password is required</p>
         <p v-if="v$.password.minLength.$invalid" class="field-error text--red">Minimum 3 symbols</p>
         <p v-if="v$.password.maxLength.$invalid" class="field-error text--red">Minimum 20 symbols</p>
 
@@ -118,6 +121,7 @@ const cancelRegistration = () => {
           type="password"
           label="Confirm password"
         />
+        <p v-if="v$.confirmPassword.required.$invalid && v$.confirmPassword.$dirty" class="field-error text--red">Password is required</p>
         <p v-if="v$.confirmPassword.sameAs.$invalid" class="field-error text--red">not match password</p>
       </form>
     </div>

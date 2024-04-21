@@ -4,7 +4,7 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps<{date: Date | null, label: string;}>();
-const emit = defineEmits(['update:selectedDate']);
+const emit = defineEmits(['update:selectedDate', 'focus', 'blur']);
 
 const type = 'date'; // Тип выбора (date, month, year)
 const minDate = '1900-01-01'; 
@@ -57,6 +57,8 @@ const handleChangeDate = (value: Date | null) => {
         :max="maxDate" 
         placeholder="Select Date" 
         @update:model-value="handleChangeDate"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
       />
     </div>
 </template>

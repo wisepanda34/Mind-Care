@@ -60,6 +60,25 @@ const cancelRegistration = () => {
   authStore.cancelRegistration()
 }
 
+const isNameTouched = ref(false);
+const isEmailTouched = ref(false);
+const isPhoneTouched = ref(false);
+const isBirthTouched = ref(false);
+const isPassTouched = ref(false);
+const isConfirmTouched = ref(false);
+const focusName = () => isNameTouched.value = false
+const blurName = () => isNameTouched.value = true
+const focusEmail = () => isEmailTouched.value = false
+const blurEmail = () => isEmailTouched.value = true
+const focusPhone = () => isPhoneTouched.value = false
+const blurPhone = () => isPhoneTouched.value = true
+const focusBirth = () => isBirthTouched.value = false
+const blurBirth = () => isBirthTouched.value = true
+const focusPass = () => isPassTouched.value = false
+const blurPass = () => isPassTouched.value = true
+const focusConfirm = () => isConfirmTouched.value = false
+const blurConfirm = () => isConfirmTouched.value = true
+
 </script>
  
 <template>
@@ -76,54 +95,78 @@ const cancelRegistration = () => {
           id="name"
           type="text"
           label="Name"
-          @blur="v$.name.$model"
+          @focus="focusName" 
+          @blur="blurName"
         />
-        <p v-if="v$.name.required.$invalid && v$.name.$dirty" class="field-error text--red">Name is required</p>
-        <p v-if="v$.name.minLength.$invalid" class="field-error text--red">Min 2 symbols</p>
-        <p v-if="v$.name.maxLength.$invalid" class="field-error text--red">Max 20 symbols</p>
+        <div class="modal__warning">
+          <p v-if="isNameTouched && v$.name.required.$invalid && v$.name.$dirty">Name is required</p>
+          <p v-if="isNameTouched && v$.name.minLength.$invalid">Min 2 symbols</p>
+          <p v-if="isNameTouched && v$.name.maxLength.$invalid">Max 20 symbols</p>
+        </div>
+        
         <UIInput
           v-model="state.email"
           id="email"
           type="text"
           label="Email"
+          @focus="focusEmail" 
+          @blur="blurEmail"
         />
-        <p v-if="v$.email.required.$invalid && v$.email.$dirty" class="field-error text--red">Email is required</p>
-        <p v-if="v$.email.email.$invalid" class="field-error text--red">Invalid email format</p>
+        <div class="modal__warning">
+          <p v-if="isEmailTouched && v$.email.required.$invalid && v$.email.$dirty">Email is required</p>
+          <p v-if="isEmailTouched && v$.email.email.$invalid">Invalid email format</p>
+        </div>
         <UIInput
           v-model="state.phone"
           id="phone"
           type="text"
           label="Phone"
+          @focus="focusPhone" 
+          @blur="blurPhone"
         />
-        <p v-if="v$.phone.required.$invalid && v$.phone.$dirty" class="field-error text--red">Email is required</p>
-        <p v-if="v$.phone.phoneFormat.$invalid" class="field-error text--red">Invalid email format</p>
+        <div class="modal__warning">
+          <p v-if="isPhoneTouched && v$.phone.required.$invalid && v$.phone.$dirty">Email is required</p>
+          <p v-if="isPhoneTouched && v$.phone.phoneFormat.$invalid">Invalid email format</p>
+        </div>
         
         <BirthdayPicker 
           class="modal__birthday"
           label="Birthday"
           :date="state.birthday"
           @update:selectedDate="handleUpdateBirthday" 
+          @focus="focusBirth" 
+          @blur="blurBirth"
         />
-        <p v-if="v$.birthday.required.$invalid && v$.birthday.$dirty" class="field-error text--red">Birthday is required</p>
+        <div class="modal__warning">
+          <p v-if="isBirthTouched && v$.birthday.required.$invalid && v$.birthday.$dirty">Birthday is required</p>
+        </div>
 
         <UIInput
           v-model="state.password"
           id="password"
           type="password"
           label="Password"
+          @focus="focusPass" 
+          @blur="blurPass"
         />
-        <p v-if="v$.password.required.$invalid && v$.password.$dirty" class="field-error text--red">Password is required</p>
-        <p v-if="v$.password.minLength.$invalid" class="field-error text--red">Minimum 3 symbols</p>
-        <p v-if="v$.password.maxLength.$invalid" class="field-error text--red">Minimum 20 symbols</p>
+        <div class="modal__warning">
+          <p v-if="isPassTouched && v$.password.required.$invalid && v$.password.$dirty">Password is required</p>
+          <p v-if="isPassTouched && v$.password.minLength.$invalid">Minimum 3 symbols</p>
+          <p v-if="isPassTouched && v$.password.maxLength.$invalid">Minimum 20 symbols</p>
+        </div>
 
         <UIInput
           v-model="state.confirmPassword"
           id="confirmPassword"
           type="password"
           label="Confirm password"
+          @focus="focusConfirm" 
+          @blur="blurConfirm"
         />
-        <p v-if="v$.confirmPassword.required.$invalid && v$.confirmPassword.$dirty" class="field-error text--red">Password is required</p>
-        <p v-if="v$.confirmPassword.sameAs.$invalid" class="field-error text--red">not match password</p>
+        <div class="modal__warning">
+          <p v-if="isConfirmTouched && v$.confirmPassword.required.$invalid && v$.confirmPassword.$dirty">Password is required</p>
+          <p v-if="isConfirmTouched && v$.confirmPassword.sameAs.$invalid">not match password</p>
+        </div>
       </form>
     </div>
 

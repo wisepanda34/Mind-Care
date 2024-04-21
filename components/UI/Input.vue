@@ -27,12 +27,6 @@ const showPassword = () => {
 const hidePassword = () => {
   isPasswordVisible.value = false;
 };
-const handleFocus = () => {
-  emits('focus');
-};
-const handleBlur = () => {
-  emits('blur');
-};
 
 </script>
  

@@ -41,6 +41,7 @@ const handleUpdateRole = (role: RoleT) => {
 }
 
 const submitRegistration = () => {
+  v$.value.$touch()
   if (v$.value.$invalid){
     return
   }

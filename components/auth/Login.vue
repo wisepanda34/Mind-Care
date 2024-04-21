@@ -11,8 +11,8 @@ const authStore = useAuthStore();
 const selectedRole = ref<RoleT>(ROLE.CLIENT)
 const message = ref<string | null>(null);
 const state = reactive({
-  email:'admin@mail.com',
-  password:'1234'
+  email:'',
+  password:''
 })
 
 const rules = {
@@ -20,9 +20,10 @@ const rules = {
   password: { required },
 };
 
-const v$ = useVuelidate(rules, state);
+const v$ = useVuelidate(rules, state, { $autoDirty: true, $lazy: true });
 
 const submitLogin = async () => {
+  v$.value.$touch()
   if (v$.value.$invalid){
     message.value = 'Please input email and password'
     return
@@ -47,6 +48,12 @@ const handleUpdateRole = (role: RoleT) => {
   selectedRole.value = role;
 }
 
+const isEmailTouched = ref(false);
+const isPassTouched = ref(false);
+const focusEmail = () => {isEmailTouched.value = false, message.value = null} 
+const blurEmail = () => isEmailTouched.value = true
+const focusPass = () => {isPassTouched.value = false, message.value = null}
+const blurPass = () => isPassTouched.value = true
 </script>
 
 <template>
@@ -63,17 +70,25 @@ const handleUpdateRole = (role: RoleT) => {
           id="email"
           type="text"
           label="Email"
+          @focus="focusEmail" 
+          @blur="blurEmail"
         />
-        <p v-if="v$.email.required.$invalid" class="field-error text--red">Email is required</p>
-        <p v-if="v$.email.email.$invalid" class="field-error text--red">Invalid email format</p>
-
+        <div class="modal__warning">
+          <p v-show="isEmailTouched && v$.email.required.$invalid && v$.email.$dirty">Email is required</p> 
+          <p v-show="isEmailTouched && v$.email.email.$invalid && v$.email.$dirty">Invalid email format</p>
+        </div>
+      
         <UIInput
           v-model="state.password"
           id="password"
           type="password"
           label="Password"
+          @focus="focusPass" 
+          @blur="blurPass"
         />
-        <p v-if="v$.password.required.$invalid" class="field-error text--red">Password is required</p>
+        <div class="modal__warning">
+          <p v-if="isPassTouched && v$.password.required.$invalid && v$.password.$dirty">Password is required</p>
+        </div>
       </form>
       <div v-if="message" class="modal__message">{{ message }}</div>
     </div>

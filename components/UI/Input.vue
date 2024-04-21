@@ -2,7 +2,7 @@
 <script setup lang='ts'>
 
 const props = defineProps(['modelValue', 'id', 'type', 'label']);
-const emits = defineEmits(['update:modelValue']);
+const emits = defineEmits(['update:modelValue', 'focus', 'blur']);
 const isPasswordVisible = ref(false)
 
 const onInput = (event: Event) => {
@@ -27,6 +27,12 @@ const showPassword = () => {
 const hidePassword = () => {
   isPasswordVisible.value = false;
 };
+const handleFocus = () => {
+  emits('focus');
+};
+const handleBlur = () => {
+  emits('blur');
+};
 
 </script>
  
@@ -41,6 +47,8 @@ const hidePassword = () => {
       :value="modelValue" 
       :autocomplete="getAutocompleteType(type)"
       @input="onInput" 
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     />
     <input 
       v-else
@@ -50,6 +58,8 @@ const hidePassword = () => {
       :value="modelValue" 
       :autocomplete="getAutocompleteType('password')"
       @input="onInput" 
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     />
 
     <div v-if="type === 'password'" class="input__show"  @mousedown="showPassword" @mouseup="hidePassword">
@@ -65,7 +75,7 @@ const hidePassword = () => {
 <style scoped lang='scss'>
 .input{
   position: relative;
-  padding: 10px 0;
+  padding: 3px 0;
   &__label{
     font-size: 18px;
   }

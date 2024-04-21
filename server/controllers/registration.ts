@@ -1,22 +1,23 @@
 // server/controllers/registration.ts
 import ClientModel from "~/server/models/Client";
 import DoctorModel from "../models/Doctor";
-import { AdminModel } from "../models/Admin";
 import { ISaveNewUser, ISaveNewDoctor } from "~/types/auth.type";
 
 
 export const regClient = async(fullData: ISaveNewUser) => {
   try {
     const candidate = await ClientModel.findOne({email: fullData.email});
+
     if(candidate){
-      return{
+      return {
+        status: 400,
         body: { message: `Client with email ${fullData.email} already exists` }
       }
     }
     const client: ISaveNewUser = {
       id: fullData.id,
       name: fullData.name,
-      surname: fullData.name,
+      surname: fullData.surname,
       email: fullData.email,
       password: fullData.password,
       role: fullData.role,
@@ -28,16 +29,16 @@ export const regClient = async(fullData: ISaveNewUser) => {
     }
 
     const newClient = new ClientModel(client);
-    console.log('newClient: ', newClient);
+    await newClient.save();
 
     if(newClient){
-      return {body: { message: 'New Client registration received successfully'}}
+      return { body: { message: 'New Client registration received successfully'}, newClient }
     } else {
-      return {body: { message: 'registration failed'}}
+      return { status: 500, body: { message: 'registration failed'}}
     }
-  } catch(e) {
-    console.log('regClient error :', e);
-    return e
+  } catch (error) {
+    console.error('regClient error:', error);
+    return { status: 500, body: { message: 'Internal server error' }}
   }
 }
 
@@ -45,7 +46,8 @@ export const regDoctor = async(fullData: ISaveNewUser) => {
   try {
     const candidate = await DoctorModel.findOne({email: fullData.email});
     if(candidate){
-      return{
+      return {
+        status: 400,
         body: { message: `Doctor with email ${fullData.email} already exists` }
       }
     }
@@ -68,13 +70,13 @@ export const regDoctor = async(fullData: ISaveNewUser) => {
     console.log('newDoctor: ', newDoctor);
 
     if(newDoctor){
-      return {body: { message: 'New doctor registration received successfully'}}
+      return { body: { message: 'New doctor registration received successfully'}}
     } else {
-      return {body: { message: 'registration failed'}}
+      return { status: 500, body: { message: 'registration failed'}}
     }
-  } catch(e) {
-    console.log('regDoctor error :', e);
-    return e
+  } catch (error) {
+    console.error('regClient error:', error);
+    return { status: 500, body: { message: 'Internal server error' }}
   }
 }
 

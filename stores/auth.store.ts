@@ -42,7 +42,7 @@ export const useAuthStore = defineStore('auth', {
         if(!response.ok){
           throw new Error('error')
         }
-        
+        return responseJson.body.message
       } catch (error) {
         console.error('Error submitting registration:', error);
       } finally {

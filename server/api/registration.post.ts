@@ -2,21 +2,25 @@
 import UserModel from "../models/Client";
 import { hash}  from 'bcrypt-ts';
 import  {v4}  from 'uuid';
+import { validate } from "email-validator";
 // import MailService from "../service/mail-service.js";
 import tokenService from "../services/token-service";
 import { ISaveNewUser, IClientDB } from "~/types/auth.type";
 import { ROLE } from "~/constants";
 import DoctorModel from "../models/Doctor";
 import { regClient, regDoctor } from "../controllers/registration";
+import { validateReg } from "../validators/validator";
 // import cookieParser from "cookie-parser";
 // import {body} from 'express-validator'
 
 
 export default defineEventHandler(async (event) => {
   const data = await readBody(event);
-  if(!data.name || !data.email || !data.password || !data.role || !data.phone || !data.birthday ){
+  
+  const { error } = validateReg(data);
+  if (error) {
     setResponseStatus(event, 400);
-    return { body:{ message: "Data is not full"}}
+    return { body: { message: error.details[0].message } };
   }
 
   const fullData = {
@@ -27,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     switch(data.role){
-      case 'user':
+      case 'client':
         return await regClient(fullData)
       case 'doctor':
         return await regDoctor(fullData)

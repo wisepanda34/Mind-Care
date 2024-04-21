@@ -5,10 +5,11 @@ import type {INewUser, RoleT} from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email as emailValidator, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from '../BirthdayPicker.vue';
-import { ROLE } from '~/constants';
+import { ROLE, phoneRegex } from '~/constants';
 
 
 const authStore = useAuthStore()
+const message = ref<string | null>(null);
 const selectedRole = ref<RoleT>(ROLE.CLIENT)
 const state = reactive({
   name:'',
@@ -19,30 +20,28 @@ const state = reactive({
   confirmPassword:'',
 })
 
-const phoneRegex = /^(\d{3}[\s-]?){2}\d{2}\s?\d{2}$/;
 const rules = {
   name: { required, minLength: minLength(2), maxLength: maxLength(20)},
   email: { required, email: emailValidator },
   password: { required, minLength: minLength(3), maxLength: maxLength(20)},
-  confirmPassword: {required, sameAs:sameAs(computed(() => state.password))},
+  confirmPassword: { sameAs:sameAs(computed(() => state.password))},
   phone: { required, phoneFormat: helpers.regex(phoneRegex)},
   birthday: {required}
 };
-
 const v$ = useVuelidate(rules, state, { $autoDirty: true });
 
 
 const handleUpdateBirthday = (date: Date | null) => {
   state.birthday = date;
 };
-
 const handleUpdateRole = (role: RoleT) => {
   selectedRole.value = role;
 }
 
-const submitRegistration = () => {
+const submitRegistration = async() => {
   v$.value.$touch()
   if (v$.value.$invalid){
+    message.value = 'Please fill in all fields'
     return
   }
   const newUser: INewUser = {
@@ -53,7 +52,7 @@ const submitRegistration = () => {
     birthday: state.birthday as Date,
     password: state.password,
   }
-  authStore.fetchRegistration(newUser)
+  message.value = await authStore.fetchRegistration(newUser)
 }
 
 const cancelRegistration = () => {
@@ -164,10 +163,10 @@ const blurConfirm = () => isConfirmTouched.value = true
           @blur="blurConfirm"
         />
         <div class="modal__warning">
-          <p v-if="isConfirmTouched && v$.confirmPassword.required.$invalid && v$.confirmPassword.$dirty">Password is required</p>
           <p v-if="isConfirmTouched && v$.confirmPassword.sameAs.$invalid">not match password</p>
         </div>
       </form>
+      <div v-if="message" class="modal__message">{{ message }}</div>
     </div>
 
     <div class="modal__footer">

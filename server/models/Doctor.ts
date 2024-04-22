@@ -13,10 +13,11 @@ const DoctorSchema = new Schema({
   phone: { type: String, required: true },
   birthday: { type: Date, required: true },
   registeredAt: { type: Date, required: true },
+  avatar: { type: String },
   info: {
     experience: { type: Number },
-    specialization: { type: Array, default: [] },
-    education: { type: Array, default: [] },
+    specialization: { type: Array, default: [], of: String },
+    education: { type: Array, default: [], of: String },
     photoLink: { type: String }
   }
 });

@@ -13,6 +13,8 @@ const AdminSchema = new Schema({
   phone: { type: String, required: true },
   birthday: { type: Date, required: true },
   registeredAt: { type: Date, required: true },
+  avatar: { type: String }
+
 });
 
 export const AdminModel = model<IAdmin>('admins', AdminSchema);

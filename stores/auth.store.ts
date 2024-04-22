@@ -22,6 +22,8 @@ export const useAuthStore = defineStore('auth', {
       phone: '',
       birthday: null,
       registeredAt: null,
+      avatar: '',
+      info: null
     } 
   }),
   actions: {
@@ -56,9 +58,6 @@ export const useAuthStore = defineStore('auth', {
         id: this.user.id,
         role: this.user.role
       };
-
-      console.log('fetchUpdateUser data: ', data);
-      
       const requestOptions: MindRequestOptions = {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -70,7 +69,6 @@ export const useAuthStore = defineStore('auth', {
         this.openMessageModal(responseJson.body.message)
 
         if(!response.ok){
-          console.log('fetchUpdateUser !response.ok');
           this.openMessageModal('fetchUpdateUser !response.ok')
         }
         const resUser = responseJson.user
@@ -87,6 +85,8 @@ export const useAuthStore = defineStore('auth', {
               phone: resUser.phone,
               birthday: new Date(resUser.birthday),
               registeredAt: resUser.registeredAt,
+              avatar: resUser.avatar,
+              info: resUser.info
             }
           });
         } else {
@@ -96,14 +96,13 @@ export const useAuthStore = defineStore('auth', {
         console.error("Error fetching modal data:", error);
       }
     },
+
     async fetchLogin(data: ILogin) {
-      
       const requestOptions: MindRequestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       };
-      
       try {
         const response = await fetch('/api/login', requestOptions);
         const responseJson = await response.json();
@@ -126,6 +125,8 @@ export const useAuthStore = defineStore('auth', {
             phone: data.phone,
             birthday: new Date(data.birthday),
             registeredAt: data.registeredAt,
+            avatar: data.avatar,
+            info: data.info
           }
         });
         
@@ -155,7 +156,9 @@ export const useAuthStore = defineStore('auth', {
           role: null,
           phone: '',
           birthday: null,
-          registeredAt: null
+          registeredAt: null,
+          avatar: '',
+          info: null
         } as IUser; 
         navigateTo('/');
       }

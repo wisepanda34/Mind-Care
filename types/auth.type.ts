@@ -29,6 +29,15 @@ export interface IUser {
   phone: string;
   birthday: Date | null;
   registeredAt: Date | null;
+  avatar?: string;
+  info?: IInfo | null;
+}
+
+export interface IInfo {
+  education?: string[] ;
+  experience?: number;
+  specialization?: string[];
+  photoLink?: string;
 }
 
 export interface INewUser {
@@ -46,7 +55,7 @@ export interface ISaveNewUser extends IUser{
 }
 
 export interface ISaveNewDoctor extends ISaveNewUser{
-  info: {}
+  info: IInfo 
 }
 
 export interface IClient extends IUser {
@@ -55,12 +64,6 @@ export interface IClient extends IUser {
 
 export interface IDoctor extends IUser  {
   password: string;
-  info: {
-    experience: number;
-    specialization?: string[];
-    education?: string[];
-    photoLink?: string;
-  }
 }
 
 export interface IAdmin extends IUser {
@@ -88,7 +91,7 @@ export interface IClientDto  { //в принципе тот же самый IUse
 }
 export interface IDoctorDto extends IClientDto {
   info:{
-    experience: number;
+    experience?: number;
     specialization?: string[];
     education?: string[];
     photoLink?: string;

@@ -17,7 +17,7 @@ export const loginClient = async(email: string, password: string) => {
     if(password === foundUser.password){
       const user = createUserDto(foundUser)
 
-      return { status: 200, body: { message:'successful authorization' }, user}
+      return { status: 200, body: { message:'successful authorization' }, user }
     } else {
       return { status: 400, body: { message:'Password is wrong!'}}
     }
@@ -34,8 +34,8 @@ export const loginDoctor = async(email: string, password: string) => {
       return { status: 400, body: { message: "There is no user with this email" }};
     }
     if(password === foundDoctor.password){
-      const data =  createDoctorDto(foundDoctor)
-      return { status: 200, body: { message:'successful authorization', data }}
+      const user =  createDoctorDto(foundDoctor)
+      return { status: 200, body: { message:'successful authorization' }, user }
     } else { 
       return { status: 400, body: { message:'Password is wrong!'}}
     }
@@ -53,8 +53,8 @@ export const loginAdmin = async(email: string, password: string) => {
       return { status: 400, body: { message: "There is no user with this email" }};
     }
     if(password === foundAdmin.password){
-      const data = createAdminDto(foundAdmin)
-      return { status: 200, body: { message:'successful authorization', data }}
+      const user = createAdminDto(foundAdmin)
+      return { status: 200, body: { message:'successful authorization' }, user }
     } else {
       return { status: 400, body: { message:'Password is wrong!'}}
     }

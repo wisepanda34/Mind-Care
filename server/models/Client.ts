@@ -13,6 +13,7 @@ const ClientSchema = new Schema({
   phone: { type: String, required: true },
   birthday: { type: Date, require: true },
   registeredAt: { type: Date, require: true },
+  avatar: { type: String },
   info: { type: Object }
 });
 

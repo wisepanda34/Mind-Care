@@ -7,22 +7,23 @@ import { compare } from 'bcrypt-ts'
 
 
 export const loginClient = async(email: string, password: string) => {
+  
   try {
     const foundUser = await ClientModel.findOne({email});
-    if (!foundUser) {
-      return { 
-        body: { message: "There is no user with this email" }
-      };
-    }
 
+    if (!foundUser) {
+      return { status: 400, body: { message: "There is no user with this email" }};
+    }
     if(password === foundUser.password){
-      const data = createUserDto(foundUser)
-      return { data, body: { message:'successful authorization'}}
+      const user = createUserDto(foundUser)
+
+      return { status: 200, body: { message:'successful authorization' }, user}
     } else {
-      return { body: { message:'Password is wrong!'}}
+      return { status: 400, body: { message:'Password is wrong!'}}
     }
   } catch(error) {
     console.log('loginUser error: ', error);
+    return { status: 500, body: { error: "Internal server error" }}
   }
 }
 
@@ -30,18 +31,18 @@ export const loginDoctor = async(email: string, password: string) => {
   try {
     const foundDoctor = await DoctorModel.findOne({email});
     if (!foundDoctor) {
-      return { 
-        body: { message: "There is no doctor with this email" }
-      };
+      return { status: 400, body: { message: "There is no user with this email" }};
     }
     if(password === foundDoctor.password){
       const data =  createDoctorDto(foundDoctor)
-      return { data, body: { message:'successful authorization'}}
-    } else {
-      return { body: { message:'Password is wrong!'}}
+      return { status: 200, body: { message:'successful authorization', data }}
+    } else { 
+      return { status: 400, body: { message:'Password is wrong!'}}
     }
+    
   } catch(error) {
     console.log('loginDoctor error: ', error);
+    return {status: 500, body: { error: "Internal server error" }}
   }
 }
 
@@ -49,19 +50,17 @@ export const loginAdmin = async(email: string, password: string) => {
   try {
     const foundAdmin = await AdminModel.findOne({email});
     if (!foundAdmin) {
-      return { 
-        body: { message: "There is no admin with this email" }
-      };
+      return { status: 400, body: { message: "There is no user with this email" }};
     }
-
     if(password === foundAdmin.password){
       const data = createAdminDto(foundAdmin)
-      return { data, body: { message:'successful authorization'}}
+      return { status: 200, body: { message:'successful authorization', data }}
     } else {
-      return { body: { message:'Password is wrong!'}}
+      return { status: 400, body: { message:'Password is wrong!'}}
     }
   } catch(error) {
     console.log('loginAdmin error: ', error);
+    return {status: 500, body: { error: "Internal server error" }}
   }
 }
 

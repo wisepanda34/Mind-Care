@@ -49,13 +49,16 @@ export const useAuthStore = defineStore('auth', {
         this.processAuth = ENTER.LOGIN
       }
     },
-    async fetchUpdateUser(newData: Partial<IUpdateUser>){
 
+    async fetchUpdateUser(newData: Partial<IUpdateUser>){
       const data: Partial<IUpdateUser> = {
         ...newData,
         id: this.user.id,
+        role: this.user.role
       };
 
+      console.log('fetchUpdateUser data: ', data);
+      
       const requestOptions: MindRequestOptions = {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -68,22 +71,27 @@ export const useAuthStore = defineStore('auth', {
 
         if(!response.ok){
           console.log('fetchUpdateUser !response.ok');
+          this.openMessageModal('fetchUpdateUser !response.ok')
         }
-        const resUser = responseJson.body.user
+        const resUser = responseJson.user
+        console.log('resUser', resUser);
         
-        this.$patch({
-          user: {
-            id: resUser.id,
-            name: resUser.name,
-            email: resUser.email,
-            role: resUser.role as RoleT,
-            phone: resUser.phone,
-            birthday: new Date(resUser.birthday),
-            registeredAt: resUser.registeredAt,
-          }
-        });
-        
-
+        if (resUser) {
+          this.$patch({
+            user: {
+              id: resUser.id,
+              email: resUser.email,
+              name: resUser.name,
+              surname: resUser.surname,
+              role: resUser.role as RoleT,
+              phone: resUser.phone,
+              birthday: new Date(resUser.birthday),
+              registeredAt: resUser.registeredAt,
+            }
+          });
+        } else {
+          console.error("User data not found in server response.");
+        }
       } catch (error) {
         console.error("Error fetching modal data:", error);
       }
@@ -106,7 +114,7 @@ export const useAuthStore = defineStore('auth', {
         if(!response.ok){
           return responseJson.body.message
         }
-        const data = responseJson.data
+        const data = responseJson.user
 
         this.$patch({
           user: {

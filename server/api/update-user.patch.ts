@@ -1,59 +1,68 @@
 // server/api/update-user.patch.ts
 import { IUpdateUser } from "~/types/auth.type";
-import UserModel from "../models/Client";
+import ClientModel from "../models/Client";
+import DoctorModel from "../models/Doctor";
+import { AdminModel } from "../models/Admin";
 import { compare, hash } from "bcrypt-ts";
-
-
+import { userUpdate } from "../controllers/updates";
 
 export default defineEventHandler( async(event) => {
 
   try {
     const data: Partial<IUpdateUser> = await readBody(event);
-    if (!data.id) {
-      throw new Error('Missing id in request data');
-    }
-
-    const updateData: Partial<IUpdateUser> = {};
-    updateData.id = data.id 
-    if (data.name) {
-      updateData.name = data.name;
-    }
-    if (data.phone) {
-      updateData.phone = data.phone;
-    }
-    if (data.birthday) {
-      updateData.birthday = data.birthday;
-    }
-    if (data.oldPassword && data.newPassword) {
-      const foundUser = await UserModel.findOne({id: data.id});
+    console.log('data: ', data);
+    const foundUser = await ClientModel.findOne({id: data.id});
       if (!foundUser) {
-        setResponseStatus(event, 400);
-        return {
-          body: { message: "There is no user with this id" }
-        };
+        return { status: 400, body: { message: "There is no user with this id" }};
+      }
+      if(data.oldPassword && data.newPassword){
+        if(data.oldPassword !== foundUser.password){
+          return { status: 400, body: { message: "Old password is wrong!" }};
+        } else {
+          data.password = data.newPassword
+        }
+      }
+      
+      const updatedUser = await ClientModel.findOneAndUpdate({ id: data.id }, data, { new: true });
+      if (!updatedUser) {
+        return { status: 500, body: { message: "Problem with DB"}};
       }
 
-      const isOldPasswordValid = await compare(data.oldPassword, foundUser.password);
-      if(!isOldPasswordValid){
-        setResponseStatus(event, 400);
-        return { 
-          body: { message: "Old password is wrong!" }
-        };
-      }
-      const hashedNewPassword = await hash(data.newPassword, 3);
-      updateData.password = hashedNewPassword;
-    }
+      return { status: 200, body: { message: "User updated successfully" }, user: updatedUser };
 
-    const updatedUser = await UserModel.findOneAndUpdate({ id: data.id }, updateData, { new: true });
-    if (!updatedUser) {
-      throw new Error('User not found');
-    }
+    // if (!data.id ) {
+    //   throw new Error('Missing id in request data');
+    // }
 
-    return {
-      body: { message: "User updated successfully", user: updatedUser }
-    };
+    // const updateData: IUpdateUser = {
+    //   id: data.id!,
+    //   name: data.name || '',
+    //   surname: data.surname || '',
+    //   role: data.role!,
+    //   phone: data.phone || '',
+    //   birthday: data.birthday || null,
+    //   oldPassword: data.oldPassword || '',
+    //   newPassword: data.newPassword || '',
+    //   password: data.password || '',
+    // };
+
+    // switch(data.role){
+    //   case 'client': 
+    //     return await userUpdate(updateData, ClientModel)
+    //   case 'doctor': 
+    //     return await userUpdate(updateData, DoctorModel)
+    //   case 'admin': 
+    //     return await userUpdate(updateData, AdminModel)
+    //   default: return {
+    //     status: 400,
+    //     body: { message: "update failed"}
+    //   }
+    // }
 
   } catch (error) {
     console.log('error update-user', error);
+    setResponseStatus(event, 500);
+    return { body: { message: "Internal server error" }};
   }
 })
+

@@ -107,9 +107,9 @@ export interface IAdminDto { //в принципе тот же самый IUser
 
 export interface IUpdateUser {
   id: string;
-  email: string;
   name: string;
-  surname?: string;
+  surname: string;
+  role: RoleT;
   phone: string;
   birthday: Date | null;
   oldPassword: string;

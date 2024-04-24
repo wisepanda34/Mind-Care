@@ -100,7 +100,7 @@ const hidePassword = () => {
     width: 100%;
     height: 35px;
     border-radius: 4px;
-    padding: 20px;
+    padding: 20px 70px 20px 20px;
     border: 1px solid $grey-5;
     margin-top: 5px;
     font-size: 18px;

@@ -118,6 +118,7 @@ export interface IUpdateUser {
   oldPassword: string;
   newPassword: string;
   password: string;
+  info: IInfo;
 }
 export interface ILogin {
   email: string;

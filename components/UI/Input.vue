@@ -6,7 +6,7 @@ const emits = defineEmits(['update:modelValue', 'focus', 'blur']);
 const isPasswordVisible = ref(false)
 
 const onInput = (event: Event) => {
-  const inputValue = (event.target as HTMLInputElement).value;
+  const inputValue = (event.target as HTMLInputElement).value.trim();
   emits('update:modelValue', inputValue);
 };
 

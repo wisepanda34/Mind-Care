@@ -32,7 +32,9 @@
     "pinia": "^2.1.7",
     "uuid": "^9.0.1",
     "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue-screen": "^2.4.0",
+    "vue3-dropzone": "^2.2.1"
   },
   "devDependencies": {
     "@nuxt/image": "^1.4.0",

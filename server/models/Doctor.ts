@@ -1,9 +1,15 @@
 // server/models/Doctor.ts
 import { Schema, model } from 'mongoose';
 import { ROLE } from "~/constants";
-import { IDoctor } from '@/types/auth.type';
+import { IDoctor, IUser, ImageType, IInfo } from '@/types/auth.type';
 
-const DoctorSchema = new Schema({
+const InfoSchema = new Schema<IInfo>({
+  education: { type: [String], default: [] },
+  experience: { type: Number },
+  specialization: { type: [String], default: [] },
+  photoLink: { type: Buffer} // Мы используем Schema.Types.Mixed, чтобы принять любой тип из ImageType
+});
+const DoctorSchema = new Schema<IDoctor>({
   id: { type: String, required: true },
   name: { type: String, required: true },
   surname: { type: String },
@@ -14,12 +20,7 @@ const DoctorSchema = new Schema({
   birthday: { type: Date, required: true },
   registeredAt: { type: Date, required: true },
   avatar: { type: String },
-  info: {
-    experience: { type: Number },
-    specialization: { type: Array, default: [], of: String },
-    education: { type: Array, default: [], of: String },
-    photoLink: { type: String }
-  }
+  info: InfoSchema // Используем ранее определенную схему InfoSchema для поля info
 });
 
 const DoctorModel = model<IDoctor>('doctors', DoctorSchema);

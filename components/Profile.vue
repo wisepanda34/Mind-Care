@@ -1,7 +1,7 @@
 <!-- components/Profile.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
-import type { IUser, IUpdateUser, IInfo } from '@/types/auth.type'
+import type { IUser, IUpdateUser, IInfo, ImageType, FileInputEvent } from '@/types/auth.type'
 import { useVuelidate } from '@vuelidate/core'
 import { helpers, required, minLength, maxLength } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
@@ -209,8 +209,34 @@ const fillFields = () => {
     if(info.value.experience === undefined){
       info.value.experience = 1
     }
+    if(info.value.photoLink === undefined){
+      info.value.photoLink = ''
+    }
   }
 }
+const uploadedImage: Ref<ImageType> = ref(null);
+
+  const handleFileUpload = (event: Event): void => {
+  // if (event instanceof Event) {
+  //   const fileInputEvent = event as FileInputEvent;
+  //   const file = fileInputEvent.target?.files?.[0];
+
+  //   if (file) {
+  //     const reader = new FileReader();
+
+  //     reader.onload = () => {
+  //       uploadedImage.value = reader.result; 
+  //     };
+
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     uploadedImage.value = null;
+  //   }
+  // }
+};
+
+
+
 onMounted(()=>{
   fillFields()
 })
@@ -224,6 +250,7 @@ onMounted(()=>{
     <div class="profile__avatar" @click="editAvatar">
       <NuxtImg  src="images/empty-avatar.jpg" alt="avatar"/>
     </div>
+    
 
 
     <form class="profile__inputs">
@@ -413,6 +440,17 @@ onMounted(()=>{
             </div>
           </div>
         </div>
+
+        <div class="profile__info">
+          <h4 class="profile__subtitle">doctor photo</h4>
+          <div class="profile__line"></div>
+          <div class="profile__photolink">
+            <input type="file" accept="image/*" @change="(event) => handleFileUpload(event)">
+          </div>
+          <!-- <img v-if="uploadedImage" :src="uploadedImage" alt="Uploaded Image"> -->
+
+        </div>
+
       </div>
 
       <div class="profile__line"></div>

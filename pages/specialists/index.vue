@@ -39,7 +39,7 @@ const authStore = useAuthStore()
       <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">
 
         <div class="doctor__avatar">
-          <img v-if="doctor.info?.photoLink" :src="doctor.info.photoLink" alt="Doctor Photo" />
+          <!-- <img v-if="doctor.info?.photoLink" :src="doctor.info.photoLink" alt="Doctor Photo" /> -->
         </div>
         <div class="doctor__info">
           <p class="text--fz24 text--fw700" >{{ doctor.name }} {{ doctor.surname }}</p>

@@ -37,7 +37,14 @@ export interface IInfo {
   education?: string[] ;
   experience?: number;
   specialization?: string[];
-  photoLink?: string;
+  photoLink?: ImageType;
+}
+
+export type ImageType = string | ArrayBuffer | null;
+
+export interface FileInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
+  files: FileList | null;
 }
 
 export interface INewUser {
@@ -94,7 +101,7 @@ export interface IDoctorDto extends IClientDto {
     experience?: number;
     specialization?: string[];
     education?: string[];
-    photoLink?: string;
+    photoLink?: ImageType;
   }
 }
 export interface IAdminDto { //в принципе тот же самый IUser
@@ -131,6 +138,11 @@ export interface IReview {
   rating: number;
   text: string;
   dateReview: Date;
+}
+export interface IFile {
+  file: File;
+  validSize: boolean;
+  validExtension: boolean;
 }
 
 

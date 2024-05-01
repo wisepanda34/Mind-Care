@@ -1,13 +1,13 @@
 <!-- pages/specialists/index.vue -->
 <script setup lang='ts'>
-import type {IDoctor} from '@/types/auth.type'
+import type {IDoctor, IUser} from '@/types/auth.type'
 import { useAuthStore } from "~/stores/auth.store";
 
 const authStore = useAuthStore()
 
 
 // Property '_id' does not exist on type 'never'.
-  const doctors = ref<IDoctor[]>([]);
+  const doctors = ref<IUser[]>([]);
 
   const fetchDoctors = async() => {
     try{
@@ -15,7 +15,10 @@ const authStore = useAuthStore()
       if(!response.ok){
         throw new Error('response is not OK')
       }
-      doctors.value = await response.json();
+      const fetchedDoctors: IUser[] = await response.json();
+      doctors.value = fetchedDoctors;
+      console.log('doctors.value ',doctors.value);
+      
 
     } catch(error) {
       console.log('getDoctors error:', error);
@@ -39,7 +42,7 @@ const authStore = useAuthStore()
       <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">
 
         <div class="doctor__avatar">
-          <!-- <img v-if="doctor.info?.photoLink" :src="doctor.info.photoLink" alt="Doctor Photo" /> -->
+          <NuxtImg :src="doctor.info?.photoLink" :alt="`${doctor.surname}`"/>
         </div>
         <div class="doctor__info">
           <p class="text--fz24 text--fw700" >{{ doctor.name }} {{ doctor.surname }}</p>

@@ -7,7 +7,7 @@ const InfoSchema = new Schema<IInfo>({
   education: { type: [String], default: [] },
   experience: { type: Number },
   specialization: { type: [String], default: [] },
-  photoLink: { type: Buffer} // Мы используем Schema.Types.Mixed, чтобы принять любой тип из ImageType
+  photoLink: { type: String } 
 });
 const DoctorSchema = new Schema<IDoctor>({
   id: { type: String, required: true },
@@ -20,7 +20,7 @@ const DoctorSchema = new Schema<IDoctor>({
   birthday: { type: Date, required: true },
   registeredAt: { type: Date, required: true },
   avatar: { type: String },
-  info: InfoSchema // Используем ранее определенную схему InfoSchema для поля info
+  info: InfoSchema
 });
 
 const DoctorModel = model<IDoctor>('doctors', DoctorSchema);

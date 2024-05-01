@@ -37,14 +37,14 @@ export interface IInfo {
   education?: string[] ;
   experience?: number;
   specialization?: string[];
-  photoLink?: ImageType;
+  photoLink?: string;
 }
 
 export type ImageType = string | ArrayBuffer | null;
 
 export interface FileInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
-  files: FileList | null;
+  files: FileList [];
 }
 
 export interface INewUser {

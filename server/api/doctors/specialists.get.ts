@@ -1,4 +1,4 @@
-// server/api/doctor.get.js
+// server/api/doctors/specialists.get.js
 
 import DoctorModel from "@/server/models/Doctor";
 // import { fetchData } from "~/server/api/utils/data-fetcher";
@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
       return response;
     
   }catch(e){
-    console.log('error: ', e);
+    setResponseStatus(event, 500);
+    return { body: { message: "Internal server error" }};
   }
 });

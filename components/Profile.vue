@@ -209,31 +209,28 @@ const fillFields = () => {
     if(info.value.experience === undefined){
       info.value.experience = 1
     }
-    if(info.value.photoLink === undefined){
-      info.value.photoLink = ''
-    }
+    // if(info.value.photoLink === undefined){
+    //   info.value.photoLink = ''
+    // }
   }
 }
-const uploadedImage: Ref<ImageType> = ref(null);
+const uploadedImage = ref<File | null>();
 
-  const handleFileUpload = (event: Event): void => {
-  // if (event instanceof Event) {
-  //   const fileInputEvent = event as FileInputEvent;
-  //   const file = fileInputEvent.target?.files?.[0];
+const handleFileUpload = (event: Event): void => {
+  const target = event.target as HTMLInputElement;
+  const file = (target.files as FileList)[0];
 
-  //   if (file) {
-  //     const reader = new FileReader();
-
-  //     reader.onload = () => {
-  //       uploadedImage.value = reader.result; 
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   } else {
-  //     uploadedImage.value = null;
-  //   }
-  // }
+  if (file) {
+    uploadedImage.value = file;
+    console.log('Выбранный файл:', uploadedImage.value);
+  } else {
+    console.log('Файл не выбран');
+  }
 };
+
+const getFileUrl = (uploadedImage: File): string => {
+  return URL.createObjectURL(uploadedImage);
+}
 
 
 
@@ -445,9 +442,15 @@ onMounted(()=>{
           <h4 class="profile__subtitle">doctor photo</h4>
           <div class="profile__line"></div>
           <div class="profile__photolink">
-            <input type="file" accept="image/*" @change="(event) => handleFileUpload(event)">
+            <input 
+              type="file" 
+              accept="image/*" 
+              @change="(event) => handleFileUpload(event)"
+              placeholder="Upload photo"
+              value="File not selected"
+            >
+            <!-- <img v-if="uploadedImage" :src="getFileUrl(uploadedImage)" alt="Uploaded Image"> -->
           </div>
-          <!-- <img v-if="uploadedImage" :src="uploadedImage" alt="Uploaded Image"> -->
 
         </div>
 
@@ -502,7 +505,6 @@ onMounted(()=>{
     position: relative;
     min-height: 160px;
     padding: 10px 0;
-
     
     &-list{
       display: grid;
@@ -572,7 +574,6 @@ onMounted(()=>{
       height: 15px;
       text-align: center;
     }
-
   }
   &__experience{
     
@@ -595,6 +596,13 @@ onMounted(()=>{
         user-select: none;
         
       }
+    }
+  }
+  &__photolink{
+    margin-top: 40px;
+
+    img{
+      width: 100px;
     }
   }
   &__buttons{

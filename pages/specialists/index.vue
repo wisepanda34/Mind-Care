@@ -11,7 +11,7 @@ const authStore = useAuthStore()
 
   const fetchDoctors = async() => {
     try{
-      const response = await fetch('/api/specialists/doctor')
+      const response = await fetch('/api/doctors/specialists')
       if(!response.ok){
         throw new Error('response is not OK')
       }

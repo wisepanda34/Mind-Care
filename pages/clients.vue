@@ -38,6 +38,10 @@ const deleteFile = (index: number) => {
 </template>
 <style scoped lang="scss">
 .clients{
+  &__drobzone{
+    width: 200px;
+    min-height: 150px;
+  }
   &__photo{
     position: relative;
     margin-top: 50px;

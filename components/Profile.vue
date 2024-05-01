@@ -18,6 +18,15 @@ const openAddSpecialization = ref(false)
 let isEducationChanged = false
 let isSpecializationChanged = false
 let isExperienceChanged = false
+const doctorImg = ref<File[]>([])
+const doctorImgUrl = ref('')
+const getImageUrl = () => {
+  if(doctorImg.value.length !== 0)  doctorImgUrl.value = URL.createObjectURL(doctorImg.value[0]);
+  else doctorImgUrl.value = ''
+}
+watch(doctorImg, getImageUrl);
+
+const maxSize = 2*1024*1024
 
 const addExperience = () => {
   if ( info.value?.experience !== undefined){
@@ -214,23 +223,8 @@ const fillFields = () => {
     // }
   }
 }
-const uploadedImage = ref<File | null>();
 
-const handleFileUpload = (event: Event): void => {
-  const target = event.target as HTMLInputElement;
-  const file = (target.files as FileList)[0];
 
-  if (file) {
-    uploadedImage.value = file;
-    console.log('Выбранный файл:', uploadedImage.value);
-  } else {
-    console.log('Файл не выбран');
-  }
-};
-
-const getFileUrl = (uploadedImage: File): string => {
-  return URL.createObjectURL(uploadedImage);
-}
 
 
 
@@ -442,14 +436,21 @@ onMounted(()=>{
           <h4 class="profile__subtitle">doctor photo</h4>
           <div class="profile__line"></div>
           <div class="profile__photolink">
-            <input 
-              type="file" 
-              accept="image/*" 
-              @change="(event) => handleFileUpload(event)"
-              placeholder="Upload photo"
-              value="File not selected"
-            >
-            <!-- <img v-if="uploadedImage" :src="getFileUrl(uploadedImage)" alt="Uploaded Image"> -->
+            <div class="profile__drobzone">
+              <UIDropzone
+                v-model="doctorImg" 
+                textDrag="Drag & drop one file"
+                :maxFiles="1"
+                :multiple="false"
+                :maxSize="maxSize"
+              />
+            </div>
+            <NuxtImg v-if="doctorImg.length > 0" :src="doctorImgUrl"/>
+            <NuxtImg 
+              v-if="info?.photoLink" 
+              :src="info?.photoLink" 
+              :class="{'blurred' : doctorImgUrl}"
+            />
           </div>
 
         </div>
@@ -527,7 +528,7 @@ onMounted(()=>{
     &-add{
       width: 30px;
       height: 30px;
-      margin: 10px auto 10px 0;
+      margin: 40px auto 10px 0;
       cursor: pointer;
       svg{
         width: 100%;
@@ -599,16 +600,28 @@ onMounted(()=>{
     }
   }
   &__photolink{
-    margin-top: 40px;
+    min-height: 50px;
+    margin: 20px auto 5px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     img{
       width: 100px;
     }
+  }
+  &__drobzone{
   }
   &__buttons{
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
   }
-} 
+}
+.blurred {
+  opacity: 0.3;
+}
+
+
 </style>

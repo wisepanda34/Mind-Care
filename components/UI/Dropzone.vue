@@ -1,6 +1,7 @@
 <!-- components/UI/Dropzone.vue -->
 <script setup lang="ts">
 import { useDropzone } from 'vue3-dropzone';
+import { truncateFileName } from '~/utils/truncateFilename'
 
 const props = defineProps<{
   modelValue: File[]; 
@@ -43,7 +44,7 @@ const { getRootProps, getInputProps, isDragActive, isDragAccept } = useDropzone(
         :key="file.name"
         class="dropzone__selected"
       > 
-        <p>{{ file.name }} </p>
+        <p class="drobzone__filename">{{ truncateFileName(file.name, 12) }} </p>
         <div class="dropzone__delete" @click.stop="deleteFile(file)">X</div>
       </div>
     </div>
@@ -52,8 +53,8 @@ const { getRootProps, getInputProps, isDragActive, isDragAccept } = useDropzone(
 
 <style scoped lang="scss">
 .dropzone {
-  width: 400px;
-  min-height: 150px;
+  width: 100%;
+  min-height: 50px;
   border: 1px solid gray;
   border-radius: 8px;
   background: #f0f5f8;
@@ -69,6 +70,13 @@ const { getRootProps, getInputProps, isDragActive, isDragAccept } = useDropzone(
     display: flex;
     justify-content: space-between;
     gap: 30px;
+  }
+
+  &__filename{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 50px; 
   }
 
   &__delete{

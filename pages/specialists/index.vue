@@ -17,8 +17,6 @@ const authStore = useAuthStore()
       }
       const fetchedDoctors: IUser[] = await response.json();
       doctors.value = fetchedDoctors;
-      console.log('doctors.value ',doctors.value);
-      
 
     } catch(error) {
       console.log('getDoctors error:', error);

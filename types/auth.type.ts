@@ -8,7 +8,7 @@ export type RoleT = ROLE.CLIENT | ROLE.DOCTOR | ROLE.ADMIN | null
 
 export interface MindRequestOptions {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'; 
-  headers: { [key: string]: string };
+  headers?: { [key: string]: string };
   body?: string | FormData | URLSearchParams | ReadableStream<Uint8Array> | null; 
 }
 export interface IStateAuth {
@@ -32,16 +32,29 @@ export interface IUser {
   avatar?: string;
   info?: IInfo | null;
 }
-
+export interface IClient extends IUser {
+  password: string;
+}
+export interface IDoctor extends IUser  {
+  password: string;
+}
+export interface IAdmin extends IUser {
+  password: string;
+}
 export interface IInfo {
   education?: string[] ;
   experience?: number;
   specialization?: string[];
   photoLink?: string;
 }
+export interface IUpdateUser extends IUser {
+  oldPassword: string;
+  newPassword: string;
+  password: string;
+  photoFile: File
+}
 
 export type ImageType = string | ArrayBuffer | null;
-
 export interface FileInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
   files: FileList [];
@@ -60,22 +73,10 @@ export interface ISaveNewUser extends IUser{
   id: string;
   password: string
 }
-
 export interface ISaveNewDoctor extends ISaveNewUser{
   info: IInfo 
 }
 
-export interface IClient extends IUser {
-  password: string;
-}
-
-export interface IDoctor extends IUser  {
-  password: string;
-}
-
-export interface IAdmin extends IUser {
-  password: string;
-}
 
 export interface IClientDB {
   id: string;
@@ -115,18 +116,7 @@ export interface IAdminDto { //в принципе тот же самый IUser
   registeredAt: Date | null;
 }
 
-export interface IUpdateUser {
-  id: string;
-  name: string;
-  surname: string;
-  role: RoleT;
-  phone: string;
-  birthday: Date | null;
-  oldPassword: string;
-  newPassword: string;
-  password: string;
-  info: IInfo;
-}
+
 export interface ILogin {
   email: string;
   password: string;

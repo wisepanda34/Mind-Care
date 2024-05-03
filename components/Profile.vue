@@ -8,7 +8,6 @@ import BirthdayPicker from './BirthdayPicker.vue';
 import { phoneRegex } from '~/constants';
 
 
-
 const authStore = useAuthStore()
 const changePasswordText = ref('')
 const reqAvailable = ref(true)
@@ -18,14 +17,19 @@ const openAddSpecialization = ref(false)
 let isEducationChanged = false
 let isSpecializationChanged = false
 let isExperienceChanged = false
+let isPhotoFileChanged = false
 const doctorImg = ref<File[]>([])
 const doctorImgUrl = ref('')
 const getImageUrl = () => {
-  if(doctorImg.value.length !== 0)  doctorImgUrl.value = URL.createObjectURL(doctorImg.value[0]);
-  else doctorImgUrl.value = ''
+  if(doctorImg.value.length !== 0) {
+    isPhotoFileChanged = true
+    doctorImgUrl.value = URL.createObjectURL(doctorImg.value[0]); 
+  }  else {
+    doctorImgUrl.value = ''
+    isPhotoFileChanged = false
+  }
 }
 watch(doctorImg, getImageUrl);
-
 const maxSize = 2*1024*1024
 
 const addExperience = () => {
@@ -154,27 +158,33 @@ const submitSave = async() => {
     newData.birthday = birthday;
     hasChanges = true;
   }
-  if (authStore.user.role === 'doctor' && isEducationChanged) {
-    const newEducation = info.value?.education ?? [];
+  if(authStore.user.role === 'doctor'){
     newData.info = { ...(authStore.user.info ?? {})};
-    newData.info.education = newEducation;
-    hasChanges = true;
-    isEducationChanged = false; 
+    if(isEducationChanged){
+      const newEducation = info.value?.education ?? [];
+      newData.info.education = newEducation;
+      hasChanges = true;
+      isEducationChanged = false; 
+    }
+    if(isSpecializationChanged){
+      const newSpecialization = info.value?.specialization ?? [];
+      newData.info.specialization = newSpecialization;
+      hasChanges = true;
+      isSpecializationChanged = false; 
+    }
+    if(isExperienceChanged){
+      const newExperience: number = info.value?.experience ?? 1;
+      newData.info.experience = newExperience;
+      hasChanges = true;
+      isExperienceChanged = false; 
+    }
+    if(isPhotoFileChanged){
+      newData.photoFile = doctorImg.value[0];
+      hasChanges = true;
+      isPhotoFileChanged = false; 
+    }
   }
-  if (authStore.user.role === 'doctor' && isSpecializationChanged) {
-    const newSpecialization = info.value?.specialization ?? [];
-    newData.info = { ...(authStore.user.info ?? {})};
-    newData.info.specialization = newSpecialization;
-    hasChanges = true;
-    isSpecializationChanged = false; 
-  }
-  if (authStore.user.role === 'doctor' && isExperienceChanged) {
-    const newExperience: number = info.value?.experience ?? 1;
-    newData.info = { ...(authStore.user.info ?? {})};
-    newData.info.experience = newExperience;
-    hasChanges = true;
-    isExperienceChanged = false; 
-  }
+ 
 
   if (oldPassword && newPassword && confirmPassword) {
     if (newPassword === confirmPassword) {
@@ -200,9 +210,7 @@ watch(() => [state.oldPassword, state.newPassword, state.confirmPassword], () =>
   const { oldPassword, newPassword, confirmPassword } = state;
   const allEmpty = !oldPassword && !newPassword && !confirmPassword;
   const allFilled = oldPassword && newPassword && confirmPassword;
-  if (allEmpty || allFilled) {
-    changePasswordText.value = '';
-  }
+  if (allEmpty || allFilled) changePasswordText.value = '';
 });
 
 const fillFields = () => {
@@ -213,20 +221,10 @@ const fillFields = () => {
   state.oldPassword = ''
   state.newPassword = ''
   state.confirmPassword = ''
-  if(authStore.user.role === 'doctor' && authStore.user.info){
+  if(authStore.user.role === 'doctor'){
     info.value = authStore.user.info ?? {}
-    if(info.value.experience === undefined){
-      info.value.experience = 1
-    }
-    // if(info.value.photoLink === undefined){
-    //   info.value.photoLink = ''
-    // }
   }
 }
-
-
-
-
 
 onMounted(()=>{
   fillFields()

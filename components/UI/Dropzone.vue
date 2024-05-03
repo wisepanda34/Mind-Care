@@ -34,9 +34,9 @@ const { getRootProps, getInputProps, isDragActive, isDragAccept } = useDropzone(
     :class="{ dragActive: isDragActive, dragAccept: isDragAccept }" 
     v-bind="getRootProps()"
   >
-    <input v-bind="getInputProps()" />
+    <input v-bind="getInputProps()"/>
     <p v-if="!modelValue.length">{{ textDrag }}</p>
-    <div v-if="modelValue.length > 0" >
+    <div v-if="modelValue.length > 0">
       <p v-if="props.multiple">Upload {{ props.maxFiles }} images</p>
       <p v-else>Selected file:</p>
       <div 

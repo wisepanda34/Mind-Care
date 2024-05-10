@@ -28,7 +28,9 @@ export default defineEventHandler(async (event) => {
     console.log('response ', response);
 
     if (response) {
-      return response;
+      return {
+        response, body: {message: 'Your review was added!'}
+      }
     } else {
       setResponseStatus(event, 500); 
       return { body: { message: "Failed to create review" }};

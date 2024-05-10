@@ -2,6 +2,9 @@
 <script setup lang="ts">
 import { IDoctor } from '~/types/auth.type';
 
+definePageMeta({
+  middleware: ['only-client']
+});
 
 const router = useRouter();
 const route = useRoute();

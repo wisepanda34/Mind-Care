@@ -8,7 +8,7 @@ import type { IStateAuth, IUser, INewUser, IUpdateUser, EnterT, RoleT, MindReque
 
 export const useAuthStore = defineStore('auth', {
   state: (): IStateAuth => ({
-    isOpenAuthModal: true,
+    isOpenAuthModal: false,
     isOpenMessageModal: false,
     textMessageModal: '',
     processAuth: ENTER.LOGIN,
@@ -152,7 +152,11 @@ export const useAuthStore = defineStore('auth', {
 
       } catch (error) {
         console.error("Error fetching modal data:", error);
-      } 
+      } finally {
+        if(this.user.role === 'admin') {
+          navigateTo('/admin')
+        }
+      }
     },
     async fetchLogout(){
       try {
@@ -181,7 +185,7 @@ export const useAuthStore = defineStore('auth', {
     },
     toggleAuthModal(){
       this.isOpenAuthModal = !this.isOpenAuthModal
-      if(!this.isOpenAuthModal) this.processAuth = ENTER.LOGIN
+      if(this.isOpenAuthModal) this.processAuth = ENTER.LOGIN
     },
     startRegistration(){
       this.processAuth = ENTER.REGISTRATON

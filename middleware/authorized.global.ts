@@ -1,27 +1,16 @@
 // middleware/authorized.ts
 import { useAuthStore } from "~/stores/auth.store";
 
-const isPrivateRoutes = [
-  '/profile',
-  /^\/specialists\/.*/,
-]
+const publicUrls = ['/', '/specialists', '/reviews']
 
-export default defineNuxtRouteMiddleware((to)=> {
+export default defineNuxtRouteMiddleware(async(to, from)=> {
   const app = useNuxtApp()
   const authStore = useAuthStore(app.$pinia)
+  console.log('global middleware');
 
-  const isPrivateRoute = isPrivateRoutes.some((privetRoute) => {
-    if (typeof privetRoute === 'string') {
-      // Если это строка, сравниваем пути напрямую
-      return to.path === privetRoute;
-    } else {
-      // Если это регулярное выражение, проверяем соответствие пути
-      return privetRoute.test(to.path);
-    }
-  });
-
-  const isUserAuthed = authStore.isAuthed
-  if (isPrivateRoute && !isUserAuthed) {
-    return abortNavigation()
+  if (!authStore.isAuthed && !publicUrls.includes(to.path)) {
+    return navigateTo('/');
   }
-})
+  return;
+});
+

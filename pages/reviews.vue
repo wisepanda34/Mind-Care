@@ -45,6 +45,8 @@ const createReview = async() => {
     }
     const responseJson = await response.json()
     authStore.openMessageModal(responseJson.body.message)
+    rating.value = 0
+    textReview.value = ''
     getReviews()
 
   } catch(error) {

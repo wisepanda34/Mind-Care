@@ -1,4 +1,4 @@
-<!-- components/Profile.vue -->
+ <!-- components/Profile.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
 import type { IUser, IUpdateUser, IInfo, ImageType, FileInputEvent } from '@/types/auth.type'
@@ -234,7 +234,6 @@ onMounted(()=>{
  
 <template>
   <div section="profile">
-    <UILogo/>
     <h1 class="text-center text--fz30 text--fw700 text--grey-5">Edit profile</h1>
     <div class="profile__avatar" @click="editAvatar">
       <NuxtImg  src="images/empty-avatar.jpg" alt="avatar"/>

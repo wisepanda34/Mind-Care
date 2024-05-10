@@ -1,5 +1,5 @@
 // server/api/update-user.patch.ts
-import { IClient, IDoctor, IUpdateUser } from "~/types/auth.type";
+import { IAdmin, IClient, IDoctor, IUpdateUser } from "~/types/auth.type";
 import ClientModel from "../models/Client";
 import DoctorModel from "../models/Doctor";
 import { AdminModel } from "../models/Admin";
@@ -19,6 +19,9 @@ export default defineEventHandler( async(event) => {
     if(data.role === 'doctor'){
       foundUser = await DoctorModel.findOne({id: data.id});
     }
+    if(data.role === 'admin'){
+      foundUser = await AdminModel.findOne({id: data.id});
+    }
     if (!foundUser) {
       return { status: 400, body: { message: "There is no user with this id" }};
     }
@@ -30,12 +33,15 @@ export default defineEventHandler( async(event) => {
       }
     }
 
-    let updatedUser: IClient | IDoctor | null = null;
+    let updatedUser: IClient | IDoctor | IAdmin | null = null;
     if(data.role === 'client'){
       updatedUser = await ClientModel.findOneAndUpdate({ id: data.id }, data, { new: true });
     }  
     if(data.role === 'doctor'){
       updatedUser = await DoctorModel.findOneAndUpdate({ id: data.id }, data, { new: true });
+    }
+    if(data.role === 'admin'){
+      updatedUser = await AdminModel.findOneAndUpdate({ id: data.id }, data, { new: true });
     }
     if (!updatedUser) {
       return { status: 500, body: { message: "Problem with DB"}};

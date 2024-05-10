@@ -6,12 +6,13 @@ import '@vuepic/vue-datepicker/dist/main.css'
 const props = defineProps<{date: Date | null, label: string;}>();
 const emit = defineEmits(['update:selectedDate', 'focus', 'blur']);
 
-const type = 'date'; // Тип выбора (date, month, year)
+const type = 'date'; 
 const minDate = '1900-01-01'; 
 const maxDate = new Date().toISOString().split('T')[0]; 
 
-const parseDate = (value: string ): Date => {
-  return new Date(value);
+const parseDate = (value: string): Date => {
+  const parsedDate = new Date(value);
+  return new Date(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
 };
 
 const dateValue = ref<Date | null>(null);
@@ -25,23 +26,15 @@ onMounted(() => {
 });
 
 const updateDateValue = (value: Date | string | null) => {
-  if (value instanceof Date) {
-    dateValue.value = value;
-  } else if (typeof value === 'string') {
-    dateValue.value = parseDate(value);
-  } else if (value === null){
-    dateValue.value = null;
-  } else {
-    throw new Error('updateDateValue error with type') 
-  }
+  if (value instanceof Date) dateValue.value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+  else if (typeof value === 'string') dateValue.value = parseDate(value);
+  else if (value === null) dateValue.value = null; 
+  else throw new Error('updateDateValue error with type') 
 };
 
 const handleChangeDate = (value: Date | null) => {
   emit('update:selectedDate', value); 
-
-  if (!value) { 
-    emit('update:selectedDate', null);
-  }
+  if (!value) emit('update:selectedDate', null);
 };
 
 </script>

@@ -92,6 +92,7 @@ onMounted(()=>{
         <UIButton
           class="reviews__submit"
           type="submit"
+          width="100px"
           text="OK"
         />
       </form>

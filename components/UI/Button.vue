@@ -1,12 +1,19 @@
 <!-- components/UI/Button.vue -->
 <script setup lang='ts'>
-const props = defineProps(['text']);
+const props = defineProps({
+  text: String,
+  width: {
+    type: String,
+    default: '80px' // Устанавливаем значение по умолчанию
+  }
+});
 
 </script>
  
 <template>
   <button 
     class="btn"
+    :style="{ width: width }"
     type="button"
   >
    <span>{{ text }}</span>
@@ -15,7 +22,6 @@ const props = defineProps(['text']);
  
 <style scoped lang='scss'>
   .btn{
-    min-width: 80px;
     height: 40px;
     
     display: flex;
@@ -26,6 +32,7 @@ const props = defineProps(['text']);
     border: 2px solid $green;
     background: $green-1;
     border-radius: 3px;
+    box-shadow: -3px 5px 10px 1px $grey-3;
 
     &:hover{
       background: $green-2;
@@ -37,6 +44,14 @@ const props = defineProps(['text']);
 
     &:hover{
       background: $green-hover;
+    }
+  }
+  .btn-reset{
+    border: 2px solid $green-ok;
+    background: $grey-2;
+
+    &:hover{
+      background: rgb(225, 224, 224);
     }
   }
 </style>

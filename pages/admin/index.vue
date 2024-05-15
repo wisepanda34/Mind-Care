@@ -13,6 +13,7 @@ definePageMeta({
 <template>
   <div>
     <h1>ADMIN PANEL</h1>
+    <AdminPanel/>
   </div>
 </template>
  

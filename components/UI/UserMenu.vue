@@ -7,22 +7,18 @@ const props = defineProps({ userAvatar: String })
 const isMenuOpen = ref(false);
 const authStore = useAuthStore();
 
-const openMenu = () => {
-  isMenuOpen.value = true;
-};
-
-const closeMenu = () => {
-  isMenuOpen.value = false;
-};
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value 
+}
 
 const editProfile = () => {
   navigateTo('/profile');
-  closeMenu()
+  toggleMenu()
 };
 
 const logout = () => {
   authStore.fetchLogout();
-  closeMenu();
+  toggleMenu();
 };
 
 const handleClickOutside = (event: MouseEvent) => {
@@ -31,17 +27,19 @@ const handleClickOutside = (event: MouseEvent) => {
     const menuElement = document.querySelector('.user-menu__profile') as HTMLElement;
 
     if (!menuElement.contains(target)) {
-      closeMenu();
+      toggleMenu();
     }
   }
 };
-
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
-
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
+});
+
+const pathname = computed(() => {
+  return window.location.pathname; // Получаем текущий путь страницы
 });
 
 </script>
@@ -49,13 +47,13 @@ onUnmounted(() => {
 <template>
   <div class="user-menu">
     <div v-if="!authStore.isAuthed" class="user-menu__enter" @click="authStore.toggleAuthModal">Enter</div>
-    <div v-if="authStore.isAuthed" class="user-menu__profile" @click="openMenu">
+    <div v-if="authStore.isAuthed" class="user-menu__profile" @click="toggleMenu">
       <div class="user-menu__ava">
         <NuxtImg :src="userAvatar" alt="Avatar"/>
       </div>
-      <div class="user-menu__menu" :class="{ 'active': isMenuOpen }" @click.stop="closeMenu">
+      <div class="user-menu__menu" :class="{ 'active': isMenuOpen }" @click.stop="toggleMenu">
         <ul>
-          <li @click="editProfile">Edit profile</li>
+          <li v-if="pathname !== '/profile'" @click="editProfile">Edit profile</li>
           <li @click="logout">Exit</li>
         </ul>
       </div>
@@ -73,7 +71,7 @@ onUnmounted(() => {
     position: relative;
   }
   &__ava {
-    width: 39px;
+    width: 50px;
     border-radius: 50%;
     overflow: hidden;
 
@@ -86,7 +84,7 @@ onUnmounted(() => {
   &__menu {
     position: absolute;
     display: none;
-    top: 45px;
+    top: 53px;
     right: 0;
     width: 120px;
     height: auto;

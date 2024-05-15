@@ -55,6 +55,7 @@ const authStore = useAuthStore()
         <div class="doctor__consultation">
           <UIButton
             text="Сonsultation"
+            width="120px"
             @click="chooseDoctor(doctor.id)"
           />
         </div>  

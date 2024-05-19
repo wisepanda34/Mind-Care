@@ -1,7 +1,11 @@
 <!-- components/admin/AdminPanel.vue -->
 <script setup lang='ts'>
 
-const optionsLimit = { '10': 10, '20': 20, 'all': 100 }
+import {formateDate} from '~/utils/formateDate'
+import VueDatePicker from '@vuepic/vue-datepicker';
+
+
+const optionsLimit = { '3': 3, '10': 10, 'all': 100 }
 const optionsSort = { 'a-z': 1, 'z-a': 2, 'registered up': 3, 'registered down': 4, 'age up': 5, 'age down': 6 }
 const categories = ['clients', 'doctors', 'admins']
 
@@ -9,15 +13,16 @@ const categories = ['clients', 'doctors', 'admins']
 const changedCategories = ref<String[]>(['clients'])
 const searchUser = ref('')
 const searchPhone = ref('')
+const registredStart = ref<Date | string | null>(null)
 const registredDates = {
-  registredStart: ref(new Date("2022-01-01")),
+  registredStart: ref<Date | string | null>(null),
   registredEnd: ref(new Date())
 }
 const birthdayDates = {
-  birthdayStart: ref(new Date("1991-01-01")),
-  birthdayEnd: ref(new Date("2020-12-31"))
+  birthdayStart: ref(new Date("1950-01-01")),
+  birthdayEnd: ref(new Date())
 }
-const limit = ref<number>(10)
+const limit = ref<number>(3)
 const sortMode = ref<number>(1)
 
 
@@ -26,6 +31,69 @@ const toggleCategory = (category: string) => {
   if (index === -1) changedCategories.value.push(category);
   else changedCategories.value.splice(index, 1);
 };
+
+const reset = () => {
+  searchUser.value = ''
+  searchPhone.value = ''
+  registredDates.registredStart.value = new Date("2022-01-01")
+  registredDates.registredEnd.value = new Date()
+  birthdayDates.birthdayStart.value = new Date("1950-01-01")
+  birthdayDates.birthdayEnd.value = new Date()
+  limit.value = 3
+  sortMode.value = 1
+}
+const q = ref<any>()
+const submitRequest = async () => {
+  const queries: String[] = [];
+
+  if (changedCategories.value.length === 0) {
+    console.log('return');
+    return
+  }
+  const category = changedCategories.value.join(',');
+  queries.push(`category=${encodeURIComponent(category)}`);
+
+  if(searchUser.value.trim() !== '') queries.push(`searchUser=${encodeURIComponent(searchUser.value.trim())}`)
+
+  if(searchPhone.value.trim() !== '') queries.push(`searchPhone=${encodeURIComponent(searchPhone.value.trim())}`);
+
+  // const defaultRegistredStart = new Date("2022-01-01");
+  // if (!datesEqual(registredDates.registredStart.value, defaultRegistredStart)) {
+  //   const formattedRegistredStart = formateDate(registredDates.registredStart.value);
+  //   queries.push(`registredStart=${formattedRegistredStart}`);
+  // }
+
+  // if (!datesEqual(registredDates.registredEnd.value, new Date())) {
+  //   const formattedRegistredEnd = formateDate(registredDates.registredEnd.value);
+  //   queries.push(`registredEnd=${formattedRegistredEnd}`);
+  // }
+
+  // const defaultBirthdayStart = new Date("1991-01-01");
+  // if (!datesEqual(birthdayDates.birthdayStart.value, defaultBirthdayStart) && birthdayDates.birthdayStart.value !== undefined) {
+  //   const formattedBirthdayStart = formateDate(birthdayDates.birthdayStart.value);
+  //   queries.push(`birthdayStart=${formattedBirthdayStart}`);
+  // }
+
+  // if (!datesEqual(birthdayDates.birthdayEnd.value, new Date())) {
+  //   const formattedBirthdayEnd = formateDate(birthdayDates.birthdayEnd.value);
+  //   queries.push(`birthdayEnd=${formattedBirthdayEnd}`);
+  // }
+
+  if(limit.value !== 100) queries.push(`limit=${limit.value}`);
+  queries.push(`sortMode=${sortMode.value}`);
+  q.value = queries
+
+  const queryString = queries.join('&');
+  console.log('queryString ', queryString);
+  
+
+  try {
+    const response = await fetch(`/api/admin/getUser?${queryString}`);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+};
+
 
 </script>
  
@@ -65,26 +133,17 @@ const toggleCategory = (category: string) => {
     <div class="panel__date">
       <div>
         <label for="start">Start registred date:</label>
-        <input 
-          v-model="registredDates.registredStart.value" 
-          type="date" 
-          id="registred-start" 
-          name="registred-start" 
-          min="2022-01-01" 
-          max="2030-12-31" 
-          lang="en"
+        <VueDatePicker
+          v-model="registredStart" 
+          :enable-time-picker="false"
         />
       </div>
       <div>
         <label for="start">End registred date:</label>
-        <input 
+        <VueDatePicker
           v-model="registredDates.registredEnd.value" 
-          type="date" 
-          id="registred-end" 
-          name="registred-end" 
-          min="2022-01-01" 
-          max="2030-12-31" 
-          lang="en"
+          :enable-time-picker="false"
+          :max-date="new Date()"
         />
       </div>
     </div>
@@ -92,26 +151,16 @@ const toggleCategory = (category: string) => {
     <div class="panel__date">
       <div>
         <label for="start">Start birthday date:</label>
-        <input 
+        <VueDatePicker
           v-model="birthdayDates.birthdayStart.value" 
-          type="date" 
-          id="birthday-start" 
-          name="birthday-start" 
-          min="1900-01-01" 
-          max="2030-12-31" 
-          lang="en"
+          :enable-time-picker="false"
         />
       </div>
       <div>
         <label for="start">End birthday date:</label>
-        <input
+        <VueDatePicker
           v-model="birthdayDates.birthdayEnd.value" 
-          type="date" 
-          id="birthday-end" 
-          name="birthday-end" 
-          min="1900-01-01" 
-          max="2030-12-31" 
-          lang="en"
+          :enable-time-picker="false"
         />
       </div>
     </div>
@@ -131,9 +180,10 @@ const toggleCategory = (category: string) => {
       </div>
     </div>
     <div class="panel__button">
-      <UIButton class="btn-reset" width="145px" text="Reset"/>
-      <UIButton width="145px" text="Search"/>
+      <UIButton class="btn-reset" width="145px" text="Reset" @click="reset"/>
+      <UIButton width="145px" text="Search" @click="submitRequest"/>
     </div>
+    <pre>{{q}}</pre>
 
   </div>
 </template>
@@ -152,10 +202,6 @@ const toggleCategory = (category: string) => {
       display: block;
       width: 15px;
     }
-    input[type="checkbox"]:checked {
-      background: #04c5ab;
-      border-color: #007bff; 
-    }
   }
   &__search{
     margin-top: 20px;
@@ -167,7 +213,7 @@ const toggleCategory = (category: string) => {
   &__date{
     margin-top: 20px;
     display: flex;
-    gap: 20px;
+    gap: 10px;
 
     label{
       display: block;
@@ -195,6 +241,10 @@ const toggleCategory = (category: string) => {
       border-radius: $radius-3;
 
       text-align: center;
+
+      &:hover{
+        border: 1px solid $grey-7;
+      }
     }
     #limit option {
       height: 25px;
@@ -210,6 +260,13 @@ const toggleCategory = (category: string) => {
     display: flex;
     gap: 20px;
   }
+}
+.dp__main{
+  width: 150px;
+}
+.dp__theme_light{
+  --dp-border-color: #9898a1;
+  --dp-border-color-hover: #4b4b4c;
 }
 
 </style>

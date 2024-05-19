@@ -6,6 +6,7 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, email as emailValidator, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from '../BirthdayPicker.vue';
 import { ROLE, phoneRegex } from '~/constants';
+import { convertDateToString } from '~/utils/convertDate'
 
 
 const authStore = useAuthStore()
@@ -38,6 +39,8 @@ const handleUpdateRole = (role: RoleT) => {
   selectedRole.value = role;
 }
 
+
+
 const submitRegistration = async() => {
   v$.value.$touch()
   if (v$.value.$invalid){
@@ -49,7 +52,7 @@ const submitRegistration = async() => {
     email: state.email,
     role: selectedRole.value,
     phone: state.phone,
-    birthday: state.birthday as Date,
+    birthday: state.birthday,
     password: state.password,
   }
   message.value = await authStore.fetchRegistration(newUser)

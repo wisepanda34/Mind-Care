@@ -4,7 +4,7 @@ import { ROLE } from "~/constants";
 import { IClient } from "~/types/auth.type";
 
 const ClientSchema = new Schema({
-  id: { type: String, required: true },
+  id: { type: String, required: true, default: new Date().getTime().toString() },
   name: { type: String, required: true },
   surname: { type: String },
   email: { type: String, required: true, unique: true },
@@ -12,7 +12,7 @@ const ClientSchema = new Schema({
   role: { type: String, enum: Object.values(ROLE), required: true },
   phone: { type: String, required: true },
   birthday: { type: Date, require: true },
-  registeredAt: { type: Date, require: true },
+  registeredAt: { type: Date, require: true, default: Date.now  },
   avatar: { type: String },
   info: { type: Object }
 });

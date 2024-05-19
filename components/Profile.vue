@@ -6,6 +6,7 @@ import { useVuelidate } from '@vuelidate/core'
 import { helpers, required, minLength, maxLength } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
 import { phoneRegex } from '~/constants';
+import { parseDate, convertDateToString } from '~/utils/convertDate'
 
 
 const authStore = useAuthStore()
@@ -82,6 +83,7 @@ const rules = {
 };
 const v$ = useVuelidate(rules, state, { $autoDirty: true });  
 
+const isBirthdayTouched = ref(false);
 const isEducationTouched = ref(false);
 const isSpecializationTouched = ref(false);
 const focusEducation = () => isEducationTouched.value = false
@@ -91,6 +93,7 @@ const blurSpecialization = () => isSpecializationTouched.value = true
 
 const handleUpdateBirthday = (date: Date | null) => {
   state.birthday = date;
+  isBirthdayTouched.value = true
 };
 const handleEducationChange = () => {
   isEducationChanged = true; 
@@ -140,7 +143,7 @@ const submitSave = async() => {
   reqAvailable.value = false
   const newData: Partial<IUpdateUser> = {};
   let hasChanges = false;
-  const { name, surname, phone, birthday, oldPassword, newPassword, confirmPassword } = state;
+  const { name, surname, phone, oldPassword, newPassword, confirmPassword } = state;
 
   if (name !== authStore.user.name) {
     newData.name = name;
@@ -154,8 +157,9 @@ const submitSave = async() => {
     newData.phone = phone;
     hasChanges = true;
   }
-  if (birthday !== authStore.user.birthday) {
-    newData.birthday = birthday;
+  if (isBirthdayTouched.value && state.birthday) {
+    newData.birthday = convertDateToString(state.birthday)
+    isBirthdayTouched.value = false
     hasChanges = true;
   }
   if(authStore.user.role === 'doctor'){
@@ -184,7 +188,6 @@ const submitSave = async() => {
       isPhotoFileChanged = false; 
     }
   }
- 
 
   if (oldPassword && newPassword && confirmPassword) {
     if (newPassword === confirmPassword) {
@@ -217,7 +220,7 @@ const fillFields = () => {
   state.name = authStore.user.name
   state.surname = authStore.user.surname ?? ''
   state.phone = authStore.user.phone
-  state.birthday = authStore.user.birthday
+  state.birthday = parseShortDate(authStore.user.birthday) 
   state.oldPassword = ''
   state.newPassword = ''
   state.confirmPassword = ''
@@ -607,8 +610,6 @@ onMounted(()=>{
     img{
       width: 100px;
     }
-  }
-  &__drobzone{
   }
   &__buttons{
     display: flex;

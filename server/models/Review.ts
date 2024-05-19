@@ -19,7 +19,7 @@ const ReviewSchema = new Schema({
     require: true
   },
   dateReview: {
-    type: Date,
+    type: String,
     require: true
   }
 });

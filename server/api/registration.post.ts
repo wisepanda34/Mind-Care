@@ -10,6 +10,7 @@ import { ROLE } from "~/constants";
 import DoctorModel from "../models/Doctor";
 import { regClient, regDoctor } from "../controllers/registration";
 import { validateReg } from "../validators/validator";
+
 // import cookieParser from "cookie-parser";
 // import {body} from 'express-validator'
 
@@ -23,18 +24,12 @@ export default defineEventHandler(async (event) => {
     return { body: { message: error.details[0].message } };
   }
 
-  const fullData = {
-    ...data,
-    id: new Date().getTime().toString(),
-    registeredAt: new Date() 
-  } as ISaveNewUser
-
   try {
     switch(data.role){
       case 'client':
-        return await regClient(fullData)
+        return await regClient(data)
       case 'doctor':
-        return await regDoctor(fullData)
+        return await regDoctor(data)
       case 'admin':
         return {body: { message: "You cannot to be admin" }}
       default: return {

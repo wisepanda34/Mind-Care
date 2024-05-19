@@ -13,7 +13,7 @@ const regSchema = Joi.object({
   birthday: Joi.date().required(),
 });
 
-export const validateReg = (data: any) => {
+export const validateReg = (data: Date) => {
   return regSchema.validate(data);
 };
 
@@ -23,7 +23,7 @@ const loginSchema = Joi.object({
   role: Joi.string().valid(...Object.values(ROLE)).required(),
 });
 
-export const validateLogin = (data: any) => {
+export const validateLogin = (data: Date) => {
   return loginSchema.validate(data);
 };
 

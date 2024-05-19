@@ -2,6 +2,7 @@
 <script setup lang='ts'>
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import {parseShortDate, formatDate} from '~/utils/convertDate'
 
 const props = defineProps<{date: Date | null, label: string;}>();
 const emit = defineEmits(['update:selectedDate', 'focus', 'blur']);
@@ -9,25 +10,11 @@ const emit = defineEmits(['update:selectedDate', 'focus', 'blur']);
 const type = 'date'; 
 const minDate = '1900-01-01'; 
 const maxDate = new Date().toISOString().split('T')[0]; 
-
-const parseDate = (value: string): Date => {
-  const parsedDate = new Date(value);
-  return new Date(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
-};
-
 const dateValue = ref<Date | null>(null);
-
-watch(() => props.date, (newValue) => {
-  updateDateValue(newValue);
-});
-
-onMounted(() => {
-  updateDateValue(props.date);
-});
 
 const updateDateValue = (value: Date | string | null) => {
   if (value instanceof Date) dateValue.value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-  else if (typeof value === 'string') dateValue.value = parseDate(value);
+  else if (typeof value === 'string') dateValue.value = parseShortDate(value);
   else if (value === null) dateValue.value = null; 
   else throw new Error('updateDateValue error with type') 
 };
@@ -37,6 +24,13 @@ const handleChangeDate = (value: Date | null) => {
   if (!value) emit('update:selectedDate', null);
 };
 
+watch(() => props.date, (newValue) => {
+  updateDateValue(newValue);
+});
+
+onMounted(() => {
+  updateDateValue(props.date);
+});
 </script>
  
 <template>
@@ -46,8 +40,10 @@ const handleChangeDate = (value: Date | null) => {
         class="vuedatepicker__custom"
         :model-value="dateValue" 
         :type="type" 
+        :format="formatDate" 
         :min="minDate" 
         :max="maxDate" 
+        :enable-time-picker="false"
         placeholder="Select Date" 
         @update:model-value="handleChangeDate"
         @focus="$emit('focus')"

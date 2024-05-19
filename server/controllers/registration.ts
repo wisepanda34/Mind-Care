@@ -2,28 +2,27 @@
 import ClientModel from "~/server/models/Client";
 import DoctorModel from "../models/Doctor";
 import { ISaveNewUser, ISaveNewDoctor } from "~/types/auth.type";
+import { parseDate } from "~/utils/convertDate";
 
 
-export const regClient = async(fullData: ISaveNewUser) => {
+export const regClient = async(data: ISaveNewUser) => {
   try {
-    const candidate = await ClientModel.findOne({email: fullData.email});
+    const candidate = await ClientModel.findOne({email: data.email});
 
     if(candidate){
       return {
         status: 400,
-        body: { message: `Client with email ${fullData.email} already exists` }
+        body: { message: `Client with email ${data.email} already exists` }
       }
     }
-    const client: ISaveNewUser = {
-      id: fullData.id,
-      name: fullData.name,
-      surname: fullData.surname,
-      email: fullData.email,
-      password: fullData.password,
-      role: fullData.role,
-      phone: fullData.phone,
-      birthday: fullData.birthday,
-      registeredAt: fullData.registeredAt,
+    const client = {
+      name: data.name,
+      surname: data.surname,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+      phone: data.phone,
+      birthday: parseDate(data.birthday) as Date,
       // isActivated: false,
       // activationLink: activationLink
     }
@@ -42,35 +41,33 @@ export const regClient = async(fullData: ISaveNewUser) => {
   }
 }
 
-export const regDoctor = async(fullData: ISaveNewUser) => {
+export const regDoctor = async(data: ISaveNewUser) => {
   try {
-    const candidate = await DoctorModel.findOne({email: fullData.email});
+    const candidate = await DoctorModel.findOne({email: data.email});
     if(candidate){
       return {
         status: 400,
-        body: { message: `Doctor with email ${fullData.email} already exists` }
+        body: { message: `Doctor with email ${data.email} already exists` }
       }
     }
-    const doctor: ISaveNewDoctor = {
-      id: fullData.id,
-      name: fullData.name,
-      surname: fullData.surname,
-      email: fullData.email,
-      password: fullData.password,
-      role: fullData.role,
-      phone: fullData.phone,
-      birthday: fullData.birthday,
-      registeredAt: fullData.registeredAt,
+    const doctor = {
+      name: data.name,
+      surname: data.surname,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+      phone: data.phone,
+      birthday: parseDate(data.birthday) as Date,
       info: {}
       // isActivated: false,
       // activationLink: activationLink
     }
 
     const newDoctor = new DoctorModel(doctor);
-    console.log('newDoctor: ', newDoctor);
+    await newDoctor.save();
 
     if(newDoctor){
-      return { body: { message: 'New doctor registration received successfully'}}
+      return { body: { message: 'New doctor registration received successfully'}, newDoctor}
     } else {
       return { status: 500, body: { message: 'registration failed'}}
     }

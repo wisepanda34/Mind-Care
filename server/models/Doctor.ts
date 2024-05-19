@@ -9,8 +9,8 @@ const InfoSchema = new Schema<IInfo>({
   specialization: { type: [String], default: [] },
   photoLink: { type: String } 
 });
-const DoctorSchema = new Schema<IDoctor>({
-  id: { type: String, required: true },
+const DoctorSchema = new Schema({
+  id: { type: String, required: true, default: new Date().getTime().toString() },
   name: { type: String, required: true },
   surname: { type: String },
   email: { type: String, required: true, unique: true },
@@ -18,7 +18,7 @@ const DoctorSchema = new Schema<IDoctor>({
   role: { type: String, enum: Object.values(ROLE), required: true },
   phone: { type: String, required: true },
   birthday: { type: Date, required: true },
-  registeredAt: { type: Date, required: true },
+  registeredAt: { type: Date, required: true, default: Date.now  },
   avatar: { type: String },
   info: InfoSchema
 });

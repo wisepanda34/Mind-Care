@@ -4,8 +4,6 @@ import { defineStore } from "pinia";
 import { ENTER, ROLE } from "~/constants";
 import type { IStateAuth, IUser, INewUser, IUpdateUser, EnterT, RoleT, MindRequestOptions, ILogin } from "~/types/auth.type";
 
-
-
 export const useAuthStore = defineStore('auth', {
   state: (): IStateAuth => ({
     isOpenAuthModal: false,
@@ -20,8 +18,8 @@ export const useAuthStore = defineStore('auth', {
       email: '',
       role: null,
       phone: '',
-      birthday: null,
-      registeredAt: null,
+      birthday: '',
+      registeredAt: '',
       avatar: '',
       info: null
     } 
@@ -99,7 +97,7 @@ export const useAuthStore = defineStore('auth', {
               surname: resUser.surname,
               role: resUser.role as RoleT,
               phone: resUser.phone,
-              birthday: new Date(resUser.birthday),
+              birthday: resUser.birthday,
               registeredAt: resUser.registeredAt,
               avatar: resUser.avatar,
               info: resUser.info
@@ -122,7 +120,6 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await fetch('/api/login', requestOptions);
         const responseJson = await response.json();
-        console.log('responseJson :', responseJson);
         
         this.openMessageModal(responseJson.body.message)
 
@@ -139,7 +136,7 @@ export const useAuthStore = defineStore('auth', {
             email: data.email,
             role: data.role as RoleT,
             phone: data.phone,
-            birthday: new Date(data.birthday),
+            birthday: data.birthday,
             registeredAt: data.registeredAt,
             avatar: data.avatar,
             info: data.info
@@ -158,6 +155,7 @@ export const useAuthStore = defineStore('auth', {
         }
       }
     },
+
     async fetchLogout(){
       try {
         const response = await fetch('/api/logout')
@@ -175,8 +173,8 @@ export const useAuthStore = defineStore('auth', {
           password: '',
           role: null,
           phone: '',
-          birthday: null,
-          registeredAt: null,
+          birthday: '',
+          registeredAt: '',
           avatar: '',
           info: null
         } as IUser; 

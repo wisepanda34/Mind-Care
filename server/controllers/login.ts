@@ -16,6 +16,8 @@ export const loginClient = async(email: string, password: string) => {
     }
     if(password === foundUser.password){
       const user = createUserDto(foundUser)
+      console.log('user ', user);
+      
 
       return { status: 200, body: { message:'successful authorization' }, user }
     } else {

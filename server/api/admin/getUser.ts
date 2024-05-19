@@ -95,7 +95,7 @@ export default defineEventHandler(async (event) => {
     }
     console.log('users sort ', users);
 
-    return { body: { users }};
+    return { users };
     
   }catch(error){
     setResponseStatus(event, 500);

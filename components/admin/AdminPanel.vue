@@ -1,27 +1,24 @@
 <!-- components/admin/AdminPanel.vue -->
 <script setup lang='ts'>
 
-import {formateDate} from '~/utils/formateDate'
+import {formatDate} from '~/utils/convertDate'
 import VueDatePicker from '@vuepic/vue-datepicker';
+import {useAuthStore} from '~/stores/auth.store'
+import {useAdminStore} from '~/stores/admin.store'
 
-
+const authStore = useAuthStore()
+const adminStore = useAdminStore()
 const optionsLimit = { '3': 3, '10': 10, 'all': 100 }
 const optionsSort = { 'a-z': 1, 'z-a': 2, 'registered up': 3, 'registered down': 4, 'age up': 5, 'age down': 6 }
 const categories = ['clients', 'doctors', 'admins']
 
-
 const changedCategories = ref<String[]>(['clients'])
 const searchUser = ref('')
 const searchPhone = ref('')
-const registredStart = ref<Date | string | null>(null)
-const registredDates = {
-  registredStart: ref<Date | string | null>(null),
-  registredEnd: ref(new Date())
-}
-const birthdayDates = {
-  birthdayStart: ref(new Date("1950-01-01")),
-  birthdayEnd: ref(new Date())
-}
+const registredStart = ref<Date | null>(null);
+const registredEnd = ref<Date | null>(null);
+const birthdayStart = ref<Date | null>(null);
+const birthdayEnd = ref<Date | null>(null);
 const limit = ref<number>(3)
 const sortMode = ref<number>(1)
 
@@ -35,71 +32,47 @@ const toggleCategory = (category: string) => {
 const reset = () => {
   searchUser.value = ''
   searchPhone.value = ''
-  registredDates.registredStart.value = new Date("2022-01-01")
-  registredDates.registredEnd.value = new Date()
-  birthdayDates.birthdayStart.value = new Date("1950-01-01")
-  birthdayDates.birthdayEnd.value = new Date()
+  registredStart.value = null
+  registredEnd.value = null
+  birthdayStart.value = null
+  birthdayEnd.value = null
   limit.value = 3
   sortMode.value = 1
 }
+
 const q = ref<any>()
 const submitRequest = async () => {
-  const queries: String[] = [];
+  const query: String[] = [];
 
   if (changedCategories.value.length === 0) {
-    console.log('return');
+    authStore.openMessageModal('Change users categories!')
     return
   }
   const category = changedCategories.value.join(',');
-  queries.push(`category=${encodeURIComponent(category)}`);
+  query.push(`category=${encodeURIComponent(category)}`);
 
-  if(searchUser.value.trim() !== '') queries.push(`searchUser=${encodeURIComponent(searchUser.value.trim())}`)
+  if(searchUser.value.trim() !== '') query.push(`searchUser=${encodeURIComponent(searchUser.value.trim())}`)
 
-  if(searchPhone.value.trim() !== '') queries.push(`searchPhone=${encodeURIComponent(searchPhone.value.trim())}`);
+  if(searchPhone.value.trim() !== '') query.push(`searchPhone=${encodeURIComponent(searchPhone.value.trim())}`);
 
-  // const defaultRegistredStart = new Date("2022-01-01");
-  // if (!datesEqual(registredDates.registredStart.value, defaultRegistredStart)) {
-  //   const formattedRegistredStart = formateDate(registredDates.registredStart.value);
-  //   queries.push(`registredStart=${formattedRegistredStart}`);
-  // }
+  if (registredStart.value) query.push(`registredStart=${convertDateToString(registredStart.value)}`);
+  if (registredEnd.value) query.push(`registredEnd=${convertDateToString(registredEnd.value)}`);
+  if (birthdayStart.value) query.push(`birthdayStart=${convertDateToString(birthdayStart.value)}`);
+  if (birthdayEnd.value) query.push(`birthdayEnd=${convertDateToString(birthdayEnd.value)}`);
 
-  // if (!datesEqual(registredDates.registredEnd.value, new Date())) {
-  //   const formattedRegistredEnd = formateDate(registredDates.registredEnd.value);
-  //   queries.push(`registredEnd=${formattedRegistredEnd}`);
-  // }
-
-  // const defaultBirthdayStart = new Date("1991-01-01");
-  // if (!datesEqual(birthdayDates.birthdayStart.value, defaultBirthdayStart) && birthdayDates.birthdayStart.value !== undefined) {
-  //   const formattedBirthdayStart = formateDate(birthdayDates.birthdayStart.value);
-  //   queries.push(`birthdayStart=${formattedBirthdayStart}`);
-  // }
-
-  // if (!datesEqual(birthdayDates.birthdayEnd.value, new Date())) {
-  //   const formattedBirthdayEnd = formateDate(birthdayDates.birthdayEnd.value);
-  //   queries.push(`birthdayEnd=${formattedBirthdayEnd}`);
-  // }
-
-  if(limit.value !== 100) queries.push(`limit=${limit.value}`);
-  queries.push(`sortMode=${sortMode.value}`);
-  q.value = queries
-
-  const queryString = queries.join('&');
-  console.log('queryString ', queryString);
+  query.push(`limit=${limit.value}`);
+  query.push(`sortMode=${sortMode.value}`);
+  q.value = query
   
-
-  try {
-    const response = await fetch(`/api/admin/getUser?${queryString}`);
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-  }
+  await adminStore.searchUsers(query);
 };
-
 
 </script>
  
 <template>
   <div class="panel">
-    <fieldset>
+    <div class="panel__query">
+      <fieldset>
       <legend>Choose need category:</legend>
       <div v-for="category in categories" :key="category">
         <input 
@@ -135,14 +108,16 @@ const submitRequest = async () => {
         <label for="start">Start registred date:</label>
         <VueDatePicker
           v-model="registredStart" 
+          :format="formatDate"
           :enable-time-picker="false"
         />
       </div>
       <div>
         <label for="start">End registred date:</label>
         <VueDatePicker
-          v-model="registredDates.registredEnd.value" 
+          v-model="registredEnd" 
           :enable-time-picker="false"
+          :format="formatDate"
           :max-date="new Date()"
         />
       </div>
@@ -152,15 +127,17 @@ const submitRequest = async () => {
       <div>
         <label for="start">Start birthday date:</label>
         <VueDatePicker
-          v-model="birthdayDates.birthdayStart.value" 
+          v-model="birthdayStart" 
           :enable-time-picker="false"
+          :format="formatDate"
         />
       </div>
       <div>
         <label for="start">End birthday date:</label>
         <VueDatePicker
-          v-model="birthdayDates.birthdayEnd.value" 
+          v-model="birthdayEnd" 
           :enable-time-picker="false"
+          :format="formatDate"
         />
       </div>
     </div>
@@ -183,7 +160,13 @@ const submitRequest = async () => {
       <UIButton class="btn-reset" width="145px" text="Reset" @click="reset"/>
       <UIButton width="145px" text="Search" @click="submitRequest"/>
     </div>
+    <br/>
     <pre>{{q}}</pre>
+    </div>
+
+    <div class="panel__result">
+
+    </div>
 
   </div>
 </template>
@@ -191,6 +174,10 @@ const submitRequest = async () => {
 <style scoped lang='scss'>
 .panel{
   padding: 10px 0;
+
+  &__query{
+
+  }
 
   fieldset{
     div{
@@ -259,6 +246,9 @@ const submitRequest = async () => {
     margin-top: 25px;
     display: flex;
     gap: 20px;
+  }
+  &__result{
+
   }
 }
 .dp__main{

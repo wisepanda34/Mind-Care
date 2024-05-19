@@ -20,8 +20,8 @@ export default defineEventHandler(async (event) => {
     userId: currentUser.id,
     rating: data.rating,
     text: data.text,
-    dateReview: new Date()
-  } as IReview
+    dateReview: new Date().toISOString()
+  }
   
   try{
     const response = await ReviewModel.create(newReview);

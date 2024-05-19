@@ -27,8 +27,8 @@ export interface IUser {
   email: string;
   role: RoleT | null;
   phone: string;
-  birthday: Date | null;
-  registeredAt: Date | null;
+  birthday: string;
+  registeredAt: string;
   avatar?: string;
   info?: IInfo | null;
 }
@@ -69,9 +69,14 @@ export interface INewUser {
   phone: string;
   birthday: Date | null;
 }
-export interface ISaveNewUser extends IUser{
-  id: string;
+export interface ISaveNewUser {
+  name: string;
+  surname?: string;
+  email: string;
   password: string
+  role: RoleT | null;
+  phone: string;
+  birthday: string;
 }
 export interface ISaveNewDoctor extends ISaveNewUser{
   info: IInfo 
@@ -94,8 +99,8 @@ export interface IClientDto  { //в принципе тот же самый IUse
   email: string;
   role: RoleT;
   phone: string;
-  birthday: Date | null;
-  registeredAt: Date | null;
+  birthday: string;
+  registeredAt: string;
 }
 export interface IDoctorDto extends IClientDto {
   info:{
@@ -112,8 +117,8 @@ export interface IAdminDto { //в принципе тот же самый IUser
   email: string;
   role: RoleT;
   phone: string;
-  birthday: Date | null;
-  registeredAt: Date | null;
+  birthday: string;
+  registeredAt: string;
 }
 
 
@@ -127,7 +132,7 @@ export interface IReview {
   userId: string;
   rating: number;
   text: string;
-  dateReview: Date;
+  dateReview: string;
 }
 export interface IFile {
   file: File;

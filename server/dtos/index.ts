@@ -13,7 +13,6 @@ export const createUserDto = (model: IUser ): IClientDto => {
     phone: model.phone,
     birthday: model.birthday,
     registeredAt: model.registeredAt,
-    
   }
 };
 

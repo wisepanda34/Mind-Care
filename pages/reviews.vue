@@ -71,7 +71,7 @@ onMounted(()=>{
        <li class="reviews__card" v-for="review in reviews" :key="review.userId">
         <div class="reviews__header">
           <h5>{{ review.name }}</h5>
-          <div v-if="review.dateReview">{{   formatDate(review.dateReview) }}</div>
+          <div v-if="review.dateReview">{{formatDate(review.dateReview)}}</div>
           <UIStarRating :rating="review.rating" :enabled="false" />
         </div>
         <p>{{ review.text }}</p>

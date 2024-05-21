@@ -9,19 +9,17 @@ import { string } from "joi";
 interface SearchQuery {
   name?: string;
   phone?: string;
-  registredStartField?: string;
-  registredEndField?: string;
-  birthdayStartField?: string;
-  birthdayEndField?: string;
+  registeredAt?: { $gte?: Date; $lte?: Date }; 
+  birthday?: { $gte?: Date; $lte?: Date };
 }
 
 export default defineEventHandler(async (event) => {
   const queries = getQuery(event)
-  console.log('queries ',queries);
+  // console.log('queries ',queries);
   
   const {category, searchUser, searchPhone, registredStart, registredEnd, birthdayStart, birthdayEnd, limit, sortMode} = getQuery(event)
   let categoryArray: string[] = (category as string).split(',');
-  console.log('categoryArray ', categoryArray);
+  // console.log('categoryArray ', categoryArray);
   
   
   try{
@@ -31,11 +29,27 @@ export default defineEventHandler(async (event) => {
       const searchQuery: SearchQuery = {};
       if (typeof searchUser === 'string') searchQuery['name'] = searchUser;
       if (typeof searchPhone === 'string') searchQuery['phone'] = searchPhone;
-      if (typeof registredStart === 'string') searchQuery['registredStartField'] = registredStart;
-      if (typeof registredEnd === 'string') searchQuery['registredEndField'] = registredEnd;
-      if (typeof birthdayStart === 'string') searchQuery['birthdayStartField'] = birthdayStart;
-      if (typeof birthdayEnd === 'string') searchQuery['birthdayEndField'] = birthdayEnd;
-      // console.log('searchQuery ',searchQuery);
+
+      if (typeof registredStart === 'string' || typeof registredEnd === 'string') {
+        searchQuery['registeredAt'] = {};
+        if (typeof registredStart === 'string') {
+          searchQuery['registeredAt']!.$gte = new Date(registredStart);
+        }
+        if (typeof registredEnd === 'string') {
+          searchQuery['registeredAt']!.$lte = new Date(registredEnd);
+        }
+      }
+      
+      if (typeof birthdayStart === 'string' || typeof birthdayEnd === 'string') {
+        searchQuery['birthday'] = {};
+        if (typeof birthdayStart === 'string') {
+          searchQuery['birthday']!.$gte = new Date(birthdayStart);
+        }
+        if (typeof birthdayEnd === 'string') {
+          searchQuery['birthday']!.$lte = new Date(birthdayEnd);
+        }
+      }
+      console.log('searchQuery ',searchQuery);
 
       const foundUsers = await (model as any).find(searchQuery).exec();
       users.push(...foundUsers);
@@ -56,7 +70,6 @@ export default defineEventHandler(async (event) => {
           continue;
       }
     }
-    console.log('users ', users);
     
     switch (sortMode) {
       case '1':
@@ -93,7 +106,6 @@ export default defineEventHandler(async (event) => {
         break;
         default: return;
     }
-    console.log('users sort ', users);
 
     return { users };
     

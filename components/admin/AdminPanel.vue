@@ -19,7 +19,7 @@ const registredStart = ref<Date | null>(null);
 const registredEnd = ref<Date | null>(null);
 const birthdayStart = ref<Date | null>(null);
 const birthdayEnd = ref<Date | null>(null);
-const limit = ref<number>(3)
+const limit = ref<number>(100)
 const sortMode = ref<number>(1)
 
 
@@ -165,7 +165,11 @@ const submitRequest = async () => {
     </div>
 
     <div class="panel__result">
-
+      <ul v-if="adminStore.users">
+        <li v-for="user in adminStore.users" :key="user.id">
+          {{ user.name }}
+        </li>
+      </ul>
     </div>
 
   </div>

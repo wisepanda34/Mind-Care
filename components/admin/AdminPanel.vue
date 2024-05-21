@@ -36,7 +36,7 @@ const reset = () => {
   registredEnd.value = null
   birthdayStart.value = null
   birthdayEnd.value = null
-  limit.value = 3
+  limit.value = 100
   sortMode.value = 1
 }
 

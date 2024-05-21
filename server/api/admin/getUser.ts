@@ -3,7 +3,7 @@
 import ClientModel from "~/server/models/Client";
 import DoctorModel from "~/server/models/Doctor";
 import {AdminModel} from "~/server/models/Admin";
-import { IAdmin, IClient, IDoctor } from "~/types/auth.type";
+import { IAdmin, IClient, IDoctor, IUser } from "~/types/auth.type";
 import { string } from "joi";
 
 interface SearchQuery {
@@ -11,6 +11,7 @@ interface SearchQuery {
   phone?: string;
   registeredAt?: { $gte?: Date; $lte?: Date }; 
   birthday?: { $gte?: Date; $lte?: Date };
+  $or?: { [key: string]: any }[];
 }
 
 export default defineEventHandler(async (event) => {
@@ -23,11 +24,18 @@ export default defineEventHandler(async (event) => {
   
   
   try{
-    let users: any[] = []; 
+    let users: IUser[] = []; 
 
     const addUsers = async <T>(model: T) => {
       const searchQuery: SearchQuery = {};
-      if (typeof searchUser === 'string') searchQuery['name'] = searchUser;
+      if (typeof searchUser === 'string') {
+        const regex = new RegExp(searchUser, 'i'); 
+        searchQuery['$or'] = [
+          { name: regex },
+          { surname: regex },
+          { email: regex },
+        ];
+      }
       if (typeof searchPhone === 'string') searchQuery['phone'] = searchPhone;
 
       if (typeof registredStart === 'string' || typeof registredEnd === 'string') {
@@ -39,7 +47,7 @@ export default defineEventHandler(async (event) => {
           searchQuery['registeredAt']!.$lte = new Date(registredEnd);
         }
       }
-      
+
       if (typeof birthdayStart === 'string' || typeof birthdayEnd === 'string') {
         searchQuery['birthday'] = {};
         if (typeof birthdayStart === 'string') {
@@ -79,17 +87,17 @@ export default defineEventHandler(async (event) => {
         users.sort((a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()));
         break;
       case '3':
-        users.sort((a, b) => b.registeredAt.localeCompare(a.registeredAt));
+        users.sort((a, b) => Date.parse(a.registeredAt) - Date.parse(b.registeredAt));
         break;
       case '4':
-        users.sort((a, b) => a.registeredAt.localeCompare(b.registeredAt));
+        users.sort((a, b) => Date.parse(b.registeredAt) - Date.parse(a.registeredAt));
         break;
       case '5':
-          users.sort((a, b) => b.birthday.localeCompare(a.birthday));
-          break;
+        users.sort((a, b) => Date.parse(a.birthday) - Date.parse(b.birthday));
+        break;
       case '6':
-          users.sort((a, b) => a.birthday.localeCompare(b.birthday));
-          break;
+        users.sort((a, b) => Date.parse(b.birthday) - Date.parse(a.birthday));
+        break;
       default: 
         return;
     }

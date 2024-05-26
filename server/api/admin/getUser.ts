@@ -3,7 +3,7 @@
 import ClientModel from "~/server/models/Client";
 import DoctorModel from "~/server/models/Doctor";
 import {AdminModel} from "~/server/models/Admin";
-import { IAdmin, IClient, IDoctor, IUser } from "~/types/auth.type";
+import {  IUser } from "~/types/auth.type";
 import { string } from "joi";
 
 interface SearchQuery {
@@ -16,12 +16,9 @@ interface SearchQuery {
 
 export default defineEventHandler(async (event) => {
   const queries = getQuery(event)
-  // console.log('queries ',queries);
   
   const {category, searchUser, searchPhone, registredStart, registredEnd, birthdayStart, birthdayEnd, limit, sortMode} = getQuery(event)
   let categoryArray: string[] = (category as string).split(',');
-  // console.log('categoryArray ', categoryArray);
-  
   
   try{
     let users: IUser[] = []; 
@@ -57,7 +54,6 @@ export default defineEventHandler(async (event) => {
           searchQuery['birthday']!.$lte = new Date(birthdayEnd);
         }
       }
-      console.log('searchQuery ',searchQuery);
 
       const foundUsers = await (model as any).find(searchQuery).exec();
       users.push(...foundUsers);

@@ -40,7 +40,6 @@ const reset = () => {
   sortMode.value = 1
 }
 
-const q = ref<any>()
 const submitRequest = async () => {
   const query: String[] = [];
 
@@ -62,7 +61,6 @@ const submitRequest = async () => {
 
   query.push(`limit=${limit.value}`);
   query.push(`sortMode=${sortMode.value}`);
-  q.value = query
   
   await adminStore.searchUsers(query);
 };
@@ -72,102 +70,120 @@ const submitRequest = async () => {
 <template>
   <div class="panel">
     <div class="panel__query">
-      <fieldset>
-      <legend>Choose need category:</legend>
-      <div v-for="category in categories" :key="category">
-        <input 
-          type="checkbox" 
-          id="category" 
-          name="category" 
-          @change="toggleCategory(category)"  
-          :checked="changedCategories.includes(category)"
-        />
-        <label :for="category">{{ category }}</label>
-      </div>
-    </fieldset>  
+      <fieldset class="panel__fieldset panel__block">
+        <legend>Choose need category:</legend>
+        <div v-for="category in categories" :key="category">
+          <input 
+            type="checkbox" 
+            id="category" 
+            name="category" 
+            @change="toggleCategory(category)"  
+            :checked="changedCategories.includes(category)"
+          />
+          <label :for="category">{{ category }}</label>
+        </div>
+      </fieldset>  
 
-    <div class="panel__search">
-      <UIInput
-        v-model="searchUser"
-        id="search"
-        placeholder="Search the user"
-      />
-    </div>
+      <div class="panel__block">
+        <p>Search </p>
+        <div class="panel__search">
+          <UIInput
+            v-model="searchUser"
+            id="search"
+            placeholder="Search the user"
+          />
+        </div><br/> 
+  
+        <div class="panel__search">
+          <UIInput
+            v-model="searchPhone"
+            type="phone"
+            id="phone"
+            placeholder="Search the user by phone"
+          />
+        </div>
+      </div>
 
-    <div class="panel__search">
-      <UIInput
-        v-model="searchPhone"
-        type="phone"
-        id="phone"
-        placeholder="Search the user by phone"
-      />
-    </div>
+      <div class="panel__block">
+        <div class="panel__date">
+          <div>
+            <label for="start">Start registred date:</label>
+            <VueDatePicker
+              v-model="registredStart" 
+              :format="formatDate"
+              :enable-time-picker="false"
+            />
+          </div>
+          <div>
+            <label for="start">End registred date:</label>
+            <VueDatePicker
+              v-model="registredEnd" 
+              :enable-time-picker="false"
+              :format="formatDate"
+              :max-date="new Date()"
+            />
+          </div>
+        </div><br>
+  
+        <div class="panel__date">
+          <div>
+            <label for="start">Start birthday date:</label>
+            <VueDatePicker
+              v-model="birthdayStart" 
+              :enable-time-picker="false"
+              :format="formatDate"
+            />
+          </div>
+          <div>
+            <label for="start">End birthday date:</label>
+            <VueDatePicker
+              v-model="birthdayEnd" 
+              :enable-time-picker="false"
+              :format="formatDate"
+            />
+          </div>
+        </div>
+      </div>
 
-    <div class="panel__date">
-      <div>
-        <label for="start">Start registred date:</label>
-        <VueDatePicker
-          v-model="registredStart" 
-          :format="formatDate"
-          :enable-time-picker="false"
-        />
-      </div>
-      <div>
-        <label for="start">End registred date:</label>
-        <VueDatePicker
-          v-model="registredEnd" 
-          :enable-time-picker="false"
-          :format="formatDate"
-          :max-date="new Date()"
-        />
-      </div>
-    </div>
+      <div></div>
 
-    <div class="panel__date">
-      <div>
-        <label for="start">Start birthday date:</label>
-        <VueDatePicker
-          v-model="birthdayStart" 
-          :enable-time-picker="false"
-          :format="formatDate"
-        />
-      </div>
-      <div>
-        <label for="start">End birthday date:</label>
-        <VueDatePicker
-          v-model="birthdayEnd" 
-          :enable-time-picker="false"
-          :format="formatDate"
-        />
-      </div>
-    </div>
 
-    <div class="panel__select">
-      <div>
-        <p>Limit on the page:</p>
-        <select name="limit" id="limit" v-model="limit">
-          <option v-for="(value, key) in optionsLimit" :key="key" :value="value">{{ key }}</option>
-        </select>
+      <div class="panel__select">
+        <div>
+          <p>Limit on the page:</p>
+          <select name="limit" id="limit" v-model="limit">
+            <option v-for="(value, key) in optionsLimit" :key="key" :value="value">{{ key }}</option>
+          </select>
+        </div>
+        <div >
+          <p>Sort by:</p>
+          <select name="sort" id="sort" v-model="sortMode">
+            <option v-for="(value, key) in optionsSort" :key="key" :value="value">{{ key }}</option>
+          </select>
+        </div>
       </div>
-      <div >
-        <p>Sort by:</p>
-        <select name="sort" id="sort" v-model="sortMode">
-          <option v-for="(value, key) in optionsSort" :key="key" :value="value">{{ key }}</option>
-        </select>
+
+
+      <div class="panel__button panel__block">
+        <UIButton class="btn-reset" width="145px" text="Reset" @click="reset"/>
+        <UIButton width="145px" text="Search" @click="submitRequest"/>
       </div>
-    </div>
-    <div class="panel__button">
-      <UIButton class="btn-reset" width="145px" text="Reset" @click="reset"/>
-      <UIButton width="145px" text="Search" @click="submitRequest"/>
-    </div>
-    <br/>
-    <pre>{{q}}</pre>
     </div>
 
     <div class="panel__result">
       <ul v-if="adminStore.users">
-        <li v-for="user in adminStore.users" :key="user.id">
-          {{ user.name }}
+        <li v-for="user in adminStore.users" :key="user.id" class="panel__result-item">
+          <div><span>Name:</span>  {{ user.name }}</div>
+          <div v-if="user.surname"><span>Surname:</span>  {{ user.surname }}</div>
+          <div><span>Email:</span>  {{ user.email}}</div>
+          <div><span>Phone:</span>  {{ user.phone}}</div>
+          <div><span>Role:</span>  {{ user.role}}</div>
+          <div><span>Birthday:</span>  {{ formatDate(parseShortDate(user.birthday))}}</div>
+          <div><span>Registered:</span>  {{ convertDateToString(parseDate(user.registeredAt))}}</div>
+          <div v-if="user.info?.education"><span>Education:</span>  {{ user.info.education}}</div>
+          <div v-if="user.info?.experience"><span>Experience:</span>  {{ user.info.experience}}</div>
+          <div v-if="user.info?.specialization"><span>Specialization:</span>  {{ user.info.specialization}}</div>
+
         </li>
       </ul>
     </div>
@@ -180,10 +196,13 @@ const submitRequest = async () => {
   padding: 10px 0;
 
   &__query{
-
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr ;
+    grid-template-rows: 180px;
   }
 
-  fieldset{
+  &__fieldset{
+    width: 200px;
     div{
       display: flex;
       gap: 10px;
@@ -195,14 +214,12 @@ const submitRequest = async () => {
     }
   }
   &__search{
-    margin-top: 20px;
     display: flex;
     align-items: center;
     gap: 20px;
     
   }
   &__date{
-    margin-top: 20px;
     display: flex;
     gap: 10px;
 
@@ -221,9 +238,8 @@ const submitRequest = async () => {
   &__select{
     display: flex;
     gap: 20px;
-    margin-top: 10px;
     p{
-      margin: 7px 0;
+      margin-bottom: 7px;
     }
     #limit,#sort{
       width: 145px;
@@ -247,12 +263,24 @@ const submitRequest = async () => {
   }
 
   &__button{
-    margin-top: 25px;
+    margin-top: 15px;
     display: flex;
     gap: 20px;
   }
   &__result{
-
+    margin-top: 20px;
+    &-item{
+      padding: 15px 0;
+      div{
+        font-size: 18px;
+        padding: 3px;
+        span{
+          display: inline-block;
+          color: $grey-7;
+          width: 120px;
+        }
+      }
+    }
   }
 }
 .dp__main{
@@ -261,6 +289,16 @@ const submitRequest = async () => {
 .dp__theme_light{
   --dp-border-color: #9898a1;
   --dp-border-color-hover: #4b4b4c;
+}
+
+@media (max-width: 900px) {
+  .panel{
+    &__query{
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+  }
 }
 
 </style>

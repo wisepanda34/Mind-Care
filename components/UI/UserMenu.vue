@@ -26,7 +26,7 @@ const handleClickOutside = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
     const menuElement = document.querySelector('.user-menu__profile') as HTMLElement;
 
-    if (!menuElement.contains(target)) {
+    if (menuElement && !menuElement.contains(target)) {
       toggleMenu();
     }
   }

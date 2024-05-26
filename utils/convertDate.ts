@@ -7,8 +7,11 @@ export const formatDate = (date: Date): string => {
   return `${day}-${month}-${year}`;
 }
 
-export const convertDateToString = (date: Date ): string => {
-  return date.toISOString().split('T')[0] 
+export const convertDateToString = (date: Date): string => {
+  const isoString = date.toISOString();
+  const datePart = isoString.split('T')[0];
+  const timePart = isoString.split('T')[1].split('.')[0];
+  return `${datePart} ${timePart}`;
 }
 
 export const parseShortDate = (value: string): Date => {

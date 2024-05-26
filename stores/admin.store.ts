@@ -1,6 +1,4 @@
 // stores/admin.store.ts
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
 import { IAdmin, IClient, IDoctor } from '~/types/auth.type';
 
 export const useAdminStore = defineStore('admin', () => {
@@ -9,8 +7,7 @@ export const useAdminStore = defineStore('admin', () => {
 
   const searchUsers = async (query: String[]) => {
     const queryString = query.join('&');
-    console.log('queryString ', queryString);
-    
+
     try {
       const response = await fetch(`/api/admin/getUser?${queryString}`, {
         method: 'GET',
@@ -18,13 +15,23 @@ export const useAdminStore = defineStore('admin', () => {
           'Content-Type': 'application/json',
         },
       });
-      const data = await response.json();
-      if (data.ok) {
+
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        console.error('JSON parse error: ', jsonError);
+        errorMessage.value = 'Error parsing response';
+        return;
+      }
+
+      if (response.ok) {
         users.value = data.users;
       } else {
         errorMessage.value = data.message || 'Error data';
       }
     } catch (error) {
+      console.error('Error fetching users: ', error);
       errorMessage.value = 'Error fetching users';
     }
   };
@@ -32,7 +39,7 @@ export const useAdminStore = defineStore('admin', () => {
   return {
     users,
     errorMessage,
-    searchUsers
+    searchUsers,
   };
 });
 

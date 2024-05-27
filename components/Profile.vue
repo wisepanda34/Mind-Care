@@ -620,6 +620,12 @@ onMounted(()=>{
 .blurred {
   opacity: 0.3;
 }
-
+@media (max-width: 600px) {
+  .profile{
+    &__inputs{
+      padding: 10px 0;
+    }
+  }
+}
 
 </style>

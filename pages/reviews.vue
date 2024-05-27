@@ -8,10 +8,13 @@ const authStore = useAuthStore()
 const textReview = ref('')
 const rating = ref<number>(0)
 const reviews = ref<IReview[]>([])
+const isLoading = ref(false)
 
 const getReviews = async() => {
+  isLoading.value = true
   const response = await fetch('/api/reviews/review')
   reviews.value = await response.json();
+  isLoading.value = false
 }
 
 const updateRating = (value: number) => {
@@ -65,7 +68,8 @@ onMounted(()=>{
 </script>
  
 <template>
-  <div class="reviews">
+  <div v-if="isLoading">Loading...</div>
+  <div v-else class="reviews">
     <h1 class="reviews__title text-center text--fz30 text--fw700">Reviews</h1>
     <ul>
        <li class="reviews__card" v-for="review in reviews" :key="review.userId">

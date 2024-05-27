@@ -96,4 +96,11 @@
     }
   }
 }
+@media (max-width: 900px) {
+  .company{
+    &__image{
+      padding: 20px 0;
+    }
+  }
+}
 </style>

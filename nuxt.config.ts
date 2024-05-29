@@ -2,7 +2,8 @@
 export default defineNuxtConfig({
   ssr : true , 
   typescript: {
-    typeCheck: true
+    typeCheck: true,
+    strict: true
   },
   app: {
     head: {

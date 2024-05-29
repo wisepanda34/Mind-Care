@@ -3,6 +3,8 @@
 import { useAuthStore } from '~/stores/auth.store';
 import { MindRequestOptions } from '~/types/auth.type';
 import { IReview } from '~/types/auth.type';
+import { VueSpinnerIos} from 'vue3-spinners';
+
 
 const authStore = useAuthStore()
 const textReview = ref('')
@@ -22,16 +24,17 @@ const updateRating = (value: number) => {
 }
 
 const createReview = async() => {
-  if(!authStore.isAuthed){
+  if(!authStore.isAuthed ){
     authStore.toggleAuthModal()
     return
   }
+  if(textReview.value.length < 2) return
+  
   const data = {
     id: authStore.user.id,
     text: textReview.value,
     rating: rating.value
   }
-  console.log('id ', data.id);
   
   const requestOptions: MindRequestOptions = {
     method: 'POST',
@@ -68,7 +71,13 @@ onMounted(()=>{
 </script>
  
 <template>
-  <div v-if="isLoading">Loading...</div>
+  <div v-if="isLoading" class="loading" >
+    <VueSpinnerIos
+      color="#76dee2"
+      size="120"
+    />
+  </div>
+ 
   <div v-else class="reviews">
     <h1 class="reviews__title text-center text--fz30 text--fw700">Reviews</h1>
     <ul>
@@ -108,6 +117,7 @@ onMounted(()=>{
 
 
 <style scoped lang='scss'>
+
  .reviews{
   &__title{
     margin-bottom: 30px;

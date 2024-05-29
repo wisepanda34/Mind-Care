@@ -51,17 +51,20 @@ const pathname = computed(() => {
       <div class="user-menu__ava">
         <NuxtImg :src="userAvatar" alt="Avatar"/>
       </div>
-      <div class="user-menu__menu" :class="{ 'active': isMenuOpen }" @click.stop="toggleMenu">
-        <ul>
-          <li v-if="pathname !== '/profile'" @click="editProfile">Edit profile</li>
-          <li @click="logout">Exit</li>
-        </ul>
-      </div>
+      <TransitionGroup name="fade">
+        <div class="user-menu__menu" :class="isMenuOpen ? 'active' : ''" @click.stop="toggleMenu">
+          <ul>
+            <li v-if="pathname !== '/profile'" @click="editProfile">Edit profile</li>
+            <li @click="logout">Exit</li>
+          </ul>
+        </div>
+      </TransitionGroup>
     </div>
   </div>
 </template>
  
 <style scoped lang='scss'>
+
 .user-menu{
   color: $blue-100;
   font-size: 20px;
@@ -83,8 +86,8 @@ const pathname = computed(() => {
   }
   &__menu {
     position: absolute;
-    display: none;
-    top: 53px;
+    // display: none;
+    top: 55px;
     right: 0;
     width: 120px;
     height: auto;
@@ -95,7 +98,11 @@ const pathname = computed(() => {
     z-index: 10;
 
     font-size: 18px;
-    color: $grey-5;
+    color: $grey-7;
+
+    opacity: 0;
+    transform: translateY(-3px);
+    transition: all 0.3s ease;
 
     ul {
       padding: 0;
@@ -114,6 +121,8 @@ const pathname = computed(() => {
 
   &__menu.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
   }
 
 }

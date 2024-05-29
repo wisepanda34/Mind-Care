@@ -2,8 +2,12 @@
 <script setup lang='ts'>
 import type {IDoctor, IUser} from '@/types/auth.type'
 import { useAuthStore } from "~/stores/auth.store";
+import { VueSpinnerIos} from 'vue3-spinners';
+
 
 const authStore = useAuthStore()
+const isLoading = ref(false)
+
 
 
 // Property '_id' does not exist on type 'never'.
@@ -11,12 +15,14 @@ const authStore = useAuthStore()
 
   const fetchDoctors = async() => {
     try{
+      isLoading.value = true
       const response = await fetch('/api/doctors/specialists')
       if(!response.ok){
         throw new Error('response is not OK')
       }
       const fetchedDoctors: IUser[] = await response.json();
       doctors.value = fetchedDoctors;
+      isLoading.value = false
 
     } catch(error) {
       console.log('getDoctors error:', error);
@@ -34,7 +40,14 @@ const authStore = useAuthStore()
 </script>
  
 <template>
-  <div class="doctor">
+   <div v-if="isLoading" class="loading" >
+    <VueSpinnerIos
+      color="#76dee2"
+      size="120"
+    />
+  </div>
+
+  <div v-else class="doctor">
     <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
     <ul class="doctor__list">
       <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">

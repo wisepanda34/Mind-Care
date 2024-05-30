@@ -11,8 +11,8 @@ const authStore = useAuthStore();
 const selectedRole = ref<RoleT>(ROLE.CLIENT)
 const message = ref<string | null>(null);
 const state = reactive({
-  email:'admin@mail.com',
-  password:'1234'
+  email:'bob@mail.com',
+  password:'bob'
 })
 
 const rules = {

@@ -6,7 +6,8 @@ import { useVuelidate } from '@vuelidate/core'
 import { helpers, required, minLength, maxLength } from '@vuelidate/validators'
 import BirthdayPicker from './BirthdayPicker.vue';
 import { phoneRegex } from '~/constants';
-import { parseDate, convertDateToString } from '~/utils/convertDate'
+import { convertDateToString } from '~/utils/convertDate'
+
 
 
 const authStore = useAuthStore()
@@ -21,6 +22,8 @@ let isExperienceChanged = false
 let isPhotoFileChanged = false
 const doctorImg = ref<File[]>([])
 const doctorImgUrl = ref('')
+
+
 const getImageUrl = () => {
   if(doctorImg.value.length !== 0) {
     isPhotoFileChanged = true
@@ -102,9 +105,6 @@ const handleSpecializationChange = () => {
   isSpecializationChanged = true; 
 }
 
-const editAvatar = () => {
-  console.log('editAvatar');
-}
 const addOneEducation = () => {
   if(state.textEducation.length>5){
     info.value?.education?.push(state.textEducation)
@@ -238,8 +238,9 @@ onMounted(()=>{
 <template>
   <div section="profile">
     <h1 class="text-center text--fz30 text--fw700 text--grey-5">Edit profile</h1>
-    <div class="profile__avatar" @click="editAvatar">
+    <div class="profile__avatar">
       <NuxtImg  src="images/empty-avatar.jpg" alt="avatar"/>
+      <!-- <UIAvatar/> -->
     </div>
     
 

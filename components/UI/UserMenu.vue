@@ -1,8 +1,9 @@
 <!-- components/UI/UserMenu.vue -->
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
+import path from 'path';
 
-const props = defineProps({ userAvatar: String })
+const props = defineProps({userAvatar: String})
 
 const isMenuOpen = ref(false);
 const authStore = useAuthStore();
@@ -12,8 +13,8 @@ const toggleMenu = () => {
 }
 
 const editProfile = () => {
-  navigateTo('/profile');
   toggleMenu()
+  navigateTo('/profile');
 };
 
 const logout = () => {
@@ -52,10 +53,10 @@ const pathname = computed(() => {
         <NuxtImg :src="userAvatar" alt="Avatar"/>
       </div>
       <TransitionGroup name="fade">
-        <div class="user-menu__menu" :class="isMenuOpen ? 'active' : ''" @click.stop="toggleMenu">
+        <div key="user-menu" class="user-menu__menu" :class="isMenuOpen ? 'active' : ''" @click.stop="toggleMenu">
           <ul>
-            <li v-if="pathname !== '/profile'" @click="editProfile">Edit profile</li>
-            <li @click="logout">Exit</li>
+            <li @click.stop="editProfile">Edit profile</li>
+            <li @click.stop="logout">Exit</li>
           </ul>
         </div>
       </TransitionGroup>

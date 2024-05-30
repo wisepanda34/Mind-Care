@@ -11,8 +11,8 @@
  
 <style scoped lang='scss'>
  .pageup{
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: $blue-300;
   opacity: 0.5;
@@ -22,7 +22,7 @@
   align-items: center;
 
   img{
-    width: 15px;
+    width: 20px;
   }
  }
 </style>

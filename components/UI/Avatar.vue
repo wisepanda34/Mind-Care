@@ -2,7 +2,6 @@
 <script setup lang='ts'>
 import { ref, defineEmits } from 'vue';
 import {AvatarEditor} from 'avatar-editor';
-// import 'avatar-editor/dist/style.css';
 
 const props = defineProps<{img: string | undefined}>(); 
 const emits = defineEmits(['update:modelValue']); 

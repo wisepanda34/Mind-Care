@@ -57,18 +57,6 @@ export const useAuthStore = defineStore('auth', {
         id: this.user.id,
         role: this.user.role
       }
-      // const formData = new FormData();
-      // Object.entries(newData).forEach(([key, value]) => {
-      //   if (key === 'photoFile' && value instanceof File) {
-      //     formData.append(key, value);
-      //   } else {
-      //     formData.append(key, JSON.stringify(value));
-      //   }
-      // });
-      // formData.append('id', this.user.id);
-      // formData.append('role', this.user.role ?? '');
-      // console.log('FormData size:', formData.values);
-      
 
       const requestOptions: MindRequestOptions = {
         method: 'PATCH',

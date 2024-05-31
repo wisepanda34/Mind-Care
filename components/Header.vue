@@ -2,7 +2,6 @@
 <script setup lang='ts'>
 import { useAuthStore } from '@/stores/auth.store';
 
-
 const authStore = useAuthStore()
 const isMenuOpened = ref(false)
 
@@ -26,7 +25,7 @@ const toggleMenu = () => {
       <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active">Reviews</nuxt-link>
       <nuxt-link v-if="authStore.user.role === 'admin'" class="header__nav-item" to="/admin" exact-active-class="active">Admin</nuxt-link>
     </nav>
-    <UIUserMenu user-avatar="images/empty-avatar.jpg"/>
+    <UIUserMenu :user-avatar="authStore.user.avatar ? authStore.user.avatar : 'images/empty-avatar.jpg'"/>
   </section>
 
   <!-- Full-screen mobile menu -->

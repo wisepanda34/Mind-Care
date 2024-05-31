@@ -89,6 +89,7 @@ export interface IClientDB {
   email: string;
   role: RoleT;
   phone: string;
+  avatar: string;
   birthday: Date | null;
   registeredAt: Date | null;
 }
@@ -100,6 +101,7 @@ export interface IClientDto  { //в принципе тот же самый IUse
   role: RoleT;
   phone: string;
   birthday: string;
+  avatar?: string;
   registeredAt: string;
 }
 export interface IDoctorDto extends IClientDto {
@@ -117,6 +119,7 @@ export interface IAdminDto { //в принципе тот же самый IUser
   email: string;
   role: RoleT;
   phone: string;
+  avatar?: string;
   birthday: string;
   registeredAt: string;
 }

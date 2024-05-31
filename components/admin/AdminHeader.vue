@@ -1,12 +1,14 @@
 <!-- components/admin/header-admin.vue -->
 <script setup lang='ts'>
- 
+import { useAuthStore } from '@/stores/auth.store';
+
+const authStore = useAuthStore() 
 </script>
  
 <template>
   <div class="header-admin">
     <UILogo/>
-    <UIUserMenu user-avatar="images/empty-avatar.jpg"/>
+    <UIUserMenu :user-avatar="authStore.user.avatar ? authStore.user.avatar : 'images/empty-avatar.jpg'"/>
   </div>
 </template>
  

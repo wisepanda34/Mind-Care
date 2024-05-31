@@ -75,7 +75,7 @@ const pathname = computed(() => {
     position: relative;
   }
   &__ava {
-    width: 50px;
+    width: 60px;
     border-radius: 50%;
     overflow: hidden;
 
@@ -88,7 +88,7 @@ const pathname = computed(() => {
   &__menu {
     position: absolute;
     // display: none;
-    top: 55px;
+    top: 65px;
     right: 0;
     width: 120px;
     height: auto;

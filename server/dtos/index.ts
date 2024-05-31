@@ -11,6 +11,7 @@ export const createUserDto = (model: IUser ): IClientDto => {
     email: model.email,
     role: model.role,
     phone: model.phone,
+    avatar: model.avatar,
     birthday: model.birthday,
     registeredAt: model.registeredAt,
   }
@@ -25,6 +26,7 @@ export const createDoctorDto = (model: IDoctor ): IDoctorDto => {
     email: model.email,
     role: model.role,
     phone: model.phone,
+    avatar: model.avatar,
     birthday: model.birthday,
     registeredAt: model.registeredAt,
     info: {
@@ -44,6 +46,7 @@ export const createAdminDto = (model: IAdmin ): IAdminDto => {
     email: model.email,
     role: model.role,
     phone: model.phone,
+    avatar: model.avatar,
     birthday: model.birthday,
     registeredAt: model.registeredAt
   }

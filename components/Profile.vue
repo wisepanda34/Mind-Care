@@ -66,6 +66,7 @@ const state = reactive({
   surname:'',
   phone:'',
   birthday: <Date | null>(null),
+  avatar: <string | undefined>(''),
   oldPassword:'',
   newPassword:'',
   confirmPassword:'',
@@ -94,6 +95,11 @@ const blurEducation = () => isEducationTouched.value = true
 const focusSpecialization = () => isSpecializationTouched.value = false
 const blurSpecialization = () => isSpecializationTouched.value = true
 
+
+const handleUpdateAvatar = (newAvatar: string) => {
+  state.avatar = newAvatar;
+  console.log('newAvatar: ', newAvatar);
+};
 const handleUpdateBirthday = (date: Date | null) => {
   state.birthday = date;
   isBirthdayTouched.value = true
@@ -143,7 +149,7 @@ const submitSave = async() => {
   reqAvailable.value = false
   const newData: Partial<IUpdateUser> = {};
   let hasChanges = false;
-  const { name, surname, phone, oldPassword, newPassword, confirmPassword } = state;
+  const { name, surname, phone, avatar, oldPassword, newPassword, confirmPassword } = state;
 
   if (name !== authStore.user.name) {
     newData.name = name;
@@ -155,6 +161,10 @@ const submitSave = async() => {
   }
   if (phone !== authStore.user.phone) {
     newData.phone = phone;
+    hasChanges = true;
+  }
+  if(avatar !== authStore.user.avatar){
+    newData.avatar = avatar
     hasChanges = true;
   }
   if (isBirthdayTouched.value && state.birthday) {
@@ -221,6 +231,7 @@ const fillFields = () => {
   state.surname = authStore.user.surname ?? ''
   state.phone = authStore.user.phone
   state.birthday = parseShortDate(authStore.user.birthday) 
+  state.avatar = authStore.user.avatar
   state.oldPassword = ''
   state.newPassword = ''
   state.confirmPassword = ''
@@ -238,12 +249,7 @@ onMounted(()=>{
 <template>
   <div section="profile">
     <h1 class="text-center text--fz30 text--fw700 text--grey-5">Edit profile</h1>
-    <div class="profile__avatar">
-      <NuxtImg  src="images/empty-avatar.jpg" alt="avatar"/>
-      <!-- <UIAvatar/> -->
-    </div>
-    
-
+    <UIAvatar class="profile__avatar" :img="state.avatar" @update:modelValue="handleUpdateAvatar"/>
 
     <form class="profile__inputs">
       <h4 class="profile__subtitle">{{ authStore.user.email }}</h4>
@@ -472,16 +478,8 @@ onMounted(()=>{
 .profile{
 
   &__avatar{
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    overflow: hidden;
-
-    margin: 20px auto 10px 50px;
-
-    img{
-      width: 100%;
-    }
+    width: 300px;
+    padding: 10px 50px;
   }
   &__inputs{
     max-width: 600px;

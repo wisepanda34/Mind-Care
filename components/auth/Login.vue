@@ -55,12 +55,7 @@ const blurEmail = () => isEmailTouched.value = true
 const focusPass = () => {isPassTouched.value = false, message.value = null}
 const blurPass = () => isPassTouched.value = true
 
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Enter') {
-    submitLogin();
-  }
-}
-
+defineExpose({ submitLogin })
 </script>
 
 <template>
@@ -71,7 +66,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
       <div class="modal__close" @click="authStore.toggleAuthModal">X</div>
     </div>
     <div class="modal__body">
-      <form class="modal__form">
+      <form class="modal__form" @submit.prevent="submitLogin">
         <UIInput
           v-model="state.email"
           id="email"

@@ -76,6 +76,7 @@ const blurPass = () => isPassTouched.value = true
 const focusConfirm = () => isConfirmTouched.value = false
 const blurConfirm = () => isConfirmTouched.value = true
 
+defineExpose({ submitRegistration })
 </script>
  
 <template>

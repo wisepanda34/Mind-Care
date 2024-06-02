@@ -19,7 +19,7 @@ const toggleMenu = () => {
       <span></span>
     </div>
     <UILogo/>
-    <nav class="header__nav">
+    <nav class="header__nav user-none">
       <nuxt-link class="header__nav-item" to="/" exact-active-class="active">Company</nuxt-link>
       <nuxt-link class="header__nav-item" to="/specialists" exact-active-class="active">Our specialists</nuxt-link>
       <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active">Reviews</nuxt-link>

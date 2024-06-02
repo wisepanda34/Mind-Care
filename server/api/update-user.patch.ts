@@ -10,7 +10,6 @@ import { userUpdate } from "../controllers/updates";
 export default defineEventHandler( async(event) => {
   try {
     const data: Partial<IUpdateUser> = await readBody(event);
-    console.log('data :', data);
     
     let foundUser: IClient | IDoctor | null = null
 

@@ -61,6 +61,12 @@ body{
 .curspoint{
   cursor: pointer;
 }
+.user-none{
+  user-select: none;
+}
+.field-error {
+  height: 16px;
+}
 
 .mt{
   &--10{
@@ -96,3 +102,4 @@ body{
     margin-bottom: 50px;
   }
 }
+

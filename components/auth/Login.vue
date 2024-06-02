@@ -54,10 +54,17 @@ const focusEmail = () => {isEmailTouched.value = false, message.value = null}
 const blurEmail = () => isEmailTouched.value = true
 const focusPass = () => {isPassTouched.value = false, message.value = null}
 const blurPass = () => isPassTouched.value = true
+
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    submitLogin();
+  }
+}
+
 </script>
 
 <template>
-  <div>
+  <div v-if="authStore.isOpenAuthModal">
     <div class="modal__header">
       <h3 class="text--fz24 text--fw700">Enter</h3>
       <UIRole v-model="selectedRole" @update:selectedRole="handleUpdateRole"/>
@@ -94,19 +101,17 @@ const blurPass = () => isPassTouched.value = true
     </div>
     <div class="modal__footer">
       <div class="modal__footer-up">
-        <div class="text--blue-600 curspoint" @click="restorePassword">Forgot password?</div>
-        <UIButton class="btn-ok" text="OK" @click="submitLogin"/>
+        <div class="text--blue-600 curspoint user-none" @click="restorePassword">Forgot password?</div>
+        <UIButton class="btn-ok" text="OK" @click.prevent="submitLogin"/>
       </div>
       
       <div>
-        <span class="text--green text--fz20 curspoint" @click="startRegistration">Registration</span>
+        <span class="text--green text--fz20 curspoint user-none" @click="startRegistration">Registration</span>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.field-error {
-  height: 16px;
-}
+
 </style>

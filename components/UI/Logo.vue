@@ -15,7 +15,7 @@
 <style scoped lang='scss'>
  .logo{
   display: flex;
-  
+  user-select: none;
   img{
     width: 60px;
     height: 60px;

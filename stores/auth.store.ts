@@ -188,7 +188,7 @@ export const useAuthStore = defineStore('auth', {
       this.isOpenMessageModal = true
       setTimeout(()=>{
         this.closeMessageModal() 
-      },1200)
+      },1500)
     },
     closeMessageModal() {
       this.isOpenMessageModal = false

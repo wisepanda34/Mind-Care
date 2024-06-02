@@ -26,7 +26,7 @@ const toggleSelect = () => {
 </script>
  
 <template>
-  <div class="role">
+  <div class="role user-none">
     <div 
       class="role__installed" 
       :class="isSelectOpen ? 'isHidden' : null"
@@ -57,7 +57,6 @@ const toggleSelect = () => {
   position: relative;
   width: 80px;
   height: 26px;
-  
 
   &__installed{
     height: 100%;
@@ -70,26 +69,30 @@ const toggleSelect = () => {
     padding: 4px 0;
 
     cursor: pointer;
+
   }
   &__installed.isHidden{
     opacity: 0;
   }
 
   &__select{
+    display: none;
+
     position: absolute;
     top: 0;
     left: 0px;
     width: 80px;
     height: 78px;
+
     border: 1px solid $grey-5;
     border-radius: 13px;
     overflow: hidden;
     z-index: 20;
-
-    display: none;
+    opacity: 0;
   }
   &__select.isOpen{
     display: block;
+    opacity: 1;
   }
   &__item{
     height: 26px;

@@ -34,6 +34,8 @@ const props = defineProps({
     border-radius: 3px;
     box-shadow: -3px 5px 10px 1px $grey-3;
 
+    user-select: none;
+
     &:hover{
       background: $green-2;
     }

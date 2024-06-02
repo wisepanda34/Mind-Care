@@ -47,8 +47,8 @@ const pathname = computed(() => {
  
 <template>
   <div class="user-menu">
-    <div v-if="!authStore.isAuthed" class="user-menu__enter" @click="authStore.toggleAuthModal">Enter</div>
-    <div v-if="authStore.isAuthed" class="user-menu__profile" @click="toggleMenu">
+    <div v-if="!authStore.isAuthed" class="user-menu__enter user-none" @click="authStore.toggleAuthModal">Enter</div>
+    <div v-if="authStore.isAuthed" class="user-menu__profile user-none" @click="toggleMenu">
       <div class="user-menu__ava">
         <NuxtImg :src="userAvatar" alt="Avatar"/>
       </div>

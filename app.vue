@@ -33,21 +33,16 @@ onUnmounted(() => {
  <Html>
     <Body>
       <NuxtLayout >
-        <!-- <NuxtLoadingIndicator
-            :height="5"
-            :duration="3000"
-            :throttle="400"
-        /> -->
-        <NuxtPage class="page"/>
+          <NuxtPage class="page" />
       </NuxtLayout>
-      <AuthModal v-if="authStore.isOpenAuthModal" />
-      <UIMessageModal v-if="authStore.isOpenMessageModal"/>
+      <AuthModal/>
+      <UIMessageModal/>
       <UIPageUp v-if="showUIPageUp" class="pageUpFixed" @click="scrollToTop"/>
     </Body>
   </Html>
 </template>
 
-<style scoped>
+<style scoped lang='scss'>
 .pageUpFixed{
   position: fixed;
   right: 30px;

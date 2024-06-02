@@ -1,0 +1,51 @@
+// assets/scss/animations.scss
+
+@mixin slide-fade {
+  &-enter-from {
+    opacity: 0;
+    transform: translate(-5px, -5px);
+  }
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  &-leave-to {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  &-enter-active {
+    transition: 0.3s ease all;
+  }
+  &-leave-active {
+    transition: 0.3s ease all;
+  }
+}
+@mixin fade {
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+  }
+  &-enter-to,
+  &-leave-from {
+    opacity: 1;
+  }
+  &-enter-active {
+    transition: 0.8s ease all;
+  }
+  &-leave-active {
+    transition: 1s ease all;
+  }
+}
+
+@mixin page-fade {
+  &-enter-active, &-leave-active {
+    transition: opacity 1s ease;
+  }
+  &-enter-from, &-leave-to {
+    opacity: 0;
+  }
+  &-enter-to, &-leave-from {
+    opacity: 1;
+  }
+}

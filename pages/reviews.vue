@@ -71,46 +71,48 @@ onMounted(()=>{
 </script>
  
 <template>
-  <div v-if="isLoading" class="loading" >
-    <VueSpinnerIos
-      color="#76dee2"
-      size="120"
-    />
-  </div>
- 
-  <div v-else class="reviews">
-    <h1 class="reviews__title text-center text--fz30 text--fw700">Reviews</h1>
-    <ul>
-       <li class="reviews__card" v-for="review in reviews" :key="review.userId">
-        <div class="reviews__header">
-          <h5>{{ review.name }}</h5>
-          <div v-if="review.dateReview">{{formatDate(review.dateReview)}}</div>
-          <UIStarRating :rating="review.rating" :enabled="false" />
-        </div>
-        <p>{{ review.text }}</p>
-      </li>
-    </ul>
-
-    <div class="reviews__write">
-      <h3 class="reviews__title text-center text--fz24 text--grey-5">Write your review</h3>
-      <form class="reviews__form" @submit.prevent="createReview">
-        <div class="reviews__rating">
-          <UIStarRating :rating="rating" :enabled="true" @update:rating="updateRating" />
-        </div>
-        <UITextArea  
-          v-model="textReview"
-          id="textReview"
-          placeholder="Field for your review"
-        />
-        <UIButton
-          class="reviews__submit"
-          type="submit"
-          width="100px"
-          text="OK"
-        />
-      </form>
+  <div>
+    <div v-if="isLoading" class="loading" >
+      <VueSpinnerIos
+        color="#76dee2"
+        size="120"
+      />
     </div>
-
+   
+    <div v-else class="reviews">
+      <h1 class="reviews__title text-center text--fz30 text--fw700">Reviews</h1>
+      <ul>
+         <li class="reviews__card" v-for="review in reviews" :key="review.userId">
+          <div class="reviews__header">
+            <h5>{{ review.name }}</h5>
+            <div v-if="review.dateReview">{{formatDate(review.dateReview)}}</div>
+            <UIStarRating :rating="review.rating" :enabled="false" />
+          </div>
+          <p>{{ review.text }}</p>
+        </li>
+      </ul>
+  
+      <div class="reviews__write">
+        <h3 class="reviews__title text-center text--fz24 text--grey-5">Write your review</h3>
+        <form class="reviews__form" @submit.prevent="createReview">
+          <div class="reviews__rating">
+            <UIStarRating :rating="rating" :enabled="true" @update:rating="updateRating" />
+          </div>
+          <UITextArea  
+            v-model="textReview"
+            id="textReview"
+            placeholder="Field for your review"
+          />
+          <UIButton
+            class="reviews__submit"
+            type="submit"
+            width="100px"
+            text="OK"
+          />
+        </form>
+      </div>
+  
+    </div>
   </div>
 </template>
  

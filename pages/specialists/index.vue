@@ -40,48 +40,50 @@ const isLoading = ref(false)
 </script>
  
 <template>
-   <div v-if="isLoading" class="loading" >
-    <VueSpinnerIos
-      color="#76dee2"
-      size="120"
-    />
-  </div>
-
-  <div v-else class="doctor">
-    <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
-    <ul class="doctor__list">
-      <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">
-
-        <div class="doctor__image">
-          <NuxtImg :src="doctor.info?.photoLink" :alt="`${doctor.surname}`"/>
-        </div>
-        <div class="doctor__info">
-          <p class="text--fz24 text--fw700 mb--20" >{{ doctor.name }} {{ doctor.surname }}</p>
-          <div class="doctor__education text--fz24 mb--10">
-            education: 
-            <span class="text--fz20 mb--10" v-for="(item, i) in doctor.info?.education" :key="i">
-              {{ item }},
-            </span>
+  <div>
+    <div v-if="isLoading" class="loading" >
+     <VueSpinnerIos
+       color="#76dee2"
+       size="120"
+     />
+    </div>
+  
+    <div v-else class="doctor">
+      <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
+      <ul class="doctor__list">
+        <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">
+  
+          <div class="doctor__image">
+            <NuxtImg :src="doctor.info?.photoLink" :alt="`${doctor.surname}`"/>
           </div>
-          <p class="text--fz24 mb--10">experience years: {{ doctor.info?.experience }}</p>
-          <div class="doctor__specialization text--fz24">
-            specialization: 
-            <span class="text--fz20" v-for="(item, i) in doctor.info?.specialization" :key="i">
-              {{ item }},
-            </span>
+          <div class="doctor__info">
+            <p class="text--fz24 text--fw700 mb--20" >{{ doctor.name }} {{ doctor.surname }}</p>
+            <div class="doctor__education text--fz24 mb--10">
+              education: 
+              <span class="text--fz20 mb--10" v-for="(item, i) in doctor.info?.education" :key="i">
+                {{ item }},
+              </span>
+            </div>
+            <p class="text--fz24 mb--10">experience years: {{ doctor.info?.experience }}</p>
+            <div class="doctor__specialization text--fz24">
+              specialization: 
+              <span class="text--fz20" v-for="(item, i) in doctor.info?.specialization" :key="i">
+                {{ item }},
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="doctor__consultation">
-          <UIButton
-            text="Сonsultation"
-            width="120px"
-            @click="chooseDoctor(doctor.id)"
-          />
-        </div>  
-
-      </li>
-    </ul>
-    
+          <div class="doctor__consultation">
+            <UIButton
+              text="Сonsultation"
+              width="120px"
+              @click="chooseDoctor(doctor.id)"
+            />
+          </div>  
+  
+        </li>
+      </ul>
+      
+    </div>
   </div>
 </template>
  

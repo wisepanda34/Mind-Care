@@ -6,12 +6,15 @@ export default defineNuxtConfig({
     strict: true
   },
   app: {
+    pageTransition: { name: 'page-fade', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
       title: "Mind Care",
       link: [{ rel: "icon", type: "image/svg+xml", href: "/favicon.ico" }]
-    }
+    },
+    
   },
   devtools: { enabled: true },
   runtimeConfig: {
@@ -30,6 +33,7 @@ export default defineNuxtConfig({
         scss: {
           additionalData: `
             @import "@/assets/scss/variables.scss";
+            @import "@/assets/mixins/animations.scss";
           `
         }
       }

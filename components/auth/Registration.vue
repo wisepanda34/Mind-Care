@@ -6,8 +6,6 @@ import { useVuelidate } from '@vuelidate/core'
 import { required, email as emailValidator, maxLength, minLength, sameAs, helpers } from '@vuelidate/validators'
 import BirthdayPicker from '../BirthdayPicker.vue';
 import { ROLE, phoneRegex } from '~/constants';
-import { convertDateToString } from '~/utils/convertDate'
-
 
 const authStore = useAuthStore()
 const message = ref<string | null>(null);
@@ -31,15 +29,12 @@ const rules = {
 };
 const v$ = useVuelidate(rules, state, { $autoDirty: true });
 
-
 const handleUpdateBirthday = (date: Date | null) => {
   state.birthday = date;
 };
 const handleUpdateRole = (role: RoleT) => {
   selectedRole.value = role;
 }
-
-
 
 const submitRegistration = async() => {
   v$.value.$touch()

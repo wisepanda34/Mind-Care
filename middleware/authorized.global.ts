@@ -1,7 +1,7 @@
 // middleware/authorized.ts
 import { useAuthStore } from "~/stores/auth.store";
 
-const publicUrls = ['/', '/specialists', '/reviews']
+const publicUrls = ['/', '/specialists', '/reviews', '/contacts']
 
 export default defineNuxtRouteMiddleware(async(to, from)=> {
   const app = useNuxtApp()

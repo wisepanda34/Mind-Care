@@ -1,8 +1,8 @@
 // stores/auth.store.ts
 import axios from "axios";
 import { defineStore } from "pinia";
-import { ENTER, ROLE } from "~/constants";
-import type { IStateAuth, IUser, INewUser, IUpdateUser, EnterT, RoleT, MindRequestOptions, ILogin } from "~/types/auth.type";
+import { ENTER } from "~/constants";
+import type { IStateAuth, IUser, INewUser, IUpdateUser, RoleT, MindRequestOptions, ILogin } from "~/types/auth.type";
 
 export const useAuthStore = defineStore('auth', {
   state: (): IStateAuth => ({

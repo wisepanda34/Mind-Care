@@ -1,11 +1,8 @@
 // stores/modal.store.ts
 import { defineStore } from "pinia";
 
-import type { IModalState, IModalProps, IModalAvailableProps } from "~/types/modal.type";
-import { extend } from "@vue/shared";
+import type { IModalState } from "~/types/modal.type";
 import axios from "axios";
-const component = extend({});
-type VueComponent = InstanceType<typeof component>;
 
 
 

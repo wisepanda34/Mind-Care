@@ -63,7 +63,11 @@ defineExpose({ submitLogin })
     <div class="modal__header">
       <h3 class="text--fz24 text--fw700">Enter</h3>
       <UIRole v-model="selectedRole" @update:selectedRole="handleUpdateRole"/>
-      <div class="modal__close" @click="authStore.toggleAuthModal">X</div>
+      <div class="modal__close" @click="authStore.toggleAuthModal">
+        <svg width="24" height="24" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M4.11 2.697L2.698 4.11 6.586 8l-3.89 3.89 1.415 1.413L8 9.414l3.89 3.89 1.413-1.415L9.414 8l3.89-3.89-1.415-1.413L8 6.586l-3.89-3.89z" fill="#4b4b4c"></path>
+        </svg>
+      </div>
     </div>
     <div class="modal__body">
       <form class="modal__form" @submit.prevent="submitLogin">

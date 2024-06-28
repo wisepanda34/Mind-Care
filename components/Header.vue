@@ -8,50 +8,64 @@ const isMenuOpened = ref(false)
 const toggleMenu = () => {
   isMenuOpened.value = !isMenuOpened.value
 }
-
 </script>
  
 <template>
-  <section class="header">
-    <div class="header__burger" @click="toggleMenu">
-      <span></span>
-      <span></span>
-      <span></span>
+  <header class="header">
+    <div class="container">
+      <div class="header__wrapper">
+        <div class="header__burger" @click="toggleMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <UILogo/>
+        <nav class="header__nav user-none">
+          <nuxt-link class="header__nav-item" to="/" exact-active-class="active" @click="toggleMenu">Company</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/specialists" exact-active-class="active" @click="toggleMenu">Our specialists</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active" @click="toggleMenu">Reviews</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/contacts" exact-active-class="active" @click="toggleMenu">Contacts</nuxt-link>
+          
+          <nuxt-link v-if="authStore.user.role === 'admin'" class="header__nav-item" to="/admin" exact-active-class="active" @click="toggleMenu">Admin</nuxt-link>
+        </nav>
+        <UIUserMenu :user-avatar="authStore.user.avatar ? authStore.user.avatar : 'images/empty-avatar.jpg'"/>
+      </div>
     </div>
-    <UILogo/>
-    <nav class="header__nav user-none">
-      <nuxt-link class="header__nav-item" to="/" exact-active-class="active">Company</nuxt-link>
-      <nuxt-link class="header__nav-item" to="/specialists" exact-active-class="active">Our specialists</nuxt-link>
-      <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active">Reviews</nuxt-link>
-      <nuxt-link v-if="authStore.user.role === 'admin'" class="header__nav-item" to="/admin" exact-active-class="active">Admin</nuxt-link>
-    </nav>
-    <UIUserMenu :user-avatar="authStore.user.avatar ? authStore.user.avatar : 'images/empty-avatar.jpg'"/>
-  </section>
+  </header>
 
   <!-- Full-screen mobile menu -->
-  <div v-if="isMenuOpened" class="mobile-menu">
-    <span class="mobile-menu__close" @click="toggleMenu">X</span>
+  <div :class="['mobile-menu', { open: isMenuOpened }]">
+    <span class="mobile-menu__close" @click="toggleMenu">
+      <svg width="40" height="40" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#c3d2ff" fill-rule="evenodd" clip-rule="evenodd" d="M4.11 2.697L2.698 4.11 6.586 8l-3.89 3.89 1.415 1.413L8 9.414l3.89 3.89 1.413-1.415L9.414 8l3.89-3.89-1.415-1.413L8 6.586l-3.89-3.89z"></path>
+      </svg>    
+    </span>
     <nav class="mobile-menu__nav">
       <nuxt-link class="mobile-menu__nav-item" to="/" exact-active-class="active" @click="toggleMenu">Company</nuxt-link>
       <nuxt-link class="mobile-menu__nav-item" to="/specialists" exact-active-class="active" @click="toggleMenu">Our specialists</nuxt-link>
       <nuxt-link class="mobile-menu__nav-item" to="/reviews" exact-active-class="active" @click="toggleMenu">Reviews</nuxt-link>
+      <nuxt-link class="mobile-menu__nav-item" to="/contacts" exact-active-class="active" @click="toggleMenu">Contacts</nuxt-link>
+
       <nuxt-link v-if="authStore.user.role === 'admin'" class="mobile-menu__nav-item" to="/admin" exact-active-class="active" @click="toggleMenu">Admin</nuxt-link>
     </nav>
   </div>
 </template>
  
 <style scoped lang='scss'>
- .header {
+.header {
   height: 80px;
   margin-top: 20px;
-  padding: 10px 20px;
   background: $gradient-header;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  &__wrapper {
+    padding: 10px 20px;
 
-  &__burger{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__burger {
     display: none;
     flex-direction: column;
     justify-content: space-around;
@@ -59,18 +73,18 @@ const toggleMenu = () => {
     height: 30px;
     cursor: pointer;
 
-    span{
+    span {
       display: block;
       height: 3px;
       background-color: white;
       border-radius: 1px;
     }
   }
-  
-  &__nav{
+
+  &__nav {
     display: flex;
 
-    &-item{
+    &-item {
       white-space: nowrap;
       padding: 0 20px;
 
@@ -78,32 +92,35 @@ const toggleMenu = () => {
       font-weight: 700;
       font-size: 20px;
     }
-    &-item.active{
+
+    &-item.active {
       color: $purple-active;
     }
   }
- }
- .mobile-menu {
+}
+
+.mobile-menu {
   position: fixed;
   top: 0;
-  left: 0;
+  left: -100%;
   width: 100%;
   height: 100%;
-  background: $gradient-header;
+  background: $gradient-footer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  transition: left 0.3s ease-in-out;
 
-  &__close{
+  &.open {
+    left: 0;
+  }
+
+  &__close {
     position: absolute;
     top: 40px;
     right: 40px;
-    font-size: 40px;
-    font-weight: 700;
-    color: white;
-    transform: scaleX(1.3);
     cursor: pointer;
   }
 
@@ -126,15 +143,15 @@ const toggleMenu = () => {
   }
 }
 
-
- @media (max-width: 900px) {
-  .header{
-    &__burger{
+@media (max-width: 900px) {
+  .header {
+    &__burger {
       display: flex;
     }
-    &__nav{
+
+    &__nav {
       display: none;
     }
   }
- }
+}
 </style>

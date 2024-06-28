@@ -66,7 +66,7 @@ const toggleSelect = () => {
 
     display: flex;
     justify-content: center;
-    padding: 4px 0;
+    padding: 2px 0;
 
     cursor: pointer;
 

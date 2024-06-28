@@ -34,6 +34,7 @@ export default defineNuxtConfig({
           additionalData: `
             @import "@/assets/scss/variables.scss";
             @import "@/assets/mixins/animations.scss";
+            @import "@/assets/scss/transition.scss";
           `
         }
       }

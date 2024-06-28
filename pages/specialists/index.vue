@@ -49,7 +49,7 @@ const isLoading = ref(false)
     </div>
   
     <div v-else class="doctor">
-      <h1 class="text--fz30 text--fw700 text-center">Our specialists</h1>
+      <h1 class="title-h1">Our specialists</h1>
       <ul class="doctor__list">
         <li class="doctor__card" v-for="doctor in doctors" :key="doctor.id">
   

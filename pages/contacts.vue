@@ -5,7 +5,7 @@
  
 <template>
   <div class="contacts">
-    <h1 class="contacts__title">Contacts</h1>
+    <h1 class="title-h1">Contacts</h1>
     <p class="contacts__descr">We are happy to help you find peace and solve problems at any time convenient for you. </p>
     <p class="contacts__descr">You can contact us by phone or email.</p>
     <div class="contacts__info">
@@ -25,12 +25,6 @@
 <style scoped lang='scss'>
  .contacts {
 
-  &__title {
-    font-size: 40px;
-    font-weight: 600;
-    color: $blue-850;
-    margin-bottom: 20px;
-  }
   &__descr {
     font-size: 20px;
     color: $blue-900;

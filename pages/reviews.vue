@@ -80,7 +80,7 @@ onMounted(()=>{
     </div>
    
     <div v-else class="reviews">
-      <h1 class="reviews__title text-center text--fz30 text--fw700">Reviews</h1>
+      <h1 class="title-h1">Reviews</h1>
       <ul>
          <li class="reviews__card" v-for="review in reviews" :key="review.userId">
           <div class="reviews__header">
@@ -121,9 +121,7 @@ onMounted(()=>{
 <style scoped lang='scss'>
 
  .reviews{
-  &__title{
-    margin-bottom: 30px;
-  }
+  
   &__card{
     border: 1px solid $grey-2;
     border-radius: $radius-12;

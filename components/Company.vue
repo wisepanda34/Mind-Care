@@ -7,7 +7,7 @@ const authStore = useAuthStore()
  
 <template>
   <section class="company" >
-    <h1 class="company__title text-center text--fz40 text--fw700">Сlinic MIND CARE offers</h1>
+    <h1 class="title-h1">Сlinic MIND CARE offers</h1>
     <h2 class="title mt--40">Your Path to Better Mental Health</h2>
     <p>At Mind Care, we understand that mental health is just as important as physical health. We offer a variety of counseling services to help you address common mental health concerns and improve your overall well-being.</p>
     
@@ -69,11 +69,7 @@ const authStore = useAuthStore()
  
 <style scoped lang='scss'>
 .company{
-  color: $black;
-  &__title {
-    margin: 10px 0;
-    color: $blue-800;
-  }
+  
   h2 {
     color: $blue-900;
   }

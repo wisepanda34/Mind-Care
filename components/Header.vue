@@ -6,7 +6,14 @@ const authStore = useAuthStore()
 const isMenuOpened = ref(false)
 
 const toggleMenu = () => {
-  isMenuOpened.value = !isMenuOpened.value
+  if (window.innerWidth <= 900) {
+    isMenuOpened.value = !isMenuOpened.value
+    if (isMenuOpened.value) {
+        document.body.classList.add('no-scroll')
+    } else {
+      document.body.classList.remove('no-scroll')
+    }
+  }
 }
 </script>
  
@@ -21,10 +28,10 @@ const toggleMenu = () => {
         </div>
         <UILogo/>
         <nav class="header__nav user-none">
-          <nuxt-link class="header__nav-item" to="/" exact-active-class="active" @click="toggleMenu">Company</nuxt-link>
-          <nuxt-link class="header__nav-item" to="/specialists" exact-active-class="active" @click="toggleMenu">Our specialists</nuxt-link>
-          <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active" @click="toggleMenu">Reviews</nuxt-link>
-          <nuxt-link class="header__nav-item" to="/contacts" exact-active-class="active" @click="toggleMenu">Contacts</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/" exact-active-class="active">Company</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/specialists" exact-active-class="active">Our specialists</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/reviews" exact-active-class="active">Reviews</nuxt-link>
+          <nuxt-link class="header__nav-item" to="/contacts" exact-active-class="active">Contacts</nuxt-link>
           
           <nuxt-link v-if="authStore.user.role === 'admin'" class="header__nav-item" to="/admin" exact-active-class="active" @click="toggleMenu">Admin</nuxt-link>
         </nav>

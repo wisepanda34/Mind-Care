@@ -1,7 +1,5 @@
 <!-- components/Footer.vue -->
 <script lang='ts'>
-import { NuxtLink } from '#build/components';
-
  
 </script>
  
@@ -71,7 +69,6 @@ import { NuxtLink } from '#build/components';
   &__up {
     display: flex;
     justify-content: space-between;
-    // gap: 10%;
     margin-bottom: 70px;
   }
 

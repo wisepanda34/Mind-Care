@@ -32,10 +32,8 @@ onUnmounted(() => {
 <template>
  <Html>
     <Body>
-      <NuxtLayout >
-        <!-- <transition> -->
-          <NuxtPage class="page" />
-        <!-- </transition> -->
+      <NuxtLayout>
+        <NuxtPage/>
       </NuxtLayout>
       <AuthModal/>
       <UIMessageModal/>

@@ -121,7 +121,6 @@ onMounted(()=>{
 <style scoped lang='scss'>
 
  .reviews{
-  
   &__card{
     border: 1px solid $grey-2;
     border-radius: $radius-12;

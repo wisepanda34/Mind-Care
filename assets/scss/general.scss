@@ -29,7 +29,14 @@ body {
   max-width: 1440px;
   margin: 0 auto;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    .page{
+      padding: 10px;
+    }
+  }
 }
+
 .container {
   max-width: 1440px;
   margin: 0 auto;
@@ -48,27 +55,16 @@ body {
   font-size: 24px;
   font-weight: 700;
 }
-@media (max-width: 768px) {
-  .page{
-    padding: 10px;
-  }
+.loading{
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 20vh;
 }
-.disabled_class {
-  opacity: 0.5;
-}
-.no-scroll{
-  overflow: hidden;
-}
-
 .flex{
   display: flex;
 }
 .flex-center{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.loading{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,10 +79,15 @@ body {
 .user-none{
   user-select: none;
 }
+.disabled_class {
+  opacity: 0.5;
+}
+.no-scroll{
+  overflow: hidden;
+}
 .field-error {
   height: 16px;
 }
-
 .mt{
   &--10{
     margin-top: 10px;

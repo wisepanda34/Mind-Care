@@ -1,8 +1,6 @@
 <!-- app.vue -->
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth.store';
 
-const authStore = useAuthStore()
 const showUIPageUp = ref(false);
 
 const handleScroll = () => {
@@ -33,7 +31,7 @@ onUnmounted(() => {
  <Html>
     <Body>
       <NuxtLayout>
-        <NuxtPage/>
+        <NuxtPage class="page"/>
       </NuxtLayout>
       <AuthModal/>
       <UIMessageModal/>
@@ -48,4 +46,5 @@ onUnmounted(() => {
   right: 30px;
   bottom: 60px;
 }
+
 </style>

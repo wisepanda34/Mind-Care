@@ -90,7 +90,7 @@ const authStore = useAuthStore()
     position: relative;
   }
   li::before {
-    content: url(/public/svg/check.svg);
+    content: url(/svg/check.svg);
     position: absolute;
     top: 3px;
     left: -30px;

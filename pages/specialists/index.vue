@@ -1,6 +1,6 @@
 <!-- pages/specialists/index.vue -->
 <script setup lang='ts'>
-import type {IDoctor, IUser} from '@/types/auth.type'
+import type { IUser } from '@/types/auth.type'
 import { useAuthStore } from "~/stores/auth.store";
 import { VueSpinnerIos} from 'vue3-spinners';
 

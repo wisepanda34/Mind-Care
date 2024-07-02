@@ -16,7 +16,7 @@
       </div>
       
       <div class="contacts__map">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2482.5624018426233!2d-0.1326564!3d51.5212438!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b2e5f652569%3A0x804321e37c4a4b1a!2s53%20Gower%20St%2C%20London%20WC1E%206HJ%2C%20UK!5e0!3m2!1sen!2sua!4v1719588330490!5m2!1sen!2sua"  height="450" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2482.5624018426233!2d-0.1326564!3d51.5212438!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b2e5f652569%3A0x804321e37c4a4b1a!2s53%20Gower%20St%2C%20London%20WC1E%206HJ%2C%20UK!5e0!3m2!1sen!2sua!4v1719588330490!5m2!1sen!2sua"  height="450" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
       </div>
     </div>
   </div>

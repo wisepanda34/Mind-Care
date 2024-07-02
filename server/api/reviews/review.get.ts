@@ -5,11 +5,9 @@ import ReviewModel from "@/server/models/Review";
 
 export default defineEventHandler(async (event) => {
 
-  // return fetchData(UserModel, event);
   try{
     const response = await ReviewModel.find();
     
-
     if (!response) {
       return { body: { message: "no data from DB" }};
     }
